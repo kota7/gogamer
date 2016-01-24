@@ -6,7 +6,8 @@
 #' @param fileEncoding  A character string: if non-empty declares the encoding used on a file.
 #' @export
 readSGF <- function(path, fileEncoding = "") {
-  scan(path, what = "character", sep = "\n", fileEncoding = fileEncoding) %>%
+  scan(path, what = "character", sep = "\n",
+       quiet = TRUE,fileEncoding = fileEncoding) %>%
     paste(collapse = "") %>%
     parseSGF()
 }
