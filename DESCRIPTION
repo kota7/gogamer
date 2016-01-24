@@ -1,0 +1,16 @@
+Package: sgf
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1
+Date: 2016-01-24
+Author: Kota Mori <kmori05@gmail.com>
+Maintainer: Kota Mori <kmori05@gmail.com>
+Description: Read and parse go game records written in the smart go format
+    (SGF).
+License: GPL-2
+Depends:
+    R (>= 2.14)
+Imports:
+    magrittr
+LazyData: TRUE
+RoxygenNote: 5.0.1
