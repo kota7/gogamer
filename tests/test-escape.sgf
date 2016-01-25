@@ -1,25 +1,10 @@
-(;GM[1]FF[4]
-CA[UTF-8]
-AP[Quarry:0.2.0]
-SZ[19]
-ST[2]
-RU[Japanese]
-KM[0.0]
-PB[Black]
-PW[White]
-;B[qd];W[dc]C[branch1 occurs here
+(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
+RU[Japanese]SZ[19]KM[0.00]
+PW[White]PB[Black]
+;B[pd]
+;W[dd]
+;B[dp]C[special characters in comments...
 
-hmm]
-(;B[cp];W[pp])
-(;B[dq]C[this is a longer branch];W[pp]C[comment functional characters \
-(abc) {d{e}) 
+( yay[! )  { foo }  [ bar \]
 
-; hey! [  \]
-
-;B[ab\] ;W[kl\]]
-;B[ce]
-(;W[ed]C[this is the longest branch];B[ci];W[od];B[oc];W[nc]
-;B[pc];W[nd];B[qf];W[jd])
-(;W[cg];B[fc])
-(;W[di];B[fe];W[gc]))
-)
+; \\ ])
