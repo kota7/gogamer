@@ -13,10 +13,11 @@ readSGF <- function(path, encoding = "") {
 
 
 
-#' Parse text in the smart go format
+#' Parse text in the smart go format.
 #'
 #' @name parseSGF
 #' @param sgf     A character vector of sgf text.
+#'
 #' @export
 parseSGF <- function(sgf) {
   ### pruning ###

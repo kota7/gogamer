@@ -14,8 +14,7 @@
 #'
 #' @export
 find_tags <- function(sgf, tags) {
-  out <- stringr::str_match(
-    sgf, paste(tags, "\\[(.*?)\\]", sep = ""))[, 2]
-  names(out) <- tags
-  out
+  stringr::str_match(
+    sgf, paste(tags, "\\[(.*?)\\]", sep = ""))[, 2] %>%
+    stats::setNames(tags)
 }

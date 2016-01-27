@@ -12,6 +12,7 @@ Depends:
     R (>= 2.14)
 Imports:
     magrittr,
+    stats,
     stringr
 LazyData: TRUE
 RoxygenNote: 5.0.1
