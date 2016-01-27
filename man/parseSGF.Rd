@@ -2,7 +2,7 @@
 % Please edit documentation in R/read-and-parse.R
 \name{parseSGF}
 \alias{parseSGF}
-\title{Parse SGF file(s)}
+\title{Parse text in the smart go format}
 \usage{
 parseSGF(sgf)
 }
@@ -10,6 +10,6 @@ parseSGF(sgf)
 \item{sgf}{A character vector of sgf text.}
 }
 \description{
-Parse SGF file(s)
+Parse text in the smart go format
 }
 

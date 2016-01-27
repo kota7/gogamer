@@ -26,9 +26,7 @@ parseSGF <- function(sgf) {
   ### obtain meta information ###
   metatag <- c("PW", "PB", "WR", "BR", "SZ", "KM", "HA",
                "DT", "RU", "EV", "RO")
-  metainfo <- stringr::str_match(
-    sgf, paste(metatag, "\\[(.*?)\\]", sep = ""))[, 2]
-  names(metainfo) <- metatag
+  metainfo <- find_tags(metatag)
 
 
   ### parse moves ###

@@ -4,12 +4,12 @@
 \alias{readSGF}
 \title{Read and parse a SGF file}
 \usage{
-readSGF(path, fileEncoding = "")
+readSGF(path, encoding = "")
 }
 \arguments{
 \item{path}{A character representing the location of a smart go format (SGF) file.}
 
-\item{fileEncoding}{A character string: if non-empty declares the encoding used on a file.}
+\item{encoding}{A character string: if non-empty declares the encoding used on a file.}
 }
 \description{
 Read and parse a SGF file
