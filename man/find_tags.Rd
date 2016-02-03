@@ -7,7 +7,7 @@
 find_tags(sgf, tags)
 }
 \arguments{
-\item{sgf}{A character}
+\item{sgf}{A character string of sgf format}
 
 \item{tags}{A character vector of tags}
 }

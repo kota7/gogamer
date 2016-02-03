@@ -1,7 +1,7 @@
 #' Find the tag properties in sgf text.
 #'
-#' @param sgf  A character
-#' @param tags A character vector of tags
+#' @param sgf   A character string of sgf format
+#' @param tags  A character vector of tags
 #'
 #' @return A character vector of the same size as \code{tags}.  It contains the properties of tags (\code{NA} if the tag is missing) and is named by the tag names.
 #'
@@ -17,4 +17,13 @@ find_tags <- function(sgf, tags) {
   stringr::str_match(
     sgf, paste(tags, "\\[(.*?)\\]", sep = ""))[, 2] %>%
     stats::setNames(tags)
+}
+
+
+
+#' Obtain moves in sgf text.
+#'
+#' @param sgf  A character string of sgf format
+#' @export
+get_moves <- function(sgf) {
 }
