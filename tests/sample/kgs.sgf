@@ -1,6 +1,6 @@
 (;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]
 RU[Japanese]SZ[19]KM[6.50]TM[600]OT[5x20 byo-yomi]
-PW[white]PB[black]WR[2k]BR[2k]DT[2016-01-17]PC[The KGS Go Server at http://www.gokgs.com/]C[black [2k\]: hi
+PW[foo]PB[bar]WR[2k]BR[2k]DT[2016-01-17]PC[The KGS Go Server at http://www.gokgs.com/]C[black [2k\]: hi
 white [2k\]: hi
 ]RE[W+Resign]
 ;B[pp]BL[599.205]

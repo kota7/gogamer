@@ -7,9 +7,11 @@
 readSGF(path, encoding = "")
 }
 \arguments{
-\item{path}{A character representing the location of a smart go format (SGF) file.}
+\item{path}{A character string of the path to
+a smart go format (SGF) file.  Can be local or online.}
 
-\item{encoding}{A character string: if non-empty declares the encoding used on a file.}
+\item{encoding}{A character string.
+If non-empty declares the encoding used on a file.}
 }
 \description{
 Read and parse a SGF file

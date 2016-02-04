@@ -11,7 +11,9 @@ License: GPL-2
 Depends:
     R (>= 2.14)
 Imports:
+    dplyr,
     magrittr,
+    plyr,
     stats,
     stringr
 LazyData: TRUE

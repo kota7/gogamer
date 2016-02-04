@@ -7,7 +7,10 @@
 get_moves(sgf)
 }
 \arguments{
-\item{sgf}{A character string of sgf format}
+\item{sgf}{a character of text in sgf format}
+}
+\value{
+an integer matrix with five columns.
 }
 \description{
 Obtain moves in sgf text.

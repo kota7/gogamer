@@ -2,8 +2,11 @@
 #' Read and parse a SGF file
 #'
 #' @name readSGF
-#' @param path    A character representing the location of a smart go format (SGF) file.
-#' @param encoding  A character string: if non-empty declares the encoding used on a file.
+#' @param path    A character string of the path to
+#'   a smart go format (SGF) file.  Can be local or online.
+#' @param encoding  A character string.
+#'   If non-empty declares the encoding used on a file.
+#'
 #' @export
 readSGF <- function(path, encoding = "") {
   readLines(path, encoding = encoding) %>%
@@ -16,7 +19,7 @@ readSGF <- function(path, encoding = "") {
 #' Parse text in the smart go format.
 #'
 #' @name parseSGF
-#' @param sgf     A character vector of sgf text.
+#' @param sgf     A character string of sgf text.
 #'
 #' @export
 parseSGF <- function(sgf) {

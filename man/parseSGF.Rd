@@ -7,7 +7,7 @@
 parseSGF(sgf)
 }
 \arguments{
-\item{sgf}{A character vector of sgf text.}
+\item{sgf}{A character string of sgf text.}
 }
 \description{
 Parse text in the smart go format.
