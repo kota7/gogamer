@@ -1,11 +1,5 @@
-
-
-### manage imports ###
-#' @importFrom magrittr %>%
-NULL
-
-
 ### package documentation
+
 #' sgf: A package for parsing a SGF (smart go format) file.
 #'
 #' This package provides utilities for parsing text files in smart go format.

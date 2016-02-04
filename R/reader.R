@@ -28,18 +28,12 @@ parseSGF <- function(sgf) {
 
 
   ### obtain meta information ###
-  metatag <- c("PW", "PB", "WR", "BR", "SZ", "KM", "HA",
-               "DT", "RU", "EV", "RO")
-  metainfo <- find_tags(metatag)
+  tags <- c("PW", "PB", "WR", "BR", "SZ", "KM", "HA",
+            "DT", "RU", "EV", "RO")
+  metainfo <- get_props(sgf, tags)
 
 
-  ### parse moves ###
-  # TODO: (handicap tags, AB & AW)
-  tmp <- stringr::str_match_all(
-    sgf, ";([BW])\\[(.*?)\\]")[[1]][, -1]
-  moves <- cbind(
-    sapply(tmp[, 2], utf8ToInt) %>% t() - 96,
-    ifelse (tmp[, 1]=="B", BLACK, WHITE))
-  colnames(moves) <- c("x", "y", "col")
+  ### parse plays, comments, and times ###
+  transition <- get_moves(sgf)
   sgf
 }
