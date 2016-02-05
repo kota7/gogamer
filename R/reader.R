@@ -28,12 +28,13 @@ parseSGF <- function(sgf) {
 
 
   ### obtain meta information ###
-  tags <- c("PW", "PB", "WR", "BR", "SZ", "KM", "HA",
+  tags <- c("PW", "PB", "WR", "BR",
+            "RE", "SZ", "KM", "HA",
             "DT", "RU", "EV", "RO")
   metainfo <- get_props(sgf, tags)
 
 
   ### parse plays, comments, and times ###
-  transition <- get_moves(sgf)
+  moves <- get_moves(sgf)
   sgf
 }
