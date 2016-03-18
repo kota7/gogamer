@@ -5,7 +5,3 @@ PruneSgf <- function(x, keep_first) {
     .Call('sgf_PruneSgf', PACKAGE = 'sgf', x, keep_first)
 }
 
-timesTwo <- function(x) {
-    .Call('sgf_timesTwo', PACKAGE = 'sgf', x)
-}
-
