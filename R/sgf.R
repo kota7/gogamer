@@ -10,4 +10,9 @@
 #' @docType package
 #' @name sgf
 NULL
-#> NULL
+
+
+
+#' @useDynLib sgf
+#' @importFrom Rcpp sourceCpp
+NULL
