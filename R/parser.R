@@ -4,7 +4,7 @@
 #'
 #' @param sgf   character vector of texts in sgf format
 #' @param tags  character vector of tags
-#' @param return_list logical that specifies
+#' @param return_list logical that specifies the output format
 #'
 #' @return  If \code{return_list} is TRUE, this function returns
 #'   a list with the same length as \code{sgf}.  Each element of the list
@@ -16,7 +16,7 @@
 #' @details This function finds the first appearance of each tag
 #'   and returns the property (contents within the bracket).
 #'   It suits for finding propeties unique to a game
-#'   (e.g. meta information, date, players, rule set),
+#'   (e.g. player names or rule set),
 #'   but not for extracting tags appearing for multiple times, such as moves.
 #'
 #' @examples
@@ -33,14 +33,19 @@
 #'
 #' @export
 get_props <- function(sgf, tags, return_list = TRUE) {
+
+  # Here, llply is used across tags rather than sgf.
+  # This is probably more efficient if the number of tags are
+  # not likely to grow much, while the length of sgf may be long.
   DF <- sprintf("(?<![A-Z])%s\\[(.*?)(?<!\\\\)\\]", tags) %>%
-    plyr::llply(function(p)
-      stringr::str_match(sgf, p)[, 2]) %>% stats::setNames(tags) %>%
+    lapply(function(p) stringr::str_match(sgf, p)[, 2]) %>%
+    stats::setNames(tags) %>%
     as.data.frame(stringsAsFactors = FALSE)
 
   if (return_list) {
-    plyr::alply(DF, 1, function(d) as.character(d) %>% setNames(tags)) %>%
-      stats::setNames(NULL)
+    lapply(seq(nrow(DF)), function(i)
+      as.character(DF[i,]) %>% stats::setNames(tags)) %>%
+      unname()
   } else {
     DF
   }
@@ -48,9 +53,10 @@ get_props <- function(sgf, tags, return_list = TRUE) {
 
 
 
+
 #' Obtain setup and plays in sgf text.
 #'
-#' @param sgf  a character of text in sgf format
+#' @param sgf  character vector of text in sgf format
 #' @param return_list  logical that specifies output form.
 #'
 #' @return  The ouput for each sgf is a \code{tbl_df} object with five columns:
@@ -74,17 +80,32 @@ get_moves <- function(sgf, return_list = TRUE) {
   index <- Map(function(l, i) rep(i, l), len, seq_along(len)) %>% unlist()
 
   # big data.frame of all
-  tmp <- plyr::ldply(tmp, as.data.frame, stringsAsFactors = FALSE)
+  # plyr::ldply was not very fast
+  tmp <- lapply(tmp, as.data.frame, stringsAsFactors = FALSE) %>%
+    dplyr::bind_rows()
 
-  tags <- tmp[, 2]
+  # tags : character vector
+  # props: list of 2-col matrix with unknown nrow
+  # tags and props are of the same size
+  tags <- tmp[[2]]
   props <- stringr::str_match_all(
-    tmp[, 3], stringr::regex("\\[(.*?)\\]", dotall = TRUE))
+    tmp[[3]], stringr::regex("\\[(.*?)\\]"))
+
+  # expand index and tags as many as nrow of props
+  # vectorize the 2nd columns of props
+  len <- vapply(props, nrow, numeric(1))
+  index <- Map(rep, index, len) %>% unlist()
+  tags  <- Map(rep, tags, len) %>% unlist() %>% unname()
+  props <- lapply(props, `[`, TRUE, 2) %>% unlist()
 
   # make a master dataframe
-  DF <- Map(function(tag, prop, id)
-    data.frame(id = id, tag = tag, prop = prop[, 2], stringsAsFactors = FALSE),
-    tags, props, index) %>%
-    dplyr::bind_rows() %>%
+  # TODO: enhance --- seems Map ~ bind_rows is slow.
+#   DF <- Map(function(tag, prop, id)
+#     data.frame(id = id, tag = tag, prop = prop[, 2], stringsAsFactors = FALSE),
+#     tags, props, index) %>%
+#     dplyr::bind_rows() %>%
+  DF <- data.frame(id = index, tag = tags, prop = props,
+                   stringsAsFactors = FALSE) %>%
     dplyr::mutate(colour = 1L + (tag=="W"),
                   isMove = as.integer(tag %in% c("B", "W"))) %>%
     dplyr::group_by(id) %>%
@@ -93,7 +114,8 @@ get_moves <- function(sgf, return_list = TRUE) {
                     utf8ToInt() %>% `-`(96L),
                   y = substring(prop, 2, 2) %>% paste0(collapse = "") %>%
                     utf8ToInt() %>% `-`(96L)) %>%
-    dplyr::select(move, x, y, colour, isMove)
+    dplyr::select(move, x, y, colour, isMove) %>%
+    dplyr::ungroup()
   if (return_list) {
     plyr::dlply(DF, "id", dplyr::select, -id)
   } else {

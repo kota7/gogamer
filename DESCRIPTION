@@ -15,7 +15,9 @@ Imports:
     magrittr,
     plyr,
     stats,
-    stringr
+    stringr,
+    Rcpp
 LazyData: TRUE
 RoxygenNote: 5.0.1
 Suggests: testthat
+LinkingTo: Rcpp

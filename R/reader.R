@@ -26,13 +26,11 @@ parseSGF <- function(sgf) {
   ### pruning ###
   # TODO: branch pruning
 
-
   ### obtain meta information ###
   tags <- c("PW", "PB", "WR", "BR",
             "RE", "SZ", "KM", "HA",
             "DT", "RU", "EV", "RO")
   metainfo <- get_props(sgf, tags)
-
 
   ### parse plays, comments, and times ###
   moves <- get_moves(sgf)

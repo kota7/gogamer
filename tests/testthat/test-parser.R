@@ -13,3 +13,9 @@ test_that("Extract game properties", {
     c(RO = "Final", PW = "Iyama", ZZ = NA))
 })
 
+
+test_that("Extract game plays", {
+  sgf <- "(;GM[1];B[pd];W[cq];B[dp];W[dq];B[fp])"
+  get_moves(sgf)
+})
+

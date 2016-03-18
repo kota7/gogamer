@@ -7,7 +7,7 @@
 get_moves(sgf, return_list = TRUE)
 }
 \arguments{
-\item{sgf}{a character of text in sgf format}
+\item{sgf}{character vector of text in sgf format}
 
 \item{return_list}{logical that specifies output form.}
 }

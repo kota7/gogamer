@@ -11,7 +11,7 @@ get_props(sgf, tags, return_list = TRUE)
 
 \item{tags}{character vector of tags}
 
-\item{return_list}{logical that specifies}
+\item{return_list}{logical that specifies the output format}
 }
 \value{
 If \code{return_list} is TRUE, this function returns
@@ -28,7 +28,7 @@ Find the tag properties in sgf text.
 This function finds the first appearance of each tag
   and returns the property (contents within the bracket).
   It suits for finding propeties unique to a game
-  (e.g. meta information, date, players, rule set),
+  (e.g. player names or rule set),
   but not for extracting tags appearing for multiple times, such as moves.
 }
 \examples{
