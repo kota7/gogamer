@@ -6,13 +6,14 @@
 using namespace Rcpp;
 
 // PruneSgf
-std::string PruneSgf(std::string x);
-RcppExport SEXP sgf_PruneSgf(SEXP xSEXP) {
+std::string PruneSgf(std::string x, bool keep_first);
+RcppExport SEXP sgf_PruneSgf(SEXP xSEXP, SEXP keep_firstSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type x(xSEXP);
-    __result = Rcpp::wrap(PruneSgf(x));
+    Rcpp::traits::input_parameter< bool >::type keep_first(keep_firstSEXP);
+    __result = Rcpp::wrap(PruneSgf(x, keep_first));
     return __result;
 END_RCPP
 }

@@ -2,20 +2,20 @@
 #include <string>
 
 
-std::string PruneSgf(std::string x);
-void PruneRecursive(std::string &x);
+std::string PruneSgf(std::string x, bool keep_first);
+void PruneRecursive(std::string &x, bool &keep_first);
 void FindBranch(std::string &x, int &start, int &end);
 
 
 // [[Rcpp::export]]
-std::string PruneSgf(std::string x)
+std::string PruneSgf(std::string x, bool keep_first)
 {
-  PruneRecursive(x);
+  PruneRecursive(x, keep_first);
   return x;
 }
 
 
-void PruneRecursive(std::string &x)
+void PruneRecursive(std::string &x, bool &keep_first)
 {
   int start = 0;
   int end = x.length() - 1;
@@ -23,9 +23,23 @@ void PruneRecursive(std::string &x)
   if (start < 0) return;  // no branch
 
   std::string trunc = x.substr(0, start);
+  if (!keep_first) {
+    int new_start = end + 1;
+    int new_end = x.length() - 1;
+    while (true)
+    {
+      Rcpp::checkUserInterrupt();
+      FindBranch(x, new_start, new_end);
+      if (new_start < 0) break;
+      start = new_start;
+      end = new_end;
+      new_start = end + 1;
+      end = x.length() - 1;
+    }
+  }
   std::string child = x.substr(start + 1, end - start - 1);
   x = trunc + child;
-  PruneRecursive(x);
+  PruneRecursive(x, keep_first);
 }
 
 // This function finds the first SGF branch in x

@@ -4,10 +4,13 @@
 \alias{prune_sgf}
 \title{Remove brances of SGF}
 \usage{
-prune_sgf(sgf)
+prune_sgf(sgf, keep_first = FALSE)
 }
 \arguments{
 \item{sgf}{Scalar character formatted as SGF}
+
+\item{keep_first}{Logical. If TRUE, keep the first branch.
+Otherwise, keep the last branch.}
 }
 \value{
 Scalar character of SGF where branches are removed
