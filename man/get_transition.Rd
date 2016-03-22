@@ -4,7 +4,7 @@
 \alias{get_transition}
 \title{Obtain the board transition from moves}
 \usage{
-get_transition(moves)
+get_transition()
 }
 \arguments{
 \item{moves}{Moves}

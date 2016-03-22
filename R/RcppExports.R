@@ -5,7 +5,7 @@ PruneSgf <- function(x, keep_first) {
     .Call('sgf_PruneSgf', PACKAGE = 'sgf', x, keep_first)
 }
 
-GetTransition <- function() {
-    .Call('sgf_GetTransition', PACKAGE = 'sgf')
+GetTransition <- function(isMoves, locations, colors, boardsize) {
+    .Call('sgf_GetTransition', PACKAGE = 'sgf', isMoves, locations, colors, boardsize)
 }
 

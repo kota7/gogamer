@@ -18,12 +18,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // GetTransition
-Rcpp::IntegerMatrix GetTransition();
-RcppExport SEXP sgf_GetTransition() {
+Rcpp::IntegerMatrix GetTransition(std::vector<bool> isMoves, std::vector<int> locations, std::vector<int> colors, int boardsize);
+RcppExport SEXP sgf_GetTransition(SEXP isMovesSEXP, SEXP locationsSEXP, SEXP colorsSEXP, SEXP boardsizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    __result = Rcpp::wrap(GetTransition());
+    Rcpp::traits::input_parameter< std::vector<bool> >::type isMoves(isMovesSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type locations(locationsSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type colors(colorsSEXP);
+    Rcpp::traits::input_parameter< int >::type boardsize(boardsizeSEXP);
+    __result = Rcpp::wrap(GetTransition(isMoves, locations, colors, boardsize));
     return __result;
 END_RCPP
 }
