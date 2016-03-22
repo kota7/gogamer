@@ -3,8 +3,8 @@
 #' @param moves Moves
 #' @return transition.
 #' @export
-get_transition(moves)
+get_transition <- function(moves)
 {
-
+  GetTransition()
 }
 

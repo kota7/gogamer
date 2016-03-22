@@ -17,3 +17,13 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// GetTransition
+Rcpp::IntegerMatrix GetTransition();
+RcppExport SEXP sgf_GetTransition() {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    __result = Rcpp::wrap(GetTransition());
+    return __result;
+END_RCPP
+}
