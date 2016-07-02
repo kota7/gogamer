@@ -7,8 +7,14 @@ gogame_test <- function() {
     invisible(.Call('sgf_gogame_test', PACKAGE = 'sgf'))
 }
 
-PruneSgf <- function(x, keep_first) {
-    .Call('sgf_PruneSgf', PACKAGE = 'sgf', x, keep_first)
+#' Remove branches from SGF text
+#' @param sgf  Scalar character formatted as SGF
+#' @param keep_first  Logical. If TRUE, keep the first branch.
+#'   Otherwise, keep the last branch.
+#' @return Scalar character of SGF text where branches are removed
+#' @export
+prune_sgf <- function(sgf, keep_first = TRUE) {
+    .Call('sgf_prune_sgf', PACKAGE = 'sgf', sgf, keep_first)
 }
 
 GetTransition <- function(isMoves, locations, colors, boardsize) {

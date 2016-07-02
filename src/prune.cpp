@@ -1,17 +1,22 @@
 #include <Rcpp.h>
 #include <string>
 
-
 std::string PruneSgf(std::string x, bool keep_first);
 void PruneRecursive(std::string &x, bool &keep_first);
 void FindBranch(std::string &x, int &start, int &end);
 
 
+//' Remove branches from SGF text
+//' @param sgf  Scalar character formatted as SGF
+//' @param keep_first  Logical. If TRUE, keep the first branch.
+//'   Otherwise, keep the last branch.
+//' @return Scalar character of SGF text where branches are removed
+//' @export
 // [[Rcpp::export]]
-std::string PruneSgf(std::string x, bool keep_first)
+std::string prune_sgf(std::string sgf, bool keep_first = true)
 {
-  PruneRecursive(x, keep_first);
-  return x;
+  PruneRecursive(sgf, keep_first);
+  return sgf;
 }
 
 
