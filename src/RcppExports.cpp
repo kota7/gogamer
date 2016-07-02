@@ -5,6 +5,15 @@
 
 using namespace Rcpp;
 
+// gogame_test
+void gogame_test();
+RcppExport SEXP sgf_gogame_test() {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    gogame_test();
+    return R_NilValue;
+END_RCPP
+}
 // PruneSgf
 std::string PruneSgf(std::string x, bool keep_first);
 RcppExport SEXP sgf_PruneSgf(SEXP xSEXP, SEXP keep_firstSEXP) {
