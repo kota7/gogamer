@@ -34,7 +34,7 @@ Gogame::Gogame(int s)
   // outer edge is included.
   // hence the board index is accessed by one-base coordinate
   board.resize(s + 2);
-  for (int i = 0; i < board.size(); i++) board[i].resize(s + 2);
+  for (unsigned int i = 0; i < board.size(); i++) board[i].resize(s + 2);
 
   // initialize board and set prisoners to zero
   clear();
@@ -42,16 +42,16 @@ Gogame::Gogame(int s)
 
 void Gogame::clear()
 {
-  for (int i = 0; i < board.size(); i++)
+  for (unsigned int i = 0; i < board.size(); i++)
   {
     board[0][i] = OB;
     board[board.size() - 1][i] = OB;
     board[i][0] = OB;
     board[i][board.size() - 1] = OB;
   }
-  for (int i = 1; i < board.size() - 1; i++)
+  for (unsigned int i = 1; i < board.size() - 1; i++)
   {
-    for (int j = 1; j < board[i].size() - 1; j++)
+    for (unsigned int j = 1; j < board[i].size() - 1; j++)
       board[j][i] = EM;
   }
 
@@ -70,9 +70,9 @@ void Gogame::summary()
 
 
   Rcpp::Rcout << "\nboard configuration\n";
-  for (int i = 0; i < board.size(); i++)
+  for (unsigned int i = 0; i < board.size(); i++)
   {
-    for (int j = 0; j < board[i].size(); j++)
+    for (unsigned int j = 0; j < board[i].size(); j++)
       Rcpp::Rcout << board[j][i] << " ";
     Rcpp::Rcout << "\n";
   }
