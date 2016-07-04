@@ -1,5 +1,24 @@
 #include <Rcpp.h>
 #include <vector>
+#include <queue>
+
+
+struct Point
+{
+  // a point on the board
+  // used in the queue for checking liberties,
+  // and storing captured stones
+  unsigned int x;
+  unsigned int y;
+
+  Point() {}
+  Point(unsigned int a, unsigned int b)
+  {
+    x = a;
+    y = b;
+  }
+};
+
 
 
 class Gogame
@@ -12,21 +31,26 @@ class Gogame
   int boardsize;
   std::vector< std::vector<int> > board;
 
-  int b_captured;
-  int w_captured;
+  unsigned int b_captured;
+  unsigned int w_captured;
 
 public:
-  Gogame(int s);  // no default constractor. requires board size
+  Gogame(unsigned int s);  // no default constractor. requires board size
   void clear();   // initialize board and prisoners
 
-  void play(int color, int x, int y);
+  void play(int color, unsigned int x, unsigned int y);
+  bool check_liberty(Point p,
+                     std::queue<Point> &checklist,
+                     std::vector< std::vector<bool> > &checked,
+                     std::vector< std::vector<bool> > &alive);
+
 
   // for debugging
   void summary();
 };
 
 
-Gogame::Gogame(int s)
+Gogame::Gogame(unsigned int s)
 {
   boardsize = s;
 
@@ -79,11 +103,67 @@ void Gogame::summary()
 }
 
 
-void Gogame::play(int color, int x, int y)
+void Gogame::play(int color, unsigned int x, unsigned int y)
 {
   // play a move by color at (x, y)
 
+  // TODO:
+  //   check if legal move
+  //     suicide move
+  //     ko
+  // for now, assume moves are valid
+
+  // put the stone temporarily
+  board[y][x] = color;
+
+
+  // enter four adjacent points to the checklist
+  // if they are opponent color
+  int opponent_color;
+  if (color == BL) {
+    opponent_color = WH;
+  } else {
+    opponent_color = BL;
+  }
+
+
+  // check if any opponent stone becomes captured due to this play
+  // define input for check_liberty routine
+  std::vector< std::vector<bool> > checked;
+  std::vector< std::vector<bool> > alive;
+  std::queue<Point> checklist;
+  std::vector<Point> captured;
+
+  // loop for adjacent points of the current point
+  unsigned int xx;
+  unsigned int yy;
+  for (int k = 0; k < 2; k++)
+  {
+    for (int l = 0; l < 2; l++)
+    {
+      // for each loop, checklist should be empty
+      xx = x + 2*k - 1;
+      yy = y + 2*l - 1;
+      if (board[yy][xx] == opponent_color)
+        check_liberty(Point(x, y + 1), checklist, checked, alive);
+    }
+  }
+
+
+
 }
+
+
+bool Gogame::check_liberty(Point p,
+                           std::queue<Point> &checklist,
+                           std::vector< std::vector<bool> > &checked,
+                           std::vector< std::vector<bool> > &alive)
+{
+  // check if the point p has any liberty (not dead)
+
+  return false;
+}
+
 
 
 
