@@ -51,11 +51,16 @@ get_moves <- function(sgf) {
   tmp <- stringr::str_match_all(
     sgf, "(?<![A-Z])(AB|AW|B|W)((\\[[A-Za-z]{2}\\])+)")[[1]]
 
-  # tags : character vector
-  # props: list of 2-col matrix with unknown nrow
-  # tags and props are of the same size
+  # tags: character vector of tags
   tags <- tmp[, 2]
-  props <- tolower(substring(tmp[, 3], 2, 3))
+  # props: list of character vectors
+  #        this is a vector since a tag may be associated with
+  #        multiple positions, e.g. AB[pp][dd]
+  props <- tolower(tmp[, 3]) %>% stringr::str_extract_all("[a-z]{2}")
+  len <- lapply(props, length) %>% unlist()
+  # expand tags
+  tags <- Map(rep, tags, len) %>% unlist()
+  props <- unlist(props)
 
   # define output
   out <- data.frame(

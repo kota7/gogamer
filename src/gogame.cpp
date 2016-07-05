@@ -253,9 +253,9 @@ Rcpp::DataFrame Gogame::GetTransitions()
 {
   unsigned int n = transitions.size();
 
-  std::vector<unsigned int> movevec(n);
-  std::vector<unsigned int> xvec(n);
-  std::vector<unsigned int> yvec(n);
+  std::vector<int> movevec(n);
+  std::vector<int> xvec(n);
+  std::vector<int> yvec(n);
   std::vector<int> vvec(n);
 
   for (unsigned int i = 0; i < n; i++)
