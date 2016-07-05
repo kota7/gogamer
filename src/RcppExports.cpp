@@ -26,17 +26,18 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// GetTransition
-Rcpp::IntegerMatrix GetTransition(std::vector<bool> isMoves, std::vector<int> locations, std::vector<int> colors, int boardsize);
-RcppExport SEXP sgf_GetTransition(SEXP isMovesSEXP, SEXP locationsSEXP, SEXP colorsSEXP, SEXP boardsizeSEXP) {
+// get_transitions
+Rcpp::DataFrame get_transitions(unsigned int boardsize, std::vector<bool> ismove_vec, std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec, std::vector<unsigned int> color_vec);
+RcppExport SEXP sgf_get_transitions(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< std::vector<bool> >::type isMoves(isMovesSEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type locations(locationsSEXP);
-    Rcpp::traits::input_parameter< std::vector<int> >::type colors(colorsSEXP);
-    Rcpp::traits::input_parameter< int >::type boardsize(boardsizeSEXP);
-    __result = Rcpp::wrap(GetTransition(isMoves, locations, colors, boardsize));
+    Rcpp::traits::input_parameter< unsigned int >::type boardsize(boardsizeSEXP);
+    Rcpp::traits::input_parameter< std::vector<bool> >::type ismove_vec(ismove_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<unsigned int> >::type x_vec(x_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<unsigned int> >::type y_vec(y_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<unsigned int> >::type color_vec(color_vecSEXP);
+    __result = Rcpp::wrap(get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec));
     return __result;
 END_RCPP
 }

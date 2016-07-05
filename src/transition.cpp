@@ -12,39 +12,26 @@ struct Move
 };
 
 
-
-Rcpp::IntegerMatrix GetTransition(
-  std::vector<bool> isMoves, std::vector<int> locations,
-  std::vector<int> colors, int boardsize);
-std::vector<Transition> MovesToTransitions(
-    std::vector<Move> moves, int boardsize);
-
+//' Obtains the transition of board configuration
+//' @return \code{data.frame}
+//' @export
 //[[Rcpp::export]]
-Rcpp::IntegerMatrix GetTransition(
-  std::vector<bool> isMoves, std::vector<int> locations,
-  std::vector<int> colors, int boardsize)
+Rcpp::DataFrame get_transitions(
+  unsigned int boardsize,
+  std::vector<bool> ismove_vec,
+  std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec,
+  std::vector<unsigned int> color_vec)
 {
+  Gogame gg(boardsize);
+
   // isMoves, locations, colors must have the same size
-  int n = isMoves.size();
-  std::vector<Move> moves(n);
+  int n = ismove_vec.size();
   for (int i = 0; i < n; i++)
   {
-    moves[i].isMove = isMoves[i];
-    moves[i].location = locations[i];
-    moves[i].color = colors[i];
+    gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
   }
-  Rcpp::IntegerMatrix out;
-  return out;
+  return gg.GetTransitions();
 }
-
-
-std::vector<Transition> MovesToTransitions(
-    std::vector<Move> moves, int boardsize)
-{
-  std::vector<Transition> out(1);
-  return out;
-}
-
 
 
 

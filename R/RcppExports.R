@@ -17,7 +17,10 @@ prune_sgf <- function(sgf, keep_first = TRUE) {
     .Call('sgf_prune_sgf', PACKAGE = 'sgf', sgf, keep_first)
 }
 
-GetTransition <- function(isMoves, locations, colors, boardsize) {
-    .Call('sgf_GetTransition', PACKAGE = 'sgf', isMoves, locations, colors, boardsize)
+#' Obtains the transition of board configuration
+#' @return \code{data.frame}
+#' @export
+get_transitions <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec) {
+    .Call('sgf_get_transitions', PACKAGE = 'sgf', boardsize, ismove_vec, x_vec, y_vec, color_vec)
 }
 

@@ -38,24 +38,25 @@ class Gogame
   unsigned int movenumber; // current move number
   std::vector<Transition> transitions;
 
-  void Play(int color, unsigned int x, unsigned int y, bool ismove);
   bool HasLiberty(unsigned int x, unsigned int y,
                   std::vector< std::vector<bool> > &visited);
   void RemoveChain(unsigned int x, unsigned int y);
   void CheckAndRemove(unsigned int x, unsigned int y);
 
 
-  public:
+public:
   Gogame(unsigned int s);  // no default constractor. requires board size
   void Clear();   // initialize board and prisoners
 
-
-  // functions to be called by outside
+  void Play(int color, unsigned int x, unsigned int y, bool ismove);
+  // wrapper for Play
   void BPlay(unsigned int x, unsigned int y, bool ismove)
     { Play(BL, x, y, ismove); }
   void WPlay(unsigned int x, unsigned int y, bool ismove)
     { Play(WH, x, y, ismove); }
 
+  Rcpp::DataFrame GetTransitions();
+  // returns a data frame containing the transition of board configuration
 
 
   // for debugging

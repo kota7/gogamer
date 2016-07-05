@@ -249,6 +249,33 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
 
 
 
+Rcpp::DataFrame Gogame::GetTransitions()
+{
+  unsigned int n = transitions.size();
+
+  std::vector<unsigned int> movevec(n);
+  std::vector<unsigned int> xvec(n);
+  std::vector<unsigned int> yvec(n);
+  std::vector<int> vvec(n);
+
+  for (unsigned int i = 0; i < n; i++)
+  {
+    movevec[i] = transitions[i].movenumber;
+    xvec[i] = transitions[i].x;
+    yvec[i] = transitions[i].y;
+    vvec[i] = transitions[i].value;
+  }
+  Rcpp::DataFrame out = Rcpp::DataFrame::create(
+    Rcpp::Named("move") = movevec,
+    Rcpp::Named("x") = xvec,
+    Rcpp::Named("y") = yvec,
+    Rcpp::Named("value") = vvec
+  );
+  return out;
+}
+
+
+
 
 //' test for gogame class
 //' @export
