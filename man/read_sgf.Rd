@@ -4,7 +4,7 @@
 \alias{read_sgf}
 \title{Read and parse a SGF file}
 \usage{
-read_sgf(path, keep_first = FALSE, encoding = "")
+read_sgf(path, keep_first = TRUE, encoding = "")
 }
 \arguments{
 \item{path}{A character string of the path to

@@ -4,7 +4,7 @@
 \alias{parse_sgf}
 \title{Parse text in the smart go format.}
 \usage{
-parse_sgf(sgf, keep_first = FALSE)
+parse_sgf(sgf, keep_first = TRUE)
 }
 \arguments{
 \item{sgf}{A character string of sgf text.}
