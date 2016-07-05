@@ -387,5 +387,24 @@ void gogame_test()
   gg.WPlay(1, 1, true);
   gg.Summary();
 
+  gg.WPlay(10, 5, true);
+  gg.Summary();
+  gg.WPlay(11, 6, true);
+  gg.Summary();
+  gg.BPlay(9, 5, true);
+  gg.Summary();
+  gg.BPlay(11, 5, true);
+  gg.Summary();
+  gg.BPlay(10, 4, true);
+  gg.Summary();
+  gg.BPlay(11, 5, true);
+  gg.Summary();
+  gg.BPlay(11, 7, true);
+  gg.Summary();
+  gg.BPlay(12, 6, true);
+  gg.Summary();
+  gg.BPlay(10, 6, true);
+  gg.Summary();
+
 }
 

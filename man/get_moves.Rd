@@ -4,25 +4,19 @@
 \alias{get_moves}
 \title{Obtain setup and plays in sgf text.}
 \usage{
-get_moves(sgf, return_list = TRUE)
+get_moves(sgf)
 }
 \arguments{
-\item{sgf}{character vector of text in sgf format}
-
-\item{return_list}{logical that specifies output form.}
+\item{sgf}{scalar character of text in sgf format}
 }
 \value{
-The ouput for each sgf is a \code{tbl_df} object with five columns:
+a \code{data.frame} object with five columns:
   \itemize{
-    \item{move: move number}
+    \item{color: color (1: black, 2: white)}
     \item{x: x coordinate}
     \item{y: y coordinate}
-    \item{colour: colour (1: black, 2: white)}
-    \item{isMove: 1: move, 0: setup}
+    \item{ismove: TRUE: move, FALSE: setup}
   }
-  If \code{return_list} is TRUE, this function returns a list of such objects.
-  Otherwise, it returns a big \code{tbl_df} object with an additional column of \code{id},
-  which indicates which input the row corresponds to.
 }
 \description{
 Obtain setup and plays in sgf text.

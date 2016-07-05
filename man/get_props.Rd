@@ -4,22 +4,15 @@
 \alias{get_props}
 \title{Find the tag properties in sgf text.}
 \usage{
-get_props(sgf, tags, return_list = TRUE)
+get_props(sgf, tags)
 }
 \arguments{
-\item{sgf}{character vector of texts in sgf format}
+\item{sgf}{scalar character of texts in sgf format}
 
 \item{tags}{character vector of tags}
-
-\item{return_list}{logical that specifies the output format}
 }
 \value{
-If \code{return_list} is TRUE, this function returns
-  a list with the same length as \code{sgf}.  Each element of the list
-  is a character vector of tag properties named by tags.
-  If \code{return_list} is FALSE, then the function returns
-  a \code{data.frame} object, where rows correspond to sgf input,
-  and columns correspond to tags.
+Named list of game properties
 }
 \description{
 Find the tag properties in sgf text.
@@ -32,16 +25,9 @@ This function finds the first appearance of each tag
   but not for extracting tags appearing for multiple times, such as moves.
 }
 \examples{
-# with a length-1 sgf
 sgf <- "(;GM[1]PW[Iyama]PB[Yamashita]RO[Final]EV[Kisei])"
 get_props(sgf, "PB")
 get_props(sgf, c("PW", "PB", "EV", "RO"))
-
-# with a vector sgf
-sgf <- c("(;GM[1]PW[Iyama]PB[Yamashita]RO[Final]EV[Kisei])",
-         "(;GM[1]PW[Ichiriki]PB[Ida]RO[Final]EV[NHK])")
-get_props(sgf, c("PB", "PW"), FALSE)
-get_props(sgf, c("PB", "PW"), TRUE)
 
 }
 
