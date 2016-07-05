@@ -1,24 +1,5 @@
 #include <Rcpp.h>
 #include <vector>
-#include <queue>
-
-
-struct Point
-{
-  // a point on the board
-  // used in the queue for checking liberties,
-  // and storing captured stones
-  unsigned int x;
-  unsigned int y;
-
-  Point() {}
-  Point(unsigned int a, unsigned int b)
-  {
-    x = a;
-    y = b;
-  }
-};
-
 
 
 class Gogame
@@ -34,19 +15,26 @@ class Gogame
   unsigned int b_captured;
   unsigned int w_captured;
 
+  void Play(int color, unsigned int x, unsigned int y);
+  bool HasLiberty(unsigned int x, unsigned int y,
+                  std::vector< std::vector<bool> > &visited);
+  void RemoveChain(unsigned int x, unsigned int y);
+  void CheckAndRemove(unsigned int x, unsigned int y);
+
+
 public:
   Gogame(unsigned int s);  // no default constractor. requires board size
-  void clear();   // initialize board and prisoners
+  void Clear();   // initialize board and prisoners
 
-  void play(int color, unsigned int x, unsigned int y);
-  bool check_liberty(Point p,
-                     std::queue<Point> &checklist,
-                     std::vector< std::vector<bool> > &checked,
-                     std::vector< std::vector<bool> > &alive);
+
+  // functions to be called by outside
+  void BPlay(unsigned int x, unsigned int y) { Play(BL, x, y); }
+  void WPlay(unsigned int x, unsigned int y) { Play(WH, x, y); }
+
 
 
   // for debugging
-  void summary();
+  void Summary();
 };
 
 
@@ -61,10 +49,10 @@ Gogame::Gogame(unsigned int s)
   for (unsigned int i = 0; i < board.size(); i++) board[i].resize(s + 2);
 
   // initialize board and set prisoners to zero
-  clear();
+  Clear();
 }
 
-void Gogame::clear()
+void Gogame::Clear()
 {
   for (unsigned int i = 0; i < board.size(); i++)
   {
@@ -84,13 +72,17 @@ void Gogame::clear()
 }
 
 
-void Gogame::summary()
+void Gogame::Summary()
 {
   Rcpp::Rcout << "color definition\n";
   Rcpp::Rcout << " Empty = "<< EM << "\n";
   Rcpp::Rcout << " Black = "<< BL << "\n";
   Rcpp::Rcout << " White = "<< WH << "\n";
   Rcpp::Rcout << " OB    = "<< OB << "\n";
+
+  Rcpp::Rcout << "\ncaptured\n";
+  Rcpp::Rcout << " Black = "<< b_captured << "\n";
+  Rcpp::Rcout << " white = "<< w_captured << "\n";
 
 
   Rcpp::Rcout << "\nboard configuration\n";
@@ -103,7 +95,7 @@ void Gogame::summary()
 }
 
 
-void Gogame::play(int color, unsigned int x, unsigned int y)
+void Gogame::Play(int color, unsigned int x, unsigned int y)
 {
   // play a move by color at (x, y)
 
@@ -128,39 +120,137 @@ void Gogame::play(int color, unsigned int x, unsigned int y)
 
 
   // check if any opponent stone becomes captured due to this play
-  // define input for check_liberty routine
-  std::vector< std::vector<bool> > checked;
-  std::vector< std::vector<bool> > alive;
-  std::queue<Point> checklist;
-  std::vector<Point> captured;
 
-  // loop for adjacent points of the current point
+  // loop over the four adjacent point
   unsigned int xx;
   unsigned int yy;
-  for (int k = 0; k < 2; k++)
+  int increment;
+  for (int k = 0; k < 4; k++)
   {
-    for (int l = 0; l < 2; l++)
-    {
-      // for each loop, checklist should be empty
-      xx = x + 2*k - 1;
-      yy = y + 2*l - 1;
-      if (board[yy][xx] == opponent_color)
-        check_liberty(Point(x, y + 1), checklist, checked, alive);
+    increment = 2*(k % 2) - 1;
+    if (k < 2) {
+      xx = x + increment;
+      yy = y;
+    } else {
+      xx = x;
+      yy = y + increment;
     }
+    Rcpp::Rcout << xx << " " << yy << "\n";
+    // if this is a opponent stone,
+    // check the liberty of this point,
+    // and if it does not have a liberty,
+    // remove all stones connected to it
+    if (board[yy][xx] == opponent_color)
+      CheckAndRemove(xx, yy);
   }
-
-
 
 }
 
 
-bool Gogame::check_liberty(Point p,
-                           std::queue<Point> &checklist,
-                           std::vector< std::vector<bool> > &checked,
-                           std::vector< std::vector<bool> > &alive)
+void Gogame::CheckAndRemove(unsigned int x, unsigned int y)
 {
-  // check if the point p has any liberty (not dead)
+  // check the liberty of point (x, y)
+  // and if it has no liberty, remove all connected stones to (x, y)
 
+  // prepare for a checklist that stores points that have been checked already
+  std::vector< std::vector<bool> > visited(board.size());
+  for (unsigned int j = 0; j < visited.size(); j++)
+  {
+    for (unsigned int i = 0; i < visited[j].size(); i++)
+    {
+      visited[j][i] = false;
+    }
+  }
+
+  if (!HasLiberty(x, y, visited))
+    RemoveChain(x, y);
+}
+
+
+void Gogame::RemoveChain(unsigned int x, unsigned int y)
+{
+  // remove all stones connected to (x, y) and of the same color
+
+  int color = board[y][x];
+
+  // do nothing if the color is neither black nor white
+  if (color != BL && color != WH) return;
+
+
+  // remove this point
+  board[y][x] = EM;
+  if (color == BL) {
+    b_captured++;
+  } else {
+    w_captured++;
+  }
+
+
+  // loop over the four adjacent point
+  unsigned int xx;
+  unsigned int yy;
+  int increment;
+  for (int k = 0; k < 4; k++)
+  {
+    increment = 2*(k % 2) - 1;
+    if (k < 2) {
+      xx = x + increment;
+      yy = y;
+    } else {
+      xx = x;
+      yy = y + increment;
+    }
+
+    if (board[yy][xx] == color) RemoveChain(xx, yy);
+  }
+}
+
+
+bool Gogame::HasLiberty(unsigned int x, unsigned int y,
+                        std::vector< std::vector<bool> > &visited)
+{
+  // return true if the point (x, y) has a liberty
+
+  // assumes that there is a stone at the point
+  // if it is neither black nor white, do nothing and return true
+  int color = board[y][x];
+  if (color != BL && color != WH) return true;
+
+  // mark that this point has been checked already
+  // so that the same point is not examined again
+  visited[y][x] = true;
+
+
+  // loop over the four adjacent point
+  unsigned int xx;
+  unsigned int yy;
+  int ccolor;
+  int increment;
+  for (int k = 0; k < 4; k++)
+  {
+    increment = 2*(k % 2) - 1;
+    if (k < 2) {
+      xx = x + increment;
+      yy = y;
+    } else {
+      xx = x;
+      yy = y + increment;
+    }
+
+    // skip if this point has been already examined
+    if (!visited[yy][xx]) {
+      ccolor = board[yy][xx];
+      // if adjacent point (xx, yy) is...
+      //  Empty          ... liberty found, so return true
+      //  same color     ... check the liberty of (xx, yy) recursively
+      //  OB or opponent ... this is not liberty, do nothing
+      if (ccolor == EM) {
+        return true;
+      } else if (ccolor == color) {
+        if (HasLiberty(xx, yy, visited)) return true;
+      }
+    }
+  }
   return false;
 }
 
@@ -173,6 +263,22 @@ bool Gogame::check_liberty(Point p,
 void gogame_test()
 {
   Gogame gg(19);
-  gg.summary();
+  gg.Summary();
+
+  gg.BPlay(4, 4); gg.Summary();
+  gg.WPlay(4, 5); gg.Summary();
+  gg.WPlay(4, 3); gg.Summary();
+  gg.WPlay(3, 4); gg.Summary();
+  gg.WPlay(5, 4); gg.Summary();
+
+  gg.BPlay(15, 13); gg.Summary();
+  gg.BPlay(15, 14); gg.Summary();
+  gg.WPlay(15, 12); gg.Summary();
+  gg.WPlay(15, 15); gg.Summary();
+  gg.WPlay(14, 13); gg.Summary();
+  gg.WPlay(14, 14); gg.Summary();
+  gg.WPlay(16, 13); gg.Summary();
+  gg.WPlay(16, 14); gg.Summary();
+
 }
 
