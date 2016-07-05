@@ -8,7 +8,7 @@
 #'   If non-empty declares the encoding used on a file.
 #'
 #' @export
-read_sgf <- function(path, keep_first = FALSE, encoding = "") {
+read_sgf <- function(path, keep_first = TRUE, encoding = "") {
   readLines(path, encoding = encoding) %>%
     paste0(collapse = "\n") %>%
     parse_sgf(keep_first)
@@ -25,7 +25,7 @@ read_sgf <- function(path, keep_first = FALSE, encoding = "") {
 #'   Otherwise, keep the last branch.
 #'
 #' @export
-parse_sgf <- function(sgf, keep_first = FALSE) {
+parse_sgf <- function(sgf, keep_first = TRUE) {
   ### obtain meta information ###
   tags <- c("PW", "PB", "WR", "BR",
             "RE", "SZ", "KM", "HA",
