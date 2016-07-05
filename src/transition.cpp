@@ -3,15 +3,6 @@
 #include "gogame.hpp"
 
 
-
-struct Move
-{
-  bool isMove;
-  int location;
-  int color;
-};
-
-
 //' Obtains the transition of board configuration
 //' @return \code{data.frame}
 //' @export
