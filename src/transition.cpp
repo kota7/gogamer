@@ -1,5 +1,8 @@
 #include <Rcpp.h>
 #include <vector>
+#include "gogame.hpp"
+
+
 
 struct Move
 {
@@ -8,13 +11,6 @@ struct Move
   int color;
 };
 
-struct Transition
-{
-  int movenumber;
-  int location;
-  int color;
-  bool add;
-};
 
 
 Rcpp::IntegerMatrix GetTransition(

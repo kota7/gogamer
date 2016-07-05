@@ -1,41 +1,7 @@
 #include <Rcpp.h>
 #include <vector>
+#include "gogame.hpp"
 
-
-class Gogame
-{
-  static const int EM = 0;
-  static const int BL = 1;
-  static const int WH = 2;
-  static const int OB = 3;
-
-  int boardsize;
-  std::vector< std::vector<int> > board;
-
-  unsigned int b_captured;
-  unsigned int w_captured;
-
-  void Play(int color, unsigned int x, unsigned int y);
-  bool HasLiberty(unsigned int x, unsigned int y,
-                  std::vector< std::vector<bool> > &visited);
-  void RemoveChain(unsigned int x, unsigned int y);
-  void CheckAndRemove(unsigned int x, unsigned int y);
-
-
-public:
-  Gogame(unsigned int s);  // no default constractor. requires board size
-  void Clear();   // initialize board and prisoners
-
-
-  // functions to be called by outside
-  void BPlay(unsigned int x, unsigned int y) { Play(BL, x, y); }
-  void WPlay(unsigned int x, unsigned int y) { Play(WH, x, y); }
-
-
-
-  // for debugging
-  void Summary();
-};
 
 
 Gogame::Gogame(unsigned int s)
@@ -69,6 +35,9 @@ void Gogame::Clear()
 
   b_captured = 0;
   w_captured = 0;
+
+  movenumber = 0;
+  transitions.resize(0);
 }
 
 
@@ -92,21 +61,39 @@ void Gogame::Summary()
       Rcpp::Rcout << board[j][i] << " ";
     Rcpp::Rcout << "\n";
   }
+
+  Rcpp::Rcout << "\nboard state transitions\n";
+  for (unsigned int i = 0; i < transitions.size(); i++)
+    Rcpp::Rcout << " " << transitions[i].movenumber << " " <<
+      transitions[i].x << " " <<
+      transitions[i].y << " " <<
+      transitions[i].value << "\n";
+  Rcpp::Rcout << "\n\n";
 }
 
 
-void Gogame::Play(int color, unsigned int x, unsigned int y)
+void Gogame::Play(int color, unsigned int x, unsigned int y, bool ismove)
 {
   // play a move by color at (x, y)
 
   // TODO:
   //   check if legal move
+  //     is it black or white?
+  //     is this poition empty?
   //     suicide move
   //     ko
   // for now, assume moves are valid
 
+
+  // ismove flag indicates if this play is a move or setup
+  if (ismove) movenumber++;
+
+
   // put the stone temporarily
   board[y][x] = color;
+
+  // and record it in the transitions field
+  transitions.push_back(Transition(movenumber, x, y, color));
 
 
   // enter four adjacent points to the checklist
@@ -135,7 +122,7 @@ void Gogame::Play(int color, unsigned int x, unsigned int y)
       xx = x;
       yy = y + increment;
     }
-    Rcpp::Rcout << xx << " " << yy << "\n";
+
     // if this is a opponent stone,
     // check the liberty of this point,
     // and if it does not have a liberty,
@@ -156,6 +143,7 @@ void Gogame::CheckAndRemove(unsigned int x, unsigned int y)
   std::vector< std::vector<bool> > visited(board.size());
   for (unsigned int j = 0; j < visited.size(); j++)
   {
+    visited[j].resize(board[j].size());
     for (unsigned int i = 0; i < visited[j].size(); i++)
     {
       visited[j][i] = false;
@@ -184,6 +172,9 @@ void Gogame::RemoveChain(unsigned int x, unsigned int y)
   } else {
     w_captured++;
   }
+
+  // and record it in the transition field
+  transitions.push_back(Transition(movenumber, x, y, -color));
 
 
   // loop over the four adjacent point
@@ -240,6 +231,7 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
     // skip if this point has been already examined
     if (!visited[yy][xx]) {
       ccolor = board[yy][xx];
+
       // if adjacent point (xx, yy) is...
       //  Empty          ... liberty found, so return true
       //  same color     ... check the liberty of (xx, yy) recursively
@@ -251,6 +243,7 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
       }
     }
   }
+
   return false;
 }
 
@@ -265,20 +258,107 @@ void gogame_test()
   Gogame gg(19);
   gg.Summary();
 
-  gg.BPlay(4, 4); gg.Summary();
-  gg.WPlay(4, 5); gg.Summary();
-  gg.WPlay(4, 3); gg.Summary();
-  gg.WPlay(3, 4); gg.Summary();
-  gg.WPlay(5, 4); gg.Summary();
+  gg.BPlay(10, 10, false);
+  gg.Summary();
 
-  gg.BPlay(15, 13); gg.Summary();
-  gg.BPlay(15, 14); gg.Summary();
-  gg.WPlay(15, 12); gg.Summary();
-  gg.WPlay(15, 15); gg.Summary();
-  gg.WPlay(14, 13); gg.Summary();
-  gg.WPlay(14, 14); gg.Summary();
-  gg.WPlay(16, 13); gg.Summary();
-  gg.WPlay(16, 14); gg.Summary();
+  gg.BPlay(4, 4, true);
+  gg.Summary();
+  gg.WPlay(4, 5, true);
+  gg.Summary();
+  gg.WPlay(4, 3, true);
+  gg.Summary();
+  gg.WPlay(3, 4, true);
+  gg.Summary();
+  gg.WPlay(5, 4, true);
+  gg.Summary();
+
+  gg.BPlay(15, 13, true);
+  gg.Summary();
+  gg.BPlay(15, 14, true);
+  gg.Summary();
+  gg.WPlay(15, 12, true);
+  gg.Summary();
+  gg.WPlay(15, 15, true);
+  gg.Summary();
+  gg.WPlay(14, 13, true);
+  gg.Summary();
+  gg.WPlay(14, 14, true);
+  gg.Summary();
+  gg.WPlay(16, 13, true);
+  gg.Summary();
+  gg.WPlay(16, 14, true);
+  gg.Summary();
+
+  gg.WPlay(19, 14, true);
+  gg.Summary();
+  gg.BPlay(19, 13, true);
+  gg.Summary();
+  gg.BPlay(19, 15, true);
+  gg.Summary();
+  gg.BPlay(18, 14, true);
+  gg.Summary();
+
+  gg.BPlay(19, 19, true);
+  gg.Summary();
+  gg.WPlay(19, 18, true);
+  gg.Summary();
+  gg.WPlay(18, 19, true);
+  gg.Summary();
+
+
+
+  gg.WPlay(5, 9, true);
+  gg.Summary();
+  gg.WPlay(6, 10, true);
+  gg.Summary();
+  gg.WPlay(7, 8, true);
+  gg.Summary();
+  gg.WPlay(7, 9, true);
+  gg.Summary();
+  gg.BPlay(5, 8, true);
+  gg.Summary();
+  gg.BPlay(6, 7, true);
+  gg.Summary();
+  gg.BPlay(7, 7, true);
+  gg.Summary();
+  gg.BPlay(8, 8, true);
+  gg.Summary();
+  gg.BPlay(8, 9, true);
+  gg.Summary();
+  gg.BPlay(7, 10, true);
+  gg.Summary();
+  gg.BPlay(6, 9, true);
+  gg.Summary();
+  gg.WPlay(6, 8, true);
+  gg.Summary();
+  gg.BPlay(6, 9, true);
+  gg.Summary();
+
+  gg.WPlay(10, 11, true);
+  gg.Summary();
+  gg.WPlay(9, 10, true);
+  gg.Summary();
+  gg.WPlay(10, 9, true);
+  gg.Summary();
+  gg.WPlay(11, 10, true);
+  gg.Summary();
+
+  gg.BPlay(1, 3, true);
+  gg.Summary();
+  gg.BPlay(1, 2, true);
+  gg.Summary();
+  gg.BPlay(1, 4, true);
+  gg.Summary();
+  gg.WPlay(2, 2, true);
+  gg.Summary();
+  gg.WPlay(2, 3, true);
+  gg.Summary();
+  gg.WPlay(2, 4, true);
+  gg.Summary();
+  gg.WPlay(1, 5, true);
+  gg.Summary();
+  gg.WPlay(1, 1, true);
+  gg.Summary();
 
 }
 
