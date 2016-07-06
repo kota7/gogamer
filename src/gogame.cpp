@@ -1,6 +1,6 @@
 #include <Rcpp.h>
 #include <vector>
-#include "gogame.hpp"
+#include "gogame.h"
 
 
 

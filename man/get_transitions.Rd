@@ -6,6 +6,17 @@
 \usage{
 get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec)
 }
+\arguments{
+\item{boardsize}{integer of the board size}
+
+\item{ismove_vec}{logical vector indicating moves, as opposed to setup}
+
+\item{x_vec}{integer vector of x coordinate (horizontal)}
+
+\item{y_vec}{integer vector of y coordinate (vertical)}
+
+\item{color_vec}{integer vector of color vector}
+}
 \value{
 \code{data.frame}
 }

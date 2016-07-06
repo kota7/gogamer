@@ -1,6 +1,6 @@
 ### package documentation
 
-#' sgf: A package for parsing a SGF (smart go format) file.
+#' gogamer: A package for parsing a SGF (smart go format) file.
 #'
 #' This package provides utilities for parsing text files in smart go format.
 #'
@@ -8,11 +8,11 @@
 #' \code{readSGF}
 #'
 #' @docType package
-#' @name sgf
+#' @name gogamer
 NULL
 
 
 
-#' @useDynLib sgf
+#' @useDynLib gogamer
 #' @importFrom Rcpp sourceCpp
 NULL

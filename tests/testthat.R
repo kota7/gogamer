@@ -1,4 +1,4 @@
 library(testthat)
-library(sgf)
+library(gogamer)
 
-test_check("sgf")
+test_check("gogamer")

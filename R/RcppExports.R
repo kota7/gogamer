@@ -2,9 +2,8 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' test for gogame class
-#' @export
 gogame_test <- function() {
-    invisible(.Call('sgf_gogame_test', PACKAGE = 'sgf'))
+    invisible(.Call('gogamer_gogame_test', PACKAGE = 'gogamer'))
 }
 
 #' Remove branches from SGF text
@@ -14,13 +13,18 @@ gogame_test <- function() {
 #' @return Scalar character of SGF text where branches are removed
 #' @export
 prune_sgf <- function(sgf, keep_first = TRUE) {
-    .Call('sgf_prune_sgf', PACKAGE = 'sgf', sgf, keep_first)
+    .Call('gogamer_prune_sgf', PACKAGE = 'gogamer', sgf, keep_first)
 }
 
 #' Obtains the transition of board configuration
+#' @param boardsize integer of the board size
+#' @param ismove_vec logical vector indicating moves, as opposed to setup
+#' @param x_vec integer vector of x coordinate (horizontal)
+#' @param y_vec integer vector of y coordinate (vertical)
+#' @param color_vec integer vector of color vector
 #' @return \code{data.frame}
 #' @export
 get_transitions <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec) {
-    .Call('sgf_get_transitions', PACKAGE = 'sgf', boardsize, ismove_vec, x_vec, y_vec, color_vec)
+    .Call('gogamer_get_transitions', PACKAGE = 'gogamer', boardsize, ismove_vec, x_vec, y_vec, color_vec)
 }
 

@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // gogame_test
 void gogame_test();
-RcppExport SEXP sgf_gogame_test() {
+RcppExport SEXP gogamer_gogame_test() {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     gogame_test();
@@ -16,7 +16,7 @@ END_RCPP
 }
 // prune_sgf
 std::string prune_sgf(std::string sgf, bool keep_first);
-RcppExport SEXP sgf_prune_sgf(SEXP sgfSEXP, SEXP keep_firstSEXP) {
+RcppExport SEXP gogamer_prune_sgf(SEXP sgfSEXP, SEXP keep_firstSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -28,7 +28,7 @@ END_RCPP
 }
 // get_transitions
 Rcpp::DataFrame get_transitions(unsigned int boardsize, std::vector<bool> ismove_vec, std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec, std::vector<unsigned int> color_vec);
-RcppExport SEXP sgf_get_transitions(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP) {
+RcppExport SEXP gogamer_get_transitions(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;

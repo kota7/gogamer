@@ -1,5 +1,5 @@
 library(testthat)
-library(sgf)
+library(gogamer)
 
 context("Pruning branches")
 

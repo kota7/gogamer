@@ -1,16 +1,18 @@
-Package: sgf
+Package: gogamer
 Type: Package
 Title: Go game record parser for R
 Version: 0.1
 Date: 2016-01-24
 Author: Kota Mori <kota.mori@aya.yale.edu>
 Maintainer: Kota Mori <kota.mori@aya.yale.edu>
-Description: Read and parse go game records written in the smart go format (SGF).
+Description: 
+  Read and parse go game records written in the smart go format (SGF).
 License: GPL-2
 Depends:
     R (>= 2.14)
 Imports:
     dplyr,
+    ggplot2,
     magrittr,
     stats,
     stringr,
