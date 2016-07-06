@@ -253,6 +253,11 @@ Rcpp::DataFrame Gogame::GetTransitions()
 {
   unsigned int n = transitions.size();
 
+  // although move, x, y are all nonnegative,
+  // they should be declared as int type, so that
+  // they can be passed to R properly
+  // R does not recognize unsigned int type, and
+  // regard it as double
   std::vector<int> movevec(n);
   std::vector<int> xvec(n);
   std::vector<int> yvec(n);
@@ -278,7 +283,6 @@ Rcpp::DataFrame Gogame::GetTransitions()
 
 
 //' test for gogame class
-//' @export
 // [[Rcpp::export]]
 void gogame_test()
 {
