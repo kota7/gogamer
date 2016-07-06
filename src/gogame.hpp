@@ -24,16 +24,20 @@ struct Transition
 
 class Gogame
 {
-  static const int EM = 0;
-  static const int BL = 1;
-  static const int WH = 2;
-  static const int OB = 3;
+  // stones and point state marker
+  // colors must be positive since in game transition expression,
+  // adding a stone is denoted by color, and
+  // removing by -color
+  static const unsigned int EM = 0;
+  static const unsigned int BL = 1;
+  static const unsigned int WH = 2;
+  static const unsigned int OB = 3;
 
   int boardsize;
-  std::vector< std::vector<int> > board;
+  std::vector< std::vector<unsigned int> > board;
 
-  unsigned int b_captured;
-  unsigned int w_captured;
+  int b_captured;
+  int w_captured;
 
   unsigned int movenumber; // current move number
   std::vector<Transition> transitions;
@@ -48,7 +52,7 @@ public:
   Gogame(unsigned int s);  // no default constractor. requires board size
   void Clear();   // initialize board and prisoners
 
-  void Play(int color, unsigned int x, unsigned int y, bool ismove);
+  void Play(unsigned int color, unsigned int x, unsigned int y, bool ismove);
   // wrapper for Play
   void BPlay(unsigned int x, unsigned int y, bool ismove)
     { Play(BL, x, y, ismove); }

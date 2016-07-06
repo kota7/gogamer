@@ -72,7 +72,7 @@ void Gogame::Summary()
 }
 
 
-void Gogame::Play(int color, unsigned int x, unsigned int y, bool ismove)
+void Gogame::Play(unsigned int color, unsigned int x, unsigned int y, bool ismove)
 {
   // play a move by color at (x, y)
 
@@ -98,7 +98,7 @@ void Gogame::Play(int color, unsigned int x, unsigned int y, bool ismove)
 
   // enter four adjacent points to the checklist
   // if they are opponent color
-  int opponent_color;
+  unsigned int opponent_color;
   if (color == BL) {
     opponent_color = WH;
   } else {
@@ -159,7 +159,7 @@ void Gogame::RemoveChain(unsigned int x, unsigned int y)
 {
   // remove all stones connected to (x, y) and of the same color
 
-  int color = board[y][x];
+  unsigned int color = board[y][x];
 
   // do nothing if the color is neither black nor white
   if (color != BL && color != WH) return;
@@ -204,7 +204,7 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
 
   // assumes that there is a stone at the point
   // if it is neither black nor white, do nothing and return true
-  int color = board[y][x];
+  unsigned int color = board[y][x];
   if (color != BL && color != WH) return true;
 
   // mark that this point has been checked already
@@ -215,7 +215,7 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
   // loop over the four adjacent point
   unsigned int xx;
   unsigned int yy;
-  int ccolor;
+  unsigned int ccolor;
   int increment;
   for (int k = 0; k < 4; k++)
   {
