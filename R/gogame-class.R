@@ -1,5 +1,8 @@
 ### In this file, S3 class 'gogame' is defined ###
 
+# TODO:
+#   should i define functions as generic method?
+
 #' @export
 print.gogame <- function(x, ...)
 {
