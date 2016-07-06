@@ -2,18 +2,18 @@
 % Please edit documentation in R/reader.R
 \name{parse_sgf}
 \alias{parse_sgf}
-\title{Parse text in the smart go format.}
+\title{Parse text of the smart go format.}
 \usage{
 parse_sgf(sgf, keep_first = TRUE)
 }
 \arguments{
-\item{sgf}{A character string of sgf text.}
+\item{sgf}{scalar character of sgf text.}
 
-\item{keep_first}{Logical specifying the branch choice rule.
+\item{keep_first}{logical specifying the branch choice rule.
 If TRUE, keep the first appearing branch.
 Otherwise, keep the last branch.}
 }
 \description{
-Parse text in the smart go format.
+Parse text of the smart go format.
 }
 

@@ -2,11 +2,26 @@
 % Please edit documentation in R/gogame-class.R
 \name{plotat}
 \alias{plotat}
-\title{Plot the board}
+\title{Plot the go board state by ggplot}
 \usage{
-plotat(x, at)
+plotat(x, at, blackcolor = "#000000", whitecolor = "#ffffff",
+  edgecolor = "#000000")
+}
+\arguments{
+\item{x}{\code{gogame} object}
+
+\item{at}{integer of the move number}
+
+\item{blackcolor}{color for black stone}
+
+\item{whitecolor}{color for white stone}
+
+\item{edgecolor}{color for stone edge}
+}
+\value{
+\code{ggplot} object
 }
 \description{
-Plot the board
+Plot the go board state by ggplot
 }
 

@@ -2,10 +2,11 @@
 #' Read and parse a SGF file
 #'
 #' @name read_sgf
-#' @param path    A character string of the path to
+#' @param path    character string of the path to
 #'   a smart go format (SGF) file.  Can be local or online.
-#' @param encoding  A character string.
-#'   If non-empty declares the encoding used on a file.
+#' @param keep_first logical indicating the branch choice rule
+#' @param encoding  character string.
+#'   If specified, declares the encoding used on a file.
 #'
 #' @export
 read_sgf <- function(path, keep_first = TRUE, encoding = "") {
@@ -16,11 +17,11 @@ read_sgf <- function(path, keep_first = TRUE, encoding = "") {
 
 
 
-#' Parse text in the smart go format.
+#' Parse text of the smart go format.
 #'
 #' @name parse_sgf
-#' @param sgf     A character string of sgf text.
-#' @param keep_first  Logical specifying the branch choice rule.
+#' @param sgf     scalar character of sgf text.
+#' @param keep_first  logical specifying the branch choice rule.
 #'   If TRUE, keep the first appearing branch.
 #'   Otherwise, keep the last branch.
 #'
@@ -70,6 +71,9 @@ parse_sgf <- function(sgf, keep_first = TRUE) {
     }
     cat("boardsize is guess to be ", boardsize, "\n")
   }
+
+  # add the boardsize to the propetry list
+  props[["boardsize"]] <- boardsize
 
 
   ### obtain board state transition

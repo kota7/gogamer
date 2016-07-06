@@ -6,6 +6,9 @@
 \usage{
 kifu(x)
 }
+\arguments{
+\item{x}{\code{gogame} object}
+}
 \description{
 Generate kifu (game record) document
 }

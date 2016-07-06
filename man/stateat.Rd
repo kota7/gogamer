@@ -6,6 +6,11 @@
 \usage{
 stateat(x, at)
 }
+\arguments{
+\item{x}{\code{gogame} object}
+
+\item{at}{integer of the move number}
+}
 \description{
 Return the board state
 }

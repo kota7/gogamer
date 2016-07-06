@@ -7,11 +7,13 @@
 read_sgf(path, keep_first = TRUE, encoding = "")
 }
 \arguments{
-\item{path}{A character string of the path to
+\item{path}{character string of the path to
 a smart go format (SGF) file.  Can be local or online.}
 
-\item{encoding}{A character string.
-If non-empty declares the encoding used on a file.}
+\item{keep_first}{logical indicating the branch choice rule}
+
+\item{encoding}{character string.
+If specified, declares the encoding used on a file.}
 }
 \description{
 Read and parse a SGF file
