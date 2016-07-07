@@ -21,7 +21,7 @@ Rcpp::DataFrame get_transitions(
   Gogame gg(boardsize);
 
   // isMoves, locations, colors must have the same size
-  int n = ismove_vec.size();
+  unsigned int n = ismove_vec.size();
   for (unsigned int i = 0; i < n; i++)
     gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
 
