@@ -51,9 +51,28 @@ plot.kifu <- function(obj, stonesize = 6,
                       ...)
 {
   # initialize board
-  out <- ggoboard(obj[["boardsize"]], ...)
+  out <- ggoboard(obj[["boardsize"]]) +#, ...) +
+    # specify the stone colors
+    ggplot2::scale_color_manual(
+      guide = FALSE, values = c(blackcolor, whitecolor)) +
 
-  # add initial stones
+    # add initial stones
+    # it is okay to have data with no rows
+    ggplot2::geom_point(
+      data = obj[["init"]],
+      ggplot2::aes(x, y), size = stonesize, color = linecolor) +
+    ggplot2::geom_point(
+      data = obj[["init"]], ggplot2::aes(x, y, color = factor(value)),
+      size = stonesize*0.8) +
+    # add numbered stones
+    ggplot2::geom_point(
+      data = obj[["number"]],
+      ggplot2::aes(x, y), size = stonesize, color = linecolor) +
+    ggplot2::geom_point(
+      data = obj[["number"]], ggplot2::aes(x, y, color = factor(value)),
+      size = stonesize*0.8) +
+    ggplot2::geom_text(
+      data = obj[["number"]], ggplot2::aes(x, y, label = move))
 
 
   return(out)
