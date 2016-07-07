@@ -28,12 +28,12 @@ kifu <- function(x, from = 1L, to = 100L)
 
   # define three separate data frames
   # init    ... initial board state
-  # board ... moves to be numbered on the board
+  # number  ... moves to be numbered on the board
   # noted   ... moves to be listed outside
-  init  <- dplyr::filter(out, move == 0L)
-  board <- dplyr::filter(out, move != 0L, flg)
-  noted <- dplyr::filter(out, move != 0L, !flg)
-  return(structure(.Data = list(init = init, board = board, noted = noted,
+  init   <- dplyr::filter(out, move == 0L)
+  number <- dplyr::filter(out, move != 0L, flg)
+  noted  <- dplyr::filter(out, move != 0L, !flg)
+  return(structure(.Data = list(init = init, number = number, noted = noted,
                                 boardsize = x[["boardsize"]],
                                 from = from, to = to),
                    class = "kifu"))
@@ -44,7 +44,7 @@ kifu <- function(x, from = 1L, to = 100L)
 #' @param obj \code{kifu} object
 #' @return \code{ggplot} object
 #' @export
-kifu.plot <- function(obj, stonesize = 6,
+plot.kifu <- function(obj, stonesize = 6,
                       blackcolor = "#000000", whitecolor = "#ffffff",
                       edgecolor = "#000000", textcolor = "#000000")
 {
@@ -52,4 +52,7 @@ kifu.plot <- function(obj, stonesize = 6,
   out <- ggoboard(obj[["boardsize"]])
 
   # add initial stones
+
+
+  return(out)
 }

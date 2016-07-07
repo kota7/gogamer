@@ -76,6 +76,12 @@ parse_sgf <- function(sgf, keep_first = TRUE) {
   props[["boardsize"]] <- boardsize
 
 
+  ### flip the y axis so that bottom-left corner is the origin
+  # this is consistent with labeling convention in major software
+  # including Quarry and CGoban
+  moves[["y"]] <- boardsize - moves[["y"]] + 1L
+
+
   ### obtain board state transition
   transition <- get_transitions(
     boardsize, moves[["ismove"]], moves[["x"]], moves[["y"]], moves[["color"]]

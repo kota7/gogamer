@@ -62,61 +62,28 @@ stateat <- function(x, at)
 #' passed to \code{geom_point}
 #' @param blackcolor color for black stone
 #' @param whitecolor color for white stone
-#' @param edgecolor color for stone edge
+#' @param linecolor color for stone outline
+#' @param ... other arguments passed to \code{\link{ggoboard}}
 #' @return \code{ggplot} object
 #' @export
 plotat <- function(x, at, stonesize = 6,
-                   blackcolor = "#000000", whitecolor = "#ffffff",
-                   edgecolor = "#000000")
+                   marklastmove = "",
+                   blackcolor = "#000000",
+                   whitecolor = "#ffffff",
+                   linecolor = "#000000",
+                   ...)
 {
   stopifnot("gogame" %in% class(x))
 
   dat <- stateat(x, at)
-  out <- ggoboard(x[["boardsize"]]) +
+  out <- ggoboard(x[["boardsize"]], ...) +
     ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y), size = stonesize, color = edgecolor) +
+      data = dat, ggplot2::aes(x, y), size = stonesize, color = linecolor) +
     ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y, color = value), size = stonesize*0.8) +
-    ggplot2::scale_color_continuous(guide = FALSE,
-                                    low = blackcolor, high = whitecolor)
-  out
-}
-
-
-#' ggplot go board
-#' @param boardsize integer of boardsize
-#' @param gridcolor color for the grid
-#' @param boardcolor color for the background
-#' @return \code{ggplot} object of goban
-#' @examples
-#'   ggoboard(19)
-#' @export
-ggoboard <- function(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0")
-{
-  # dummy data for board grid
-  dat <- rbind(
-    data.frame(x = 1L, y = seq(boardsize),
-               xend = boardsize, yend = seq(boardsize)),
-    data.frame(x = seq(boardsize), y = 1L,
-               xend = seq(boardsize), yend = boardsize)
-  )
-
-  out <- ggplot2::ggplot(dat) +
-    ggplot2::coord_fixed() +
-    ggplot2::scale_x_continuous(
-      breaks = seq(1, boardsize), limits = c(0.5, boardsize + 0.5), name = "") +
-    ggplot2::scale_y_continuous(
-      breaks = seq(boardsize, 1), limits = c(boardsize + 0.5, 0.5),
-      name = "", trans = "reverse") +
-    ggplot2::theme(
-      panel.grid.major = ggplot2::element_blank(),
-      panel.grid.minor = ggplot2::element_blank(),
-      axis.ticks = ggplot2::element_blank(),
-      axis.text = ggplot2::element_blank(),
-      panel.background = ggplot2::element_rect(fill = boardcolor)
-    ) +
-    ggplot2::geom_segment(ggplot2::aes(x = x, y = y, xend = xend, yend = yend),
-                          color = gridcolor)
+      data = dat, ggplot2::aes(x, y, color = factor(value)),
+      size = stonesize*0.8) +
+    ggplot2::scale_color_manual(guide = FALSE,
+                                values = c(blackcolor, whitecolor))
 
   return(out)
 }

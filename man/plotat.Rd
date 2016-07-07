@@ -4,8 +4,8 @@
 \alias{plotat}
 \title{Plot the go board state by ggplot}
 \usage{
-plotat(x, at, stonesize = 6, blackcolor = "#000000",
-  whitecolor = "#ffffff", edgecolor = "#000000")
+plotat(x, at, stonesize = 6, marklastmove = "", blackcolor = "#000000",
+  whitecolor = "#ffffff", linecolor = "#000000", ...)
 }
 \arguments{
 \item{x}{\code{gogame} object}
@@ -19,7 +19,9 @@ passed to \code{geom_point}}
 
 \item{whitecolor}{color for white stone}
 
-\item{edgecolor}{color for stone edge}
+\item{linecolor}{color for stone outline}
+
+\item{...}{other arguments passed to \code{\link{ggoboard}}}
 }
 \value{
 \code{ggplot} object
