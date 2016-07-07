@@ -11,6 +11,9 @@ stateat(x, at)
 
 \item{at}{integer of the move number}
 }
+\value{
+data frame object
+}
 \description{
 Return the board state
 }

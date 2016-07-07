@@ -282,7 +282,7 @@ Rcpp::DataFrame Gogame::GetTransitions()
 
 
 
-//' test for gogame class
+// test for gogame class
 // [[Rcpp::export]]
 void gogame_test()
 {

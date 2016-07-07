@@ -47,6 +47,8 @@ void PruneRecursive(std::string &x, bool &keep_first)
   PruneRecursive(x, keep_first);
 }
 
+
+
 // This function finds the first SGF branch in x
 // between start and end positions.
 // The starting and ending indices are stored in start and end.

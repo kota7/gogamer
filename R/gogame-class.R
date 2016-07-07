@@ -1,4 +1,5 @@
-### In this file, S3 class 'gogame' is defined ###
+### S3 class 'gogame' is defined ###
+
 
 # TODO:
 #   should i define functions as generic method?
@@ -18,6 +19,7 @@ print.gogame <- function(x, ...)
 #'
 #' @param x \code{gogame} object
 #' @param at integer of the move number
+#' @return data frame object
 #' @export
 stateat <- function(x, at)
 {
@@ -27,8 +29,27 @@ stateat <- function(x, at)
   # dense matrix format
   out <- x[["transition"]] %>%
     dplyr::filter(move <= at) %>%
-    dplyr::group_by(x, y) %>% dplyr::summarize(value = sum(value)) %>%
+    dplyr::group_by(x, y) %>%
+    dplyr::summarize(value = sum(value)) %>%
     dplyr::filter(value > 0L)
+
+  # compute the number of prisoners
+  capt <- x[["transition"]] %>%
+    dplyr::filter(move <= at, value < 0L) %>%
+    dplyr::group_by(value) %>%
+    dplyr::summarize(captured = length(move))
+
+  b_captured <- 0L
+  flg <- capt[["value"]] == -1L
+  if (any(flg)) b_captured <- capt[["captured"]][flg]
+
+  w_captured <- 0L
+  flg <- capt[["value"]] == -2L
+  if (any(flg)) w_captured <- capt[["captured"]][flg]
+
+  # add prisoners as attributes of the data frame
+  attr(out, "b_captured") <- b_captured
+  attr(out, "w_captured") <- w_captured
 
   return(out)
 }
@@ -37,12 +58,14 @@ stateat <- function(x, at)
 #' Plot the go board state by ggplot
 #' @param x \code{gogame} object
 #' @param at integer of the move number
+#' @param stonesize numeric that indicates the size of stones,
+#' passed to \code{geom_point}
 #' @param blackcolor color for black stone
 #' @param whitecolor color for white stone
 #' @param edgecolor color for stone edge
 #' @return \code{ggplot} object
 #' @export
-plotat <- function(x, at,
+plotat <- function(x, at, stonesize = 6,
                    blackcolor = "#000000", whitecolor = "#ffffff",
                    edgecolor = "#000000")
 {
@@ -51,9 +74,9 @@ plotat <- function(x, at,
   dat <- stateat(x, at)
   out <- ggoboard(x[["boardsize"]]) +
     ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y), size = 6, color = edgecolor) +
+      data = dat, ggplot2::aes(x, y), size = stonesize, color = edgecolor) +
     ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y, color = value), size = 5.5) +
+      data = dat, ggplot2::aes(x, y, color = value), size = stonesize*0.8) +
     ggplot2::scale_color_continuous(guide = FALSE,
                                     low = blackcolor, high = whitecolor)
   out
@@ -99,8 +122,3 @@ ggoboard <- function(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0")
 }
 
 
-#' Generate kifu (game record) document
-#' @param x \code{gogame} object
-kifu <- function(x)
-{
-}

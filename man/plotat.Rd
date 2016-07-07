@@ -4,13 +4,16 @@
 \alias{plotat}
 \title{Plot the go board state by ggplot}
 \usage{
-plotat(x, at, blackcolor = "#000000", whitecolor = "#ffffff",
-  edgecolor = "#000000")
+plotat(x, at, stonesize = 6, blackcolor = "#000000",
+  whitecolor = "#ffffff", edgecolor = "#000000")
 }
 \arguments{
 \item{x}{\code{gogame} object}
 
 \item{at}{integer of the move number}
+
+\item{stonesize}{numeric that indicates the size of stones,
+passed to \code{geom_point}}
 
 \item{blackcolor}{color for black stone}
 
