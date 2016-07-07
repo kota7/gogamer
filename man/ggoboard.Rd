@@ -28,6 +28,6 @@ ggoboard(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0",
 ggplot go board
 }
 \examples{
-  ggoboard(19)
+ggoboard(19)
 }
 

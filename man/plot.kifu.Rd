@@ -5,10 +5,13 @@
 \title{Draw kifu}
 \usage{
 \method{plot}{kifu}(obj, stonesize = 6, blackcolor = "#000000",
-  whitecolor = "#ffffff", edgecolor = "#000000", textcolor = "#000000")
+  whitecolor = "#ffffff", linecolor = "#000000", textcolor = "#000000",
+  ...)
 }
 \arguments{
 \item{obj}{\code{kifu} object}
+
+\item{...}{arguments passed to \code{\link{ggoboard}}}
 }
 \value{
 \code{ggplot} object

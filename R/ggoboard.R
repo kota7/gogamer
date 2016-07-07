@@ -8,7 +8,7 @@
 #' @param xlabels,ylabels character vector of the labels for each axis
 #' @return \code{ggplot} object of goban
 #' @examples
-#'   ggoboard(19)
+#' ggoboard(19)
 #' @export
 ggoboard <- function(boardsize,
                      gridcolor = "#262626", boardcolor = "#e1f0c0",

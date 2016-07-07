@@ -2,7 +2,7 @@
 % Please edit documentation in R/kifu-class.R
 \name{kifu}
 \alias{kifu}
-\title{Generate kifu (game record) object}
+\title{Constructor of kifu (game record) object}
 \usage{
 kifu(x, from = 1L, to = 100L)
 }
@@ -15,6 +15,6 @@ kifu(x, from = 1L, to = 100L)
 \code{kifu} object
 }
 \description{
-Generate kifu (game record) object
+Constructor of kifu (game record) object
 }
 

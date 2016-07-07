@@ -63,7 +63,7 @@ stateat <- function(x, at)
 #' @param blackcolor color for black stone
 #' @param whitecolor color for white stone
 #' @param linecolor color for stone outline
-#' @param ... other arguments passed to \code{\link{ggoboard}}
+#' @param ... arguments passed to \code{\link{ggoboard}}
 #' @return \code{ggplot} object
 #' @export
 plotat <- function(x, at, stonesize = 6,
