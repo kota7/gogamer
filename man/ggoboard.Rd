@@ -5,7 +5,8 @@
 \title{ggplot go board}
 \usage{
 ggoboard(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0",
-  xlabels = LETTERS[-9], ylabels = as.character(1:25))
+  labelcolor = gridcolor, labelsize = 3.5, xlabels = LETTERS[-9],
+  ylabels = as.character(1:25))
 }
 \arguments{
 \item{boardsize}{integer of boardsize}
@@ -14,7 +15,11 @@ ggoboard(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0",
 
 \item{boardcolor}{color for the background}
 
-\item{xlabels, ylabels}{labels for each axis}
+\item{labelcolor}{color for the label text}
+
+\item{labelsize}{numeric of the size of label}
+
+\item{xlabels, ylabels}{character vector of the labels for each axis}
 }
 \value{
 \code{ggplot} object of goban

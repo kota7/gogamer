@@ -3,14 +3,22 @@
 #' @param boardsize integer of boardsize
 #' @param gridcolor color for the grid
 #' @param boardcolor color for the background
-#' @param xlabels,ylabels labels for each axis
+#' @param labelcolor color for the label text
+#' @param labelsize numeric of the size of label
+#' @param xlabels,ylabels character vector of the labels for each axis
 #' @return \code{ggplot} object of goban
 #' @examples
 #'   ggoboard(19)
 #' @export
-ggoboard <- function(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0",
+ggoboard <- function(boardsize,
+                     gridcolor = "#262626", boardcolor = "#e1f0c0",
+                     labelcolor = gridcolor, labelsize = 3.5,
                      xlabels = LETTERS[-9], ylabels = as.character(1:25))
 {
+  # TODO:
+  #   for now, board margin is fixed to 1
+  #   but may be better to have it adjusted by the boardsize
+
   # dummy data for board grid
   dat <- dplyr::bind_rows(
     data.frame(x = 1, y = 1:boardsize, xend = boardsize, yend = 1:boardsize),
@@ -62,7 +70,7 @@ ggoboard <- function(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0",
   out <- out +
     ggplot2::geom_text(data = dat,
                        ggplot2::aes(x = x, y = y, label = label),
-                       size = 3.5)
+                       size = labelsize, color = labelcolor)
 
   return(out)
 }
