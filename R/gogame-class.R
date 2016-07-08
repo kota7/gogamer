@@ -51,40 +51,27 @@ stateat <- function(x, at)
   attr(out, "b_captured") <- b_captured
   attr(out, "w_captured") <- w_captured
 
+  # rename 'value' as 'color'
+  out <- dplyr::rename(out, color = value)
+
   return(out)
 }
 
 
 #' Plot the go board state by ggplot
 #' @param x \code{gogame} object
-#' @param at integer of the move number
-#' @param stonesize numeric that indicates the size of stones,
-#' passed to \code{geom_point}
-#' @param blackcolor color for black stone
-#' @param whitecolor color for white stone
-#' @param linecolor color for stone outline
-#' @param ... arguments passed to \code{\link{ggoban}}
+#' @param at Move number (integer)
+#' @param marklast If specifified, add a marker to the last stone (logical)
+#' @param ... graphic parameters
 #' @return \code{ggplot} object
 #' @export
-plotat <- function(x, at, stonesize = 6,
-                   marklastmove = "",
-                   blackcolor = "#000000",
-                   whitecolor = "#ffffff",
-                   linecolor = "#000000",
-                   ...)
+plotat <- function(x, at, marklast = TRUE, ...)
 {
   stopifnot("gogame" %in% class(x))
 
   dat <- stateat(x, at)
-  out <- ggoban(x[["boardsize"]], ...) +
-    ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y), size = stonesize, color = linecolor) +
-    ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y, color = factor(value)),
-      size = stonesize*0.8) +
-    ggplot2::scale_color_manual(guide = FALSE,
-                                values = c(blackcolor, whitecolor))
-
+  out <- ggoban(x[["boardsize"]], ...) %>%
+    addstones(dat$x, dat$y, dat$color)
   return(out)
 }
 

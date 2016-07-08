@@ -18,7 +18,8 @@ kifu <- function(x, from = 1L, to = 100L)
     # note that moves are the ones with positive values
     # these are candidate move numbers to be shown in the kifu
     dplyr::bind_rows(dplyr::filter(
-      x[["transition"]], move >= from, move <= to, value > 0L)) %>%
+      x[["transition"]], move >= from, move <= to, value > 0L) %>%
+        dplyr::rename(color = value)) %>%
     dplyr::arrange(move)
 
   # finally, for each (x, y), the first entry (smallest move number)
@@ -27,54 +28,40 @@ kifu <- function(x, from = 1L, to = 100L)
   flg <- !duplicated(dplyr::select(out, x, y))
 
   # define three separate data frames
-  # init    ... initial board state (shown on the board, no number)
-  # number  ... moves to be shown on the board with number
-  # noted   ... moves to be listed outside
-  init   <- dplyr::filter(out, move == 0L)
-  number <- dplyr::filter(out, move != 0L, flg)
-  noted  <- dplyr::filter(out, move != 0L, !flg)
-  return(structure(.Data = list(init = init, number = number, noted = noted,
-                                boardsize = x[["boardsize"]],
-                                from = from, to = to),
-                   class = "kifu"))
-}
+  # init      ... initial board state (shown on the board, no number)
+  # numbered  ... moves to be shown on the board with number
+  # noted     ... moves to be listed outside
+  init     <- dplyr::filter(out, move == 0L)
+  numbered <- dplyr::filter(out, move != 0L, flg)
+  noted    <- dplyr::filter(out, move != 0L, !flg)
+  return(structure(
+    .Data = list(init = init, numbered = numbered, noted = noted,
+                 boardsize = x[["boardsize"]], from = from, to = to),
+    class = "kifu"))
+  }
 
 
 #' Draw kifu
 #' @param x \code{kifu} object
 #' @param y not in use (just for argument consistency with generic function)
-#' @param ... arguments passed to \code{\link{ggoban}}
-#' @return \code{ggplot} object
+#' @param ... graphical paramters
+#' @return list of two \code{ggplot} object,
+#' one for the board, the other for outside note
 #' @export
-plot.kifu <- function(x, y, stonesize = 6,
-                      blackcolor = "#000000", whitecolor = "#ffffff",
-                      linecolor = "#000000", textcolor = "#000000",
-                      ...)
+plot.kifu <- function(x, y, ...)
 {
-  # initialize board
-  out <- ggoban(x[["boardsize"]]) +#, ...) +
-    # specify the stone colors
-    ggplot2::scale_color_manual(
-      guide = FALSE, values = c(blackcolor, whitecolor)) +
-
+  # board plot
+  out1 <- ggoban(x[["boardsize"]], ...) %>%
     # add initial stones
     # it is okay to have data with no rows
-    ggplot2::geom_point(
-      data = x[["init"]],
-      ggplot2::aes(x, y), size = stonesize, color = linecolor) +
-    ggplot2::geom_point(
-      data = x[["init"]], ggplot2::aes(x, y, color = factor(value)),
-      size = stonesize*0.8) +
+    addstones(x$init$x, x$init$y, x$init$color, ...) %>%
     # add numbered stones
-    ggplot2::geom_point(
-      data = x[["number"]],
-      ggplot2::aes(x, y), size = stonesize, color = linecolor) +
-    ggplot2::geom_point(
-      data = x[["number"]], ggplot2::aes(x, y, color = factor(value)),
-      size = stonesize*0.8) +
-    ggplot2::geom_text(
-      data = x[["number"]], ggplot2::aes(x, y, label = move))
+    addstones(x$numbered$x, x$numbered$y,
+              x$numbered$color, x$numbered$move, ...)
 
+  # outside note
 
   return(out)
 }
+
+

@@ -4,7 +4,7 @@
 \alias{addstones}
 \title{Add stones to go board}
 \usage{
-addstones(gg, x, y, color, label = NULL, ...)
+addstones(gg, x, y, color, number = NULL, ...)
 }
 \arguments{
 \item{gg}{\code{ggplot} object}
@@ -13,7 +13,7 @@ addstones(gg, x, y, color, label = NULL, ...)
 
 \item{color}{integer vector of stone colors}
 
-\item{label}{character vector of labels added on the stone}
+\item{number}{integer vector of numbers on stones}
 
 \item{...}{graphic paramters}
 }
@@ -24,6 +24,7 @@ Layer that can be added to \code{ggplot}
 Add stones to go board
 }
 \examples{
-ggoban(9) \%>\% addstones(c(5, 5), c(5, 3), c(1, 2), c(1, 2))
+ggoban(9) \%>\% addstones(c(5, 5), c(5, 3), c(1, 2))
+ggoban(19) \%>\% addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
 }
 

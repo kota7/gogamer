@@ -4,24 +4,16 @@
 \alias{plotat}
 \title{Plot the go board state by ggplot}
 \usage{
-plotat(x, at, stonesize = 6, marklastmove = "", blackcolor = "#000000",
-  whitecolor = "#ffffff", linecolor = "#000000", ...)
+plotat(x, at, marklast = TRUE, ...)
 }
 \arguments{
 \item{x}{\code{gogame} object}
 
-\item{at}{integer of the move number}
+\item{at}{Move number (integer)}
 
-\item{stonesize}{numeric that indicates the size of stones,
-passed to \code{geom_point}}
+\item{marklast}{If specifified, add a marker to the last stone (logical)}
 
-\item{blackcolor}{color for black stone}
-
-\item{whitecolor}{color for white stone}
-
-\item{linecolor}{color for stone outline}
-
-\item{...}{arguments passed to \code{\link{ggoban}}}
+\item{...}{graphic parameters}
 }
 \value{
 \code{ggplot} object

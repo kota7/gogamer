@@ -16,14 +16,19 @@ WHITE <- 2L
     blackcolor = "#000000", whitecolor = "#ffffff", stonelinecolor = "#000000",
     stonesize = 6,
 
+    # numbers
+    whitenumbercolor = "#000000", blacknumbercolor = "#ffffff",
+    numbersize = 3,
+
     # marker
     whitemarkercolor = "#000000", blackmarkercolor = "#ffffff",
     markersize = 3,
+    lastmovemarker = intToUtf8(9650),
 
     # board
-    boardcolor = "#e1f0c0", gridcolor  = "#262626", labelcolor = "#262626",
-    labelsize = 3.5,
-
+    boardcolor = "#e1f0c0", gridcolor  = "#262626",
+    labelcolor = "#262626", labelsize = 3.5,
+    starcolor = "#262626", starsize = 1.5,
     # axis labels
     xlabels = LETTERS[-9], ylabels = as.character(1:25)
   ),

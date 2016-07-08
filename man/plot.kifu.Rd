@@ -4,19 +4,18 @@
 \alias{plot.kifu}
 \title{Draw kifu}
 \usage{
-\method{plot}{kifu}(x, y, stonesize = 6, blackcolor = "#000000",
-  whitecolor = "#ffffff", linecolor = "#000000", textcolor = "#000000",
-  ...)
+\method{plot}{kifu}(x, y, ...)
 }
 \arguments{
 \item{x}{\code{kifu} object}
 
 \item{y}{not in use (just for argument consistency with generic function)}
 
-\item{...}{arguments passed to \code{\link{ggoban}}}
+\item{...}{graphical paramters}
 }
 \value{
-\code{ggplot} object
+list of two \code{ggplot} object,
+one for the board, the other for outside note
 }
 \description{
 Draw kifu
