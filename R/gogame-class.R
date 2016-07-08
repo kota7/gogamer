@@ -72,11 +72,11 @@ plotat <- function(x, at,
   stopifnot("gogame" %in% class(x))
 
   dat <- stateat(x, at)
-  out <- ggoban(x[["boardsize"]], ...) %>%
+  out <- ggoban(x$boardsize, ...) %>%
     addstones(dat$x, dat$y, dat$color)
   if (marklast) {
     dat2 <- dplyr::filter(x$transition, move <= at, move >= 1L, value > 0L) %>%
-      dplyr::arrange(move) %>% tail(1)
+      dplyr::arrange(move) %>% utils::tail(1)
     if (nrow(dat2) == 1L)
       out <- addlabels(out, dat2$x, dat2$y, lastmarker, dat2$value)
   }
