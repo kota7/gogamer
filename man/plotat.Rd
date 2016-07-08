@@ -4,7 +4,7 @@
 \alias{plotat}
 \title{Plot the go board state by ggplot}
 \usage{
-plotat(x, at, marklast = TRUE, ...)
+plotat(x, at, marklast = TRUE, lastmarker = intToUtf8(9650), ...)
 }
 \arguments{
 \item{x}{\code{gogame} object}
@@ -12,6 +12,8 @@ plotat(x, at, marklast = TRUE, ...)
 \item{at}{Move number (integer)}
 
 \item{marklast}{If specifified, add a marker to the last stone (logical)}
+
+\item{lastmarker}{character of marker indicating the last move}
 
 \item{...}{graphic parameters}
 }

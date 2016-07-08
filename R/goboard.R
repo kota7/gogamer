@@ -92,7 +92,7 @@ ggoban <- function(boardsize, ...)
 #' @param color integer vector of stone colors
 #' @param number integer vector of numbers on stones
 #' @param ... graphic paramters
-#' @return Layer that can be added to \code{ggplot}
+#' @return Updated \code{ggplot} object
 #' @export
 #' @examples
 #' ggoban(9) %>% addstones(c(5, 5), c(5, 3), c(1, 2))
@@ -146,6 +146,54 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
   return(gg)
 }
 
+
+#' Add text label on board
+#' @param gg  \code{ggplot} object
+#' @param x,y integer vectors of stone locations
+#' @param label character vector of labels
+#' @param color integer vector of stone colors
+#' @param ... graphic paramters
+#' @return Updated \code{ggplot} object
+#' @export
+#' @examples
+#' ggoban(19) %>% addstones(c(16, 4), c(16, 3), c(1, 2)) %>%
+#'   addlabels(4, 3, "X", 2) %>%
+#'   addlabels(c(4, 3), c(17, 16), c("a", "b"))
+addlabels <- function(gg, x, y, label, color = NULL, ...)
+{
+  graphic_param <- set_graphic_param(...)
+
+  dat <- data.frame(x = x, y = y, label = label)
+  if (is.null(color)) {
+    gg <- gg +
+      ggplot2::geom_point(
+        data = dat, ggplot2::aes(x = x, y = y),
+        size = graphic_param$emptyshadowsize,
+        color = graphic_param$boardcolor) +
+      ggplot2::geom_text(
+        data = dat, ggplot2::aes(x = x, y = y, label = label),
+        size = graphic_param$markersize,
+        color = graphic_param$emptymarkercolor)
+  } else {
+    if (!all(color %in% c(BLACK, WHITE)))
+      stop("color must be ", BLACK, " or ", WHITE)
+    for (j in unique(color))
+    {
+      if (j == BLACK) {
+        markercolor <- graphic_param$blackmarkercolor
+      } else {
+        markercolor <- graphic_param$whitemarkercolor
+      }
+      dat2 <- dat[color == j,]
+      gg <- gg +
+        ggplot2::geom_text(
+          data = dat2, ggplot2::aes(x = x, y = y, label = label),
+          size = graphic_param$markersize, color = markercolor)
+    }
+  }
+
+  return(gg)
+}
 
 
 #' Set graphic parameters for go board

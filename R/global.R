@@ -22,8 +22,9 @@ WHITE <- 2L
 
     # marker
     whitemarkercolor = "#000000", blackmarkercolor = "#ffffff",
-    markersize = 3,
-    lastmovemarker = intToUtf8(9650),
+    markersize = 3.5,
+    emptymarkercolor = "#262626",  # empty markers are markers not on stone
+    emptyshadowsize = 5,           # size of shadow around empty markers
 
     # board
     boardcolor = "#e1f0c0", gridcolor  = "#262626",

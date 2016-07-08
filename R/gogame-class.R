@@ -62,16 +62,24 @@ stateat <- function(x, at)
 #' @param x \code{gogame} object
 #' @param at Move number (integer)
 #' @param marklast If specifified, add a marker to the last stone (logical)
+#' @param lastmarker character of marker indicating the last move
 #' @param ... graphic parameters
 #' @return \code{ggplot} object
 #' @export
-plotat <- function(x, at, marklast = TRUE, ...)
+plotat <- function(x, at,
+                   marklast = TRUE, lastmarker = intToUtf8(9650), ...)
 {
   stopifnot("gogame" %in% class(x))
 
   dat <- stateat(x, at)
   out <- ggoban(x[["boardsize"]], ...) %>%
     addstones(dat$x, dat$y, dat$color)
+  if (marklast) {
+    dat2 <- dplyr::filter(x$transition, move <= at, move >= 1L, value > 0L) %>%
+      dplyr::arrange(move) %>% tail(1)
+    if (nrow(dat2) == 1L)
+      out <- addlabels(out, dat2$x, dat2$y, lastmarker, dat2$value)
+  }
   return(out)
 }
 

@@ -18,7 +18,7 @@ addstones(gg, x, y, color, number = NULL, ...)
 \item{...}{graphic paramters}
 }
 \value{
-Layer that can be added to \code{ggplot}
+Updated \code{ggplot} object
 }
 \description{
 Add stones to go board

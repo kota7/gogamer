@@ -44,11 +44,15 @@ kifu <- function(x, from = 1L, to = 100L)
 #' Draw kifu
 #' @param x \code{kifu} object
 #' @param y not in use (just for argument consistency with generic function)
+#' @param vertical logical indicating how board and notes are aligned
 #' @param ... graphical paramters
-#' @return list of two \code{ggplot} object,
+#' @return list of three graphic objects:
+#' \code{board}: \code{ggplot2} object of the board image,
+#' \code{notes}: \code{ggplot2} object of the outside note, and
+#' \code{combined}: \code{gtable} object the combine them.
 #' one for the board, the other for outside note
 #' @export
-plot.kifu <- function(x, y, ...)
+plot.kifu <- function(x, y, vertical = TRUE, ...)
 {
   # board plot
   out1 <- ggoban(x[["boardsize"]], ...) %>%
@@ -61,7 +65,7 @@ plot.kifu <- function(x, y, ...)
 
   # outside note
 
-  return(out)
+  return(out1)
 }
 
 

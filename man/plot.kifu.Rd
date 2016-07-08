@@ -4,17 +4,22 @@
 \alias{plot.kifu}
 \title{Draw kifu}
 \usage{
-\method{plot}{kifu}(x, y, ...)
+\method{plot}{kifu}(x, y, vertical = TRUE, ...)
 }
 \arguments{
 \item{x}{\code{kifu} object}
 
 \item{y}{not in use (just for argument consistency with generic function)}
 
+\item{vertical}{logical indicating how board and notes are aligned}
+
 \item{...}{graphical paramters}
 }
 \value{
-list of two \code{ggplot} object,
+list of three graphic objects:
+\code{board}: \code{ggplot2} object of the board image,
+\code{notes}: \code{ggplot2} object of the outside note, and
+\code{combined}: \code{gtable} object the combine them.
 one for the board, the other for outside note
 }
 \description{

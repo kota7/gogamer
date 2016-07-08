@@ -3,6 +3,7 @@
 S3method(plot,kifu)
 S3method(print,gogame)
 export("%>%")
+export(addlabels)
 export(addstones)
 export(get_moves)
 export(get_props)
