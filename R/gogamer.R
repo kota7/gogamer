@@ -1,4 +1,4 @@
-### package documentation
+### package documentation ###
 
 #' gogamer: A package for parsing a SGF (smart go format) file.
 #'
@@ -10,9 +10,13 @@
 #' @docType package
 #' @name gogamer
 NULL
+###
 
 
-
+### enable Rcpp ###
 #' @useDynLib gogamer
 #' @importFrom Rcpp sourceCpp
 NULL
+###
+
+

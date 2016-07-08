@@ -63,7 +63,7 @@ stateat <- function(x, at)
 #' @param blackcolor color for black stone
 #' @param whitecolor color for white stone
 #' @param linecolor color for stone outline
-#' @param ... arguments passed to \code{\link{ggoboard}}
+#' @param ... arguments passed to \code{\link{ggoban}}
 #' @return \code{ggplot} object
 #' @export
 plotat <- function(x, at, stonesize = 6,
@@ -76,7 +76,7 @@ plotat <- function(x, at, stonesize = 6,
   stopifnot("gogame" %in% class(x))
 
   dat <- stateat(x, at)
-  out <- ggoboard(x[["boardsize"]], ...) +
+  out <- ggoban(x[["boardsize"]], ...) +
     ggplot2::geom_point(
       data = dat, ggplot2::aes(x, y), size = stonesize, color = linecolor) +
     ggplot2::geom_point(

@@ -4,14 +4,16 @@
 \alias{plot.kifu}
 \title{Draw kifu}
 \usage{
-\method{plot}{kifu}(obj, stonesize = 6, blackcolor = "#000000",
+\method{plot}{kifu}(x, y, stonesize = 6, blackcolor = "#000000",
   whitecolor = "#ffffff", linecolor = "#000000", textcolor = "#000000",
   ...)
 }
 \arguments{
-\item{obj}{\code{kifu} object}
+\item{x}{\code{kifu} object}
 
-\item{...}{arguments passed to \code{\link{ggoboard}}}
+\item{y}{not in use}
+
+\item{...}{arguments passed to \code{\link{ggoban}}}
 }
 \value{
 \code{ggplot} object

@@ -21,7 +21,7 @@ passed to \code{geom_point}}
 
 \item{linecolor}{color for stone outline}
 
-\item{...}{arguments passed to \code{\link{ggoboard}}}
+\item{...}{arguments passed to \code{\link{ggoban}}}
 }
 \value{
 \code{ggplot} object

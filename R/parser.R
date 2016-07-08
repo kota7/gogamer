@@ -18,6 +18,7 @@
 #' get_props(sgf, "PB")
 #' get_props(sgf, c("PW", "PB", "EV", "RO"))
 #'
+#' @export
 get_props <- function(sgf, tags) {
   if (length(sgf) > 1) {
     warning("length(sgf) > 1: only the first element is used")
@@ -45,6 +46,7 @@ get_props <- function(sgf, tags) {
 #'     \item{y: y coordinate}
 #'     \item{ismove: TRUE: move, FALSE: setup}
 #'   }
+#' @export
 get_moves <- function(sgf) {
   tmp <- stringr::str_match_all(
     sgf, "(?<![A-Z])(AB|AW|B|W)((\\[[A-Za-z]{2}\\])+)")[[1]]

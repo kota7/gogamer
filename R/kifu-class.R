@@ -41,17 +41,18 @@ kifu <- function(x, from = 1L, to = 100L)
 
 
 #' Draw kifu
-#' @param obj \code{kifu} object
-#' @param ... arguments passed to \code{\link{ggoboard}}
+#' @param x \code{kifu} object
+#' @param y not in use (just for argument consistency with generic function)
+#' @param ... arguments passed to \code{\link{ggoban}}
 #' @return \code{ggplot} object
 #' @export
-plot.kifu <- function(obj, stonesize = 6,
+plot.kifu <- function(x, y, stonesize = 6,
                       blackcolor = "#000000", whitecolor = "#ffffff",
                       linecolor = "#000000", textcolor = "#000000",
                       ...)
 {
   # initialize board
-  out <- ggoboard(obj[["boardsize"]]) +#, ...) +
+  out <- ggoban(x[["boardsize"]]) +#, ...) +
     # specify the stone colors
     ggplot2::scale_color_manual(
       guide = FALSE, values = c(blackcolor, whitecolor)) +
@@ -59,20 +60,20 @@ plot.kifu <- function(obj, stonesize = 6,
     # add initial stones
     # it is okay to have data with no rows
     ggplot2::geom_point(
-      data = obj[["init"]],
+      data = x[["init"]],
       ggplot2::aes(x, y), size = stonesize, color = linecolor) +
     ggplot2::geom_point(
-      data = obj[["init"]], ggplot2::aes(x, y, color = factor(value)),
+      data = x[["init"]], ggplot2::aes(x, y, color = factor(value)),
       size = stonesize*0.8) +
     # add numbered stones
     ggplot2::geom_point(
-      data = obj[["number"]],
+      data = x[["number"]],
       ggplot2::aes(x, y), size = stonesize, color = linecolor) +
     ggplot2::geom_point(
-      data = obj[["number"]], ggplot2::aes(x, y, color = factor(value)),
+      data = x[["number"]], ggplot2::aes(x, y, color = factor(value)),
       size = stonesize*0.8) +
     ggplot2::geom_text(
-      data = obj[["number"]], ggplot2::aes(x, y, label = move))
+      data = x[["number"]], ggplot2::aes(x, y, label = move))
 
 
   return(out)

@@ -1,5 +1,5 @@
 
-#' ggplot go board
+#' Draw go board
 #' @param boardsize integer of boardsize
 #' @param gridcolor color for the grid
 #' @param boardcolor color for the background
@@ -8,12 +8,12 @@
 #' @param xlabels,ylabels character vector of the labels for each axis
 #' @return \code{ggplot} object of goban
 #' @examples
-#' ggoboard(19)
+#' ggoban(19)
 #' @export
-ggoboard <- function(boardsize,
-                     gridcolor = "#262626", boardcolor = "#e1f0c0",
-                     labelcolor = gridcolor, labelsize = 3.5,
-                     xlabels = LETTERS[-9], ylabels = as.character(1:25))
+ggoban <- function(boardsize,
+                   gridcolor = "#262626", boardcolor = "#e1f0c0",
+                   labelcolor = gridcolor, labelsize = 3.5,
+                   xlabels = LETTERS[-9], ylabels = as.character(1:25))
 {
   # TODO:
   #   for now, board margin is fixed to 1
@@ -75,3 +75,14 @@ ggoboard <- function(boardsize,
   return(out)
 }
 
+
+
+
+#' Add stones to go board
+#' @param x,y integer vectors of stone locations
+#' @param color integer vector of stone colors
+#' @param label character vector of labels added on the stone
+#' @return Layer for adding to \code{ggplot}
+#' @export
+addstones <- function(x, y, color, label = NULL)
+{}
