@@ -11,7 +11,7 @@
 \arguments{
 \item{x}{\code{kifu} object}
 
-\item{y}{not in use}
+\item{y}{not in use (just for argument consistency with generic function)}
 
 \item{...}{arguments passed to \code{\link{ggoban}}}
 }

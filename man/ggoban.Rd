@@ -4,22 +4,12 @@
 \alias{ggoban}
 \title{Draw go board}
 \usage{
-ggoban(boardsize, gridcolor = "#262626", boardcolor = "#e1f0c0",
-  labelcolor = gridcolor, labelsize = 3.5, xlabels = LETTERS[-9],
-  ylabels = as.character(1:25))
+ggoban(boardsize, ...)
 }
 \arguments{
 \item{boardsize}{integer of boardsize}
 
-\item{gridcolor}{color for the grid}
-
-\item{boardcolor}{color for the background}
-
-\item{labelcolor}{color for the label text}
-
-\item{labelsize}{numeric of the size of label}
-
-\item{xlabels, ylabels}{character vector of the labels for each axis}
+\item{...}{graphic parameters}
 }
 \value{
 \code{ggplot} object of goban

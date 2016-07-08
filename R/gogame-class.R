@@ -40,11 +40,11 @@ stateat <- function(x, at)
     dplyr::summarize(captured = length(move))
 
   b_captured <- 0L
-  flg <- capt[["value"]] == -1L
+  flg <- capt[["value"]] == -BLACK
   if (any(flg)) b_captured <- capt[["captured"]][flg]
 
   w_captured <- 0L
-  flg <- capt[["value"]] == -2L
+  flg <- capt[["value"]] == -WHITE
   if (any(flg)) w_captured <- capt[["captured"]][flg]
 
   # add prisoners as attributes of the data frame

@@ -4,19 +4,26 @@
 \alias{addstones}
 \title{Add stones to go board}
 \usage{
-addstones(x, y, color, label = NULL)
+addstones(gg, x, y, color, label = NULL, ...)
 }
 \arguments{
+\item{gg}{\code{ggplot} object}
+
 \item{x, y}{integer vectors of stone locations}
 
 \item{color}{integer vector of stone colors}
 
 \item{label}{character vector of labels added on the stone}
+
+\item{...}{graphic paramters}
 }
 \value{
-Layer for adding to \code{ggplot}
+Layer that can be added to \code{ggplot}
 }
 \description{
 Add stones to go board
+}
+\examples{
+ggoban(9) \%>\% addstones(c(5, 5), c(5, 3), c(1, 2), c(1, 2))
 }
 

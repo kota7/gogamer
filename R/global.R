@@ -9,23 +9,31 @@ WHITE <- 2L
 
 
 
+# default graphic setting
+.default_graphic_param <- list2env(
+  list(
+    # stone
+    blackcolor = "#000000", whitecolor = "#ffffff", stonelinecolor = "#000000",
+    stonesize = 6,
+
+    # marker
+    whitemarkercolor = "#000000", blackmarkercolor = "#ffffff",
+    markersize = 3,
+
+    # board
+    boardcolor = "#e1f0c0", gridcolor  = "#262626", labelcolor = "#262626",
+    labelsize = 3.5,
+
+    # axis labels
+    xlabels = LETTERS[-9], ylabels = as.character(1:25)
+  ),
+  parent = emptyenv()
+)
 
 
-  op_gogamer <- list(
-    ## graphic settings
-    # stones
-    gogamer.blackcolor = "#000000",
-    gogamer.whitecolor = "#ffffff",
-    # markers
-    gogamer.whitemarkercolor = "#000000",
-    gogamer.blackmarkercolor = "#ffffff",
-    # colors on board
-    gogamer.gridcolor  = "#262626",
-    gogamer.boardcolor = "#e1f0c0",
-    gogamer.labelcolor = "#262626"
-  )
 
 
 
 
-###
+
+
