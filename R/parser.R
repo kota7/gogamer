@@ -64,7 +64,7 @@ get_moves <- function(sgf) {
 
   # define output
   out <- data.frame(
-    color  = 1,
+    color = 1,
     x = (substring(props, 1, 1) %>% paste(collapse = "") %>%
            utf8ToInt() %>% `-`(96L)),
     y = (substring(props, 2, 2) %>% paste(collapse = "") %>%

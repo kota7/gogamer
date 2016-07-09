@@ -4,15 +4,81 @@
 # TODO:
 #   should i define functions as generic method?
 
+
+#' Constructor of gogame object
+#' @param properties  a list of game properties
+#' @param moves  a data frame of game moves
+#' @return \code{gogame} object
+gogame <- function(properties, moves)
+{
+  ### get/clean/guess board size
+  # first, check boardsize properties
+  # needs a bit of cleaning to deal with
+  # cases like "19x19"
+  # so, extract the first consecutive digit
+  # then, check the maximum number appearing in the move positions -> maxnum
+
+  boardsize <- properties$boardsize %>%
+    stringr::str_extract("[0-9]+") %>% as.integer()
+  maxnum <- max(max(moves$x), max(moves$y))
+
+  guess_flg <- FALSE
+  if (is.na(boardsize)) {
+    # guess the boardsize from 9, 13, 19
+    cat("board size is not specified... will guess\n")
+    guess_flg <- TRUE
+  } else if (boardsize < maxnum) {
+    warning("the maximum position exceeds the specified size... will guess")
+    guess_flg <- TRUE
+  }
+
+  if (guess_flg) {
+    # if the maximum position exceeds 19, error
+    if (maxnum <= 9L) {
+      boardsize <- 9L
+    } else if (maxnum <= 13L) {
+      boardsize <- 13L
+    } else if (maxnum <= 19L) {
+      boardsize <- 19L
+    } else {
+      stop("the maximum position exceeds 19... cannot guess the boardsize")
+    }
+    cat("boardsize is guess to be ", boardsize, "\n")
+  }
+  # update boardsize property
+  properties$boardsize <- boardsize
+
+
+  ### flip the y axis so that bottom-left corner is the origin
+  # this is consistent with labeling convention in major software
+  # including Quarry and CGoban
+  # this is valid for SGF format, but may not be for other formats
+  moves[["y"]] <- boardsize - moves[["y"]] + 1L
+
+
+  ### obtain board state transition
+  transition <- get_transitions(
+    boardsize, moves$ismove, moves$x, moves$y, moves$color)
+
+  return(structure(
+    .Data = c(properties, list(transition = transition)), class = "gogame"))
+}
+
+
 #' @export
 print.gogame <- function(x, ...)
 {
-  cat("\n*** Go game ***\n")
-  cat(sprintf(" %s (W) vs %s\n", x[["PW"]], x[["PB"]]))
-  cat(sprintf(" %s (%d moves)\n", x[["RE"]], nrow(x[["transition"]])))
+  # TODO: define!
+  cat("\n* Go game *\n")
   cat("***\n")
 }
 
+
+#' @export
+as.list.gogame <- function(x, ...)
+{
+  return(x[])
+}
 
 
 #' Return the board state

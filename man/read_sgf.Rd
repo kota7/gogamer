@@ -4,13 +4,13 @@
 \alias{read_sgf}
 \title{Read and parse a SGF file}
 \usage{
-read_sgf(path, keep_first = TRUE, encoding = "")
+read_sgf(path, keepfirst = TRUE, encoding = "")
 }
 \arguments{
 \item{path}{character string of the path to
 a smart go format (SGF) file.  Can be local or online.}
 
-\item{keep_first}{logical indicating the branch choice rule}
+\item{keepfirst}{logical indicating the branch choice rule}
 
 \item{encoding}{character string.
 If specified, declares the encoding used on a file.}

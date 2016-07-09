@@ -4,12 +4,12 @@
 \alias{parse_sgf}
 \title{Parse text of the smart go format.}
 \usage{
-parse_sgf(sgf, keep_first = TRUE)
+parse_sgf(sgf, keepfirst = TRUE)
 }
 \arguments{
 \item{sgf}{scalar character of sgf text.}
 
-\item{keep_first}{logical specifying the branch choice rule.
+\item{keepfirst}{logical specifying the branch choice rule.
 If TRUE, keep the first appearing branch.
 Otherwise, keep the last branch.}
 }
