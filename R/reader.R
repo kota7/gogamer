@@ -3,16 +3,16 @@
 #'
 #' @name read_sgf
 #' @param path    character string of the path to
-#'   a smart go format (SGF) file.  Can be local or online.
+#'   a smart go format (SGF) file.  Can be local or online
 #' @param keepfirst logical indicating the branch choice rule
-#' @param encoding  character string.
+#' @param ... arguments passed to \code{\link{readLines}}
 #'   If specified, declares the encoding used on a file.
 #'
 #' @export
-read_sgf <- function(path, keepfirst = TRUE, encoding = "") {
-  readLines(path, encoding = encoding) %>%
+read_sgf <- function(path, keepfirst = TRUE, ...) {
+  readLines(path, ...) %>%
     paste0(collapse = "\n") %>%
-    parse_sgf(keepfirst)
+    parse_sgf(keepfirst = keepfirst)
 }
 
 

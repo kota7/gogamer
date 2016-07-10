@@ -8,7 +8,6 @@
 #' @export
 kifu <- function(x, from = 1L, to = 100L)
 {
-
   out <- x %>%
     # obtain the board state just before 'from'
     # and define the move number as 0
@@ -38,7 +37,21 @@ kifu <- function(x, from = 1L, to = 100L)
     .Data = list(init = init, numbered = numbered, noted = noted,
                  boardsize = x[["boardsize"]], from = from, to = to),
     class = "kifu"))
-  }
+}
+
+
+#' @export
+print.kifu <- function(x, ...)
+{
+  cat("*** kifu ***\n\n")
+  cat("under constraction")
+}
+
+#' @export
+as.list.kifu <- function(x, ...)
+{
+  return(x[])
+}
 
 
 #' Draw kifu
@@ -55,7 +68,7 @@ kifu <- function(x, from = 1L, to = 100L)
 plot.kifu <- function(x, y, vertical = TRUE, ...)
 {
   # board plot
-  out1 <- ggoban(x[["boardsize"]], ...) %>%
+  out1 <- ggoban(x$boardsize, ...) %>%
     # add initial stones
     # it is okay to have data with no rows
     addstones(x$init$x, x$init$y, x$init$color, ...) %>%
@@ -64,8 +77,56 @@ plot.kifu <- function(x, y, vertical = TRUE, ...)
               x$numbered$color, x$numbered$move, ...)
 
   # outside note
+  out2 <- kifunote(x, ...)
 
-  return(out1)
+  return(list(out1, out2))
 }
 
+
+#' Draw outside note of kifu
+#' @param x \code{kifu} object
+#' @param ... graphic parameter
+#' @return \code{ggplot} object
+kifunote <- function(x, ...)
+{
+  graphic_param <- set_graphic_param(...)
+
+  k <- graphic_param$moveperrow
+  colsize <- 4
+
+  n <- nrow(x$noted)
+
+  # positions of each move
+  xx <- colsize*((0:(n-1)) %% k) + 1
+  yy <- -ceiling((1:n)/k)*2
+
+  # create canvas
+  out <- ggplot2::ggplot() + #ggplot2::coord_fixed() +
+    ggplot2::scale_x_continuous(limits = c(1, colsize*k)) +
+    ggplot2::scale_y_continuous(limits = c(min(yy) - 1, max(yy) + 1)) +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   axis.ticks = ggplot2::element_blank(),
+                   axis.text  = ggplot2::element_blank(),
+                   axis.title = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(
+                     fill = graphic_param$notebackcolor))
+
+  # add stones
+  out <- addstones(out, xx, yy, x$noted$color, x$noted$move,
+                   stonesize  = graphic_param$notestonesize,
+                   numbersize = graphic_param$notenumbersize)
+  # add text
+  ll <- paste("    ",
+              graphic_param$xlabels[x$noted$x],
+              graphic_param$ylabels[x$noted$y], sep = "")
+  dat <- data.frame(xx, yy, ll)
+  out <- out +
+    ggplot2::geom_text(data = dat,
+                       ggplot2::aes(x = xx, y= yy, label = ll),
+                       color = graphic_param$notetextcolor,
+                       size = graphic_param$notetextsize,
+                       hjust = 0)
+  return(out)
+}
 

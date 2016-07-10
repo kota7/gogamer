@@ -2,19 +2,28 @@
 % Please edit documentation in R/gogame-class.R
 \name{gogame}
 \alias{gogame}
-\title{Constructor of gogame object}
+\alias{is.gogame}
+\title{Go game object}
 \usage{
 gogame(properties, moves)
+
+is.gogame(x)
 }
 \arguments{
 \item{properties}{a list of game properties}
 
 \item{moves}{a data frame of game moves}
+
+\item{x}{An R object}
 }
 \value{
 \code{gogame} object
+
+Logical.
 }
 \description{
-Constructor of gogame object
+\code{gogame} stores go game record including
+game plays, results and
+other information such as player names and game setup.
 }
 

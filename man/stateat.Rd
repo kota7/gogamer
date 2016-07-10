@@ -2,7 +2,7 @@
 % Please edit documentation in R/gogame-class.R
 \name{stateat}
 \alias{stateat}
-\title{Return the board state}
+\title{Go board status at a move number}
 \usage{
 stateat(x, at)
 }
@@ -12,9 +12,10 @@ stateat(x, at)
 \item{at}{integer of the move number}
 }
 \value{
-data frame object
+\code{\link{gostate}} object
 }
 \description{
-Return the board state
+This function obtains the board state at the move number.
+The result is stored in a \code{\link{gostate}} object.
 }
 

@@ -1,11 +1,10 @@
 ### S3 class 'gogame' is defined ###
 
 
-# TODO:
-#   should i define functions as generic method?
-
-
-#' Constructor of gogame object
+#' Go game object
+#' @description  \code{gogame} stores go game record including
+#' game plays, results and
+#' other information such as player names and game setup.
 #' @param properties  a list of game properties
 #' @param moves  a data frame of game moves
 #' @return \code{gogame} object
@@ -81,45 +80,52 @@ as.list.gogame <- function(x, ...)
 }
 
 
-#' Return the board state
-#'
+#' @param x An R object
+#' @return Logical.
+#' @export
+#' @rdname gogame
+is.gogame <- function(x)
+{
+  return(inherits(x, "gogame"))
+}
+
+
+#' Go board status at a move number
+#' @description This function obtains the board state at the move number.
+#' The result is stored in a \code{\link{gostate}} object.
 #' @param x \code{gogame} object
 #' @param at integer of the move number
-#' @return data frame object
+#' @return \code{\link{gostate}} object
 #' @export
 stateat <- function(x, at)
 {
-  stopifnot("gogame" %in% class(x))
+  if (!(is.gogame(x))) stop("object it not a gogame")
 
   # the following data frame represent the board state in
   # dense matrix format
-  out <- x[["transition"]] %>%
+  board <- x$transition %>%
     dplyr::filter(move <= at) %>%
     dplyr::group_by(x, y) %>%
     dplyr::summarize(value = sum(value)) %>%
-    dplyr::filter(value > 0L)
+    dplyr::filter(value > 0L) %>%
+    dplyr::rename(color = value)
 
   # compute the number of prisoners
-  capt <- x[["transition"]] %>%
+  capt <- x$transition %>%
     dplyr::filter(move <= at, value < 0L) %>%
     dplyr::group_by(value) %>%
     dplyr::summarize(captured = length(move))
 
   b_captured <- 0L
   flg <- capt[["value"]] == -BLACK
-  if (any(flg)) b_captured <- capt[["captured"]][flg]
+  if (any(flg)) b_captured <- capt$captured[flg]
 
   w_captured <- 0L
   flg <- capt[["value"]] == -WHITE
-  if (any(flg)) w_captured <- capt[["captured"]][flg]
+  if (any(flg)) w_captured <- capt$captured[flg]
 
-  # add prisoners as attributes of the data frame
-  attr(out, "b_captured") <- b_captured
-  attr(out, "w_captured") <- w_captured
-
-  # rename 'value' as 'color'
-  out <- dplyr::rename(out, color = value)
-
+  out <- gostate(board, boardsize = x$boardsize,
+                 b_captured = b_captured, w_captured = w_captured)
   return(out)
 }
 
@@ -133,13 +139,13 @@ stateat <- function(x, at)
 #' @return \code{ggplot} object
 #' @export
 plotat <- function(x, at,
-                   marklast = TRUE, lastmarker = intToUtf8(9650), ...)
+                   marklast = TRUE, lastmarker = utf8ToInt(9650), ...)
 {
   stopifnot("gogame" %in% class(x))
 
-  dat <- stateat(x, at)
-  out <- ggoban(x$boardsize, ...) %>%
-    addstones(dat$x, dat$y, dat$color)
+  out <- stateat(x, at) %>% plot(...) # draw stone allocation
+
+  # add marker to the last move
   if (marklast) {
     dat2 <- dplyr::filter(x$transition, move <= at, move >= 1L, value > 0L) %>%
       dplyr::arrange(move) %>% utils::tail(1)

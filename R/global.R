@@ -31,7 +31,13 @@ WHITE <- 2L
     labelcolor = "#262626", labelsize = 3.5,
     starcolor = "#262626", starsize = 1.5,
     # axis labels
-    xlabels = LETTERS[-9], ylabels = as.character(1:25)
+    xlabels = LETTERS[-9], ylabels = as.character(1:25),
+
+    # kifu outside notes
+    notebackcolor = "#d2f1f1", notetextcolor = "#262626",
+    notestonesize = 3.5, notenumbersize = 2.5,
+    notetextsize = 3,
+    moveperrow = 8  # number of moves to show per line in the outside note
   ),
   parent = emptyenv()
 )
