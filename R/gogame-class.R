@@ -259,8 +259,8 @@ kifu <- function(x, from = 1L, to = 100L)
   # numbered  ... moves to be shown on the board with number
   # noted     ... moves to be listed outside
   init     <- dplyr::filter_(out, ~move == 0L)
-  numbered <- dplyr::filter_(out, ~move != 0L, flg)
-  noted    <- dplyr::filter_(out, ~move != 0L, !flg)
+  numbered <- dplyr::filter_(out, ~move != 0L, ~flg)
+  noted    <- dplyr::filter_(out, ~move != 0L, ~!flg)
 
 
   out <- gokifu(init = init, numbered = numbered, noted = noted,

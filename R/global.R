@@ -35,7 +35,7 @@ WHITE <- 2L
 
     # kifu outside notes
     notebackcolor = "#d2f1f1", notetextcolor = "#262626",
-    notestonesize = 3.5, notenumbersize = 2.5,
+    notestonesize = 4.5, notenumbersize = 2.5,
     notetextsize = 3,
     moveperrow = 8,  # number of moves to show per line in the outside note
 
