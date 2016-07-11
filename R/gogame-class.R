@@ -90,6 +90,13 @@ is.gogame <- function(x)
 }
 
 
+
+
+### following functions are not registered as generic method for the class,
+### but assumes the arguments are the gogame class object
+
+
+
 #' Go board status at a move number
 #' @description This function obtains the board state at the move number.
 #' The result is stored in a \code{\link{gostate}} object.
@@ -99,7 +106,7 @@ is.gogame <- function(x)
 #' @export
 stateat <- function(x, at)
 {
-  if (!(is.gogame(x))) stop("object it not a gogame")
+  if (!(is.gogame(x))) stop("object is not a gogame")
 
   # the following data frame represent the board state in
   # dense matrix format
@@ -139,9 +146,9 @@ stateat <- function(x, at)
 #' @return \code{ggplot} object
 #' @export
 plotat <- function(x, at,
-                   marklast = TRUE, lastmarker = utf8ToInt(9650), ...)
+                   marklast = TRUE, lastmarker = intToUtf8(9650), ...)
 {
-  stopifnot("gogame" %in% class(x))
+  if (!(is.gogame(x))) stop("object is not a gogame")
 
   out <- stateat(x, at) %>% plot(...) # draw stone allocation
 
@@ -152,6 +159,50 @@ plotat <- function(x, at,
     if (nrow(dat2) == 1L)
       out <- addlabels(out, dat2$x, dat2$y, lastmarker, dat2$value)
   }
+  return(out)
+}
+
+
+
+#' Kifu for certain move range
+#' @param x \code{gogame} object
+#' @param from,to integers specifying range of move
+#' @return \code{\link{gokifu}} object
+#' @export
+kifu <- function(x, from = 1L, to = 100L)
+{
+  if (!(is.gogame(x))) stop("object is not a gogame")
+
+  out <- x %>%
+    # obtain the board state just before 'from'
+    # and define the move number as 0
+    # this part is regarded as the 'initial' state of the kifu
+    stateat(from - 1L) %>% `[[`("board") %>%
+    dplyr::mutate(move = 0L) %>%
+    # then append the moves between 'from' to 'to'
+    # note that moves are the ones with positive values
+    # these are candidate move numbers to be shown in the kifu
+    dplyr::bind_rows(dplyr::filter(
+      x[["transition"]], move >= from, move <= to, value > 0L) %>%
+        dplyr::rename(color = value)) %>%
+    dplyr::arrange(move)
+
+  # finally, for each (x, y), the first entry (smallest move number)
+  # is the ones to be marked in the kifu
+  # the other moves are listed outside
+  flg <- !duplicated(dplyr::select(out, x, y))
+
+  # define three separate data frames
+  # init      ... initial board state (shown on the board, no number)
+  # numbered  ... moves to be shown on the board with number
+  # noted     ... moves to be listed outside
+  init     <- dplyr::filter(out, move == 0L)
+  numbered <- dplyr::filter(out, move != 0L, flg)
+  noted    <- dplyr::filter(out, move != 0L, !flg)
+
+
+  out <- gokifu(init = init, numbered = numbered, noted = noted,
+                boardsize = x$boardsize, from = from, to = to)
   return(out)
 }
 

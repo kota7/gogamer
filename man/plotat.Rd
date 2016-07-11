@@ -4,7 +4,7 @@
 \alias{plotat}
 \title{Plot the go board state by ggplot}
 \usage{
-plotat(x, at, marklast = TRUE, lastmarker = utf8ToInt(9650), ...)
+plotat(x, at, marklast = TRUE, lastmarker = intToUtf8(9650), ...)
 }
 \arguments{
 \item{x}{\code{gogame} object}
