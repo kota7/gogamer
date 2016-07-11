@@ -30,7 +30,7 @@ parse_sgf <- function(sgf, keepfirst = TRUE) {
                 PB = "blackname", BR = "blackrank",
                 SZ = "boardsize", KM = "komi", HA = "handicap",
                 DT = "date", EV = "event", RO = "round",
-                RE = "result", RU = "rule")
+                RE = "result", RU = "rule", PC = "place")
   # obtain properties and rename
   props <- get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
 
