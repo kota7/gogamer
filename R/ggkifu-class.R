@@ -7,9 +7,25 @@
 #' @return \code{ggkifu} object
 ggkifu <- function(board, note, boardsize, notenrow)
 {
-  return(structure(.Date = list(
-    board = board, note = note, boardsize = boardsize, notenrow = notenrow),
-    class = "ggkifu"))
+  if (is.null(note)) {
+    x <- board
+  } else {
+    x <- gridExtra::grid.arrange(board, note, heights = c(5, 1))
+    # TODO: this height should be altered
+  }
+
+  attr(x, "boardsize") <- boardsize
+  attr(x, "notenrow") <- notenrow
+  class(x) <- c("ggkifu", class(x))
+  return(x)
 }
 
 
+#' @export
+print.ggkifu <- function(x, quiet = FALSE, ...)
+{
+  NextMethod()  # print as ggplot or gtable
+  if (!quiet) {
+    cat("TODO: save size should be suggested...\n")
+  }
+}

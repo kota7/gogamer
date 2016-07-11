@@ -61,7 +61,10 @@ plot.gokifu <- function(x, y, ...)
   } else {
     out2 <- NULL
   }
-  return(list(out1, out2))
+  #return(list(out1, out2))
+  return(ggkifu(board = out1, note = out2,
+                boardsize = x$boardsize, notenrow = 3))
+  # TODO: notenrow must be calculated
 }
 
 
