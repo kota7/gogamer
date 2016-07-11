@@ -4,7 +4,7 @@
 \alias{gostate}
 \title{Go game state}
 \usage{
-gostate(board, boardsize, b_captured, w_captured)
+gostate(board, boardsize, b_captured, w_captured, lastmove = NULL)
 }
 \arguments{
 \item{board}{a \code{data.frame} representing stone allocation.
@@ -13,6 +13,9 @@ It must have variables (\code{x}, \code{y}, \code{color})}
 \item{boardsize}{baord size (integer)}
 
 \item{b_captured, w_captured}{numbers of captured stone (integer)}
+
+\item{lastmove}{integer vector of length three that indicates the last move
+location and color in the order of (x, y, color)}
 }
 \value{
 \code{gostate} returns an object of class "gostate"

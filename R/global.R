@@ -37,7 +37,10 @@ WHITE <- 2L
     notebackcolor = "#d2f1f1", notetextcolor = "#262626",
     notestonesize = 3.5, notenumbersize = 2.5,
     notetextsize = 3,
-    moveperrow = 8  # number of moves to show per line in the outside note
+    moveperrow = 8,  # number of moves to show per line in the outside note
+
+    # symbols to use for printing on console
+    black_mark = "@", white_mark = "O", empty_mark = "+"
   ),
   parent = emptyenv()
 )

@@ -49,15 +49,20 @@ gogame <- function(properties, moves)
   properties$boardsize <- boardsize
 
 
-  ### clean handicap, komi
-  if (is.na(properties$komi))
-    properties$komi <- 0   # if not specified, assume komi is zero
+  ### clean komi
+  # if not specified, assume komi is zero
+  if (is.na(properties$komi)) properties$komi <- 0L
+  # if there komi is interpretable as numeric, then convert to numeric
+  if (regexpr("^[[:space:]]*[\\-\\.0-9]+[[:space:]]*$", properties$komi) > 0)
+    properties$komi <- as.numeric(properties$komi)
 
+
+  ### clean handicap
   if (!is.na(properties$handicap)) {
-    # conver to integer
+    # convert to integer
     properties$handicap <- gsub("[^0-9]+", "", properties$handicap) %>%
       as.integer()
-
+    # check the handicap property is consitent with the moves
     if (properties$handicap != sum(!moves$ismove))
       warning("handicap property does not equal the number of setup stones, ",
               properties$handicap, " vs ", sum(!moves$ismove))
@@ -79,6 +84,7 @@ gogame <- function(properties, moves)
   return(structure(
     .Data = c(properties, list(transition = transition)), class = "gogame"))
 }
+
 
 
 #' @export
@@ -110,14 +116,15 @@ print.gogame <- function(x, ...)
   cat(sprintf(" %-12s: %s\n", "komi", as.character(x$komi), "\n"))
   cat(sprintf(" %-12s: %s\n", "handicap", as.character(x$handicap), "\n"))
   cat(sprintf(" %-12s: %s\n", "board size", as.character(x$boardsize), "\n"))
+
   if (!is.na(x$rule))
     cat(sprintf(" %-12s: %s\n", "rule", as.character(x$rule), "\n"))
-
-  cat("\n")
   if (!is.na(x$date))
-    cat(sprintf("  %-12s: %s\n", "handicap", as.character(x$date), "\n"))
+    cat(sprintf(" %-12s: %s\n", "date", as.character(x$date), "\n"))
   if (!is.na(x$event))
-    cat(sprintf("  %-12s: %s\n", "event", as.character(x$event), "\n"))
+    cat(sprintf(" %-12s: %s\n", "event", as.character(x$event), "\n"))
+  if (!is.na(x$round))
+    cat(sprintf(" %-12s: %s\n", "round", as.character(x$round), "\n"))
 }
 
 
@@ -179,8 +186,19 @@ stateat <- function(x, at)
   flg <- capt[["value"]] == -WHITE
   if (any(flg)) w_captured <- capt$captured[flg]
 
+  # find the last move
+  dat <- x$transition %>%
+    dplyr::filter_(~move <= at, ~move >= 1L, ~value > 0L) %>%
+    dplyr::arrange_(~move) %>% utils::tail(1)
+  if (nrow(dat) == 1L) {
+    lastmove <- c(dat$x, dat$y, dat$value)
+  } else {
+    lastmove <- NULL
+  }
+
   out <- gostate(board, boardsize = x$boardsize,
-                 b_captured = b_captured, w_captured = w_captured)
+                 b_captured = b_captured, w_captured = w_captured,
+                 lastmove = lastmove)
   return(out)
 }
 
@@ -188,29 +206,18 @@ stateat <- function(x, at)
 #' Plot the go board state by ggplot
 #' @param x \code{gogame} object
 #' @param at Move number (integer)
-#' @param marklast If specifified, add a marker to the last stone (logical)
-#' @param lastmarker character of marker indicating the last move
-#' @param ... graphic parameters
+#' @param ... arguments passed to \code{\link{print.gostate}}
 #' @return \code{ggplot} object
 #' @export
 #' @examples
-#' data(mimiaka)
 #' plotat(mimiaka, 127)
-plotat <- function(x, at,
-                   marklast = TRUE, lastmarker = intToUtf8(9650), ...)
+plotat <- function(x, at, ...)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 
-  out <- stateat(x, at) %>% graphics::plot(...) # draw stone allocation
+  out <- stateat(x, at) %>%
+    graphics::plot(...)
 
-  # add marker to the last move
-  if (marklast) {
-    dat2 <- x$transition %>%
-      dplyr::filter_(~move <= at, ~move >= 1L, ~value > 0L) %>%
-      dplyr::arrange_(~move) %>% utils::tail(1)
-    if (nrow(dat2) == 1L)
-      out <- addlabels(out, dat2$x, dat2$y, lastmarker, dat2$value)
-  }
   return(out)
 }
 
