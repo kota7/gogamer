@@ -47,7 +47,8 @@ ggoban <- function(boardsize, ...)
       panel.background = ggplot2::element_rect(fill = graphic_param$boardcolor)
     ) +
     # draw grid
-    ggplot2::geom_segment(ggplot2::aes(x = x, y = y, xend = xend, yend = yend),
+    ggplot2::geom_segment(ggplot2::aes_string(x = "x", y = "y",
+                                              xend = "xend", yend = "yend"),
                           color = graphic_param$gridcolor)
 
 
@@ -70,7 +71,7 @@ ggoban <- function(boardsize, ...)
   # rather, axis labels are added manually using geom_text()
   out <- out +
     ggplot2::geom_text(
-      data = dat, ggplot2::aes(x = x, y = y, label = label),
+      data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
       size = graphic_param$labelsize, color = graphic_param$labelcolor)
 
 
@@ -78,7 +79,7 @@ ggoban <- function(boardsize, ...)
   dat <- star_position(boardsize)
   out <- out +
     ggplot2::geom_point(
-      data = dat, ggplot2::aes(x = x, y = y),
+      data = dat, ggplot2::aes_string(x = "x", y = "y"),
       size = graphic_param$starsize, color = graphic_param$starcolor)
 
   # give class name and boardsize attribute
@@ -91,7 +92,7 @@ ggoban <- function(boardsize, ...)
 #' @export
 print.ggoban <- function(x, quiet = FALSE, ...)
 {
-  NextMethod(x)
+  NextMethod(x)  # this will call "print.ggplot"
   if (!quiet) {
     cat("will suggest saving size...\n")
   }

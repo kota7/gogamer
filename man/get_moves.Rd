@@ -2,7 +2,7 @@
 % Please edit documentation in R/parser.R
 \name{get_moves}
 \alias{get_moves}
-\title{Obtain setup and plays in sgf text.}
+\title{Obtain setup and plays in sgf text}
 \usage{
 get_moves(sgf)
 }
@@ -11,14 +11,17 @@ get_moves(sgf)
 }
 \value{
 a \code{data.frame} object with five columns:
-  \itemize{
-    \item{color: color (1: black, 2: white)}
-    \item{x: x coordinate}
-    \item{y: y coordinate}
-    \item{ismove: TRUE: move, FALSE: setup}
+  \describe{
+    \item{color}{color (1: black, 2: white)}
+    \item{x}{x coordinate}
+    \item{y}{y coordinate}
+    \item{ismove}{TRUE: move, FALSE: setup}
   }
 }
 \description{
-Obtain setup and plays in sgf text.
+Obtain setup and plays in sgf text
+}
+\examples{
+get_moves("AB[pd][dp][pp][dd]W[dg]")
 }
 

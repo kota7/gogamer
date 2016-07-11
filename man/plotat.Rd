@@ -23,4 +23,8 @@ plotat(x, at, marklast = TRUE, lastmarker = intToUtf8(9650), ...)
 \description{
 Plot the go board state by ggplot
 }
+\examples{
+data(mimiaka)
+plotat(mimiaka, 127)
+}
 

@@ -35,18 +35,20 @@ get_props <- function(sgf, tags) {
 
 
 
-#' Obtain setup and plays in sgf text.
+#' Obtain setup and plays in sgf text
 #'
 #' @param sgf  scalar character of text in sgf format
 #'
 #' @return  a \code{data.frame} object with five columns:
-#'   \itemize{
-#'     \item{color: color (1: black, 2: white)}
-#'     \item{x: x coordinate}
-#'     \item{y: y coordinate}
-#'     \item{ismove: TRUE: move, FALSE: setup}
+#'   \describe{
+#'     \item{color}{color (1: black, 2: white)}
+#'     \item{x}{x coordinate}
+#'     \item{y}{y coordinate}
+#'     \item{ismove}{TRUE: move, FALSE: setup}
 #'   }
 #' @export
+#' @examples
+#' get_moves("AB[pd][dp][pp][dd]W[dg]")
 get_moves <- function(sgf) {
   tmp <- stringr::str_match_all(
     sgf, "(?<![A-Z])(AB|AW|B|W)((\\[[A-Za-z]{2}\\])+)")[[1]]
@@ -64,13 +66,13 @@ get_moves <- function(sgf) {
 
   # define output
   out <- data.frame(
-    color = 1,
+    color = ifelse(regexpr("W", tags) > 0, WHITE, BLACK),
     x = (substring(props, 1, 1) %>% paste(collapse = "") %>%
            utf8ToInt() %>% `-`(96L)),
     y = (substring(props, 2, 2) %>% paste(collapse = "") %>%
            utf8ToInt() %>% `-`(96L)),
     ismove = (tags %in% c("B", "W"))
-  ) %>% dplyr::mutate(color = replace(color, grep("W", tags), 2))
+  )
 
   return(out)
 }

@@ -26,7 +26,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
   # draw outline
   gg <- gg +
     ggplot2::geom_point(
-      data = dat, ggplot2::aes(x, y),
+      data = dat, ggplot2::aes_string(x = "x", y = "y"),
       size = graphic_param$stonesize, color = graphic_param$stonelinecolor)
 
   # fill stones
@@ -40,7 +40,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
     dat2 <- dat[color == j,]
     gg <- gg +
       ggplot2::geom_point(
-        data = dat2, ggplot2::aes(x = x, y = y),
+        data = dat2, ggplot2::aes_string(x = "x", y = "y"),
         size = graphic_param$stonesize*0.8, color = stonecolor)
 
     if (!is.null(number)) {
@@ -52,7 +52,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
 
       gg <- gg +
         ggplot2::geom_text(
-          data = dat2, ggplot2::aes(x = x, y = y, label = label),
+          data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
           size = graphic_param$numbersize, color = markercolor)
     }
   }
@@ -81,11 +81,11 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
   if (is.null(color)) {
     gg <- gg +
       ggplot2::geom_point(
-        data = dat, ggplot2::aes(x = x, y = y),
+        data = dat, ggplot2::aes_string(x = "x", y = "y"),
         size = graphic_param$emptyshadowsize,
         color = graphic_param$boardcolor) +
       ggplot2::geom_text(
-        data = dat, ggplot2::aes(x = x, y = y, label = label),
+        data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
         size = graphic_param$markersize,
         color = graphic_param$emptymarkercolor)
   } else {
@@ -101,7 +101,7 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
       dat2 <- dat[color == j,]
       gg <- gg +
         ggplot2::geom_text(
-          data = dat2, ggplot2::aes(x = x, y = y, label = label),
+          data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
           size = graphic_param$markersize, color = markercolor)
     }
   }

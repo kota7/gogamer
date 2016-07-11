@@ -17,4 +17,8 @@ kifu(x, from = 1L, to = 100L)
 \description{
 Kifu for certain move range
 }
+\examples{
+data(saikoyo)
+kifu(saikoyo)
+}
 

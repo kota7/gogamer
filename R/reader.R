@@ -1,7 +1,6 @@
 
 #' Read and parse a SGF file
 #'
-#' @name read_sgf
 #' @param path    character string of the path to
 #'   a smart go format (SGF) file.  Can be local or online
 #' @param keepfirst logical indicating the branch choice rule
@@ -19,7 +18,6 @@ read_sgf <- function(path, keepfirst = TRUE, ...) {
 
 #' Parse text of the smart go format.
 #'
-#' @name parse_sgf
 #' @param sgf     scalar character of sgf text.
 #' @param keepfirst  logical specifying the branch choice rule.
 #'   If TRUE, keep the first appearing branch.
@@ -34,7 +32,7 @@ parse_sgf <- function(sgf, keepfirst = TRUE) {
                 DT = "date", EV = "event", RO = "round",
                 RE = "result", RU = "rule")
   # obtain properties and rename
-  props <- get_props(sgf, names(proplist)) %>% setNames(proplist)
+  props <- get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
 
   ### parse plays, comments, and times ###
   sgf <- prune_sgf(sgf, keepfirst)

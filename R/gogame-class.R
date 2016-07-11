@@ -111,20 +111,20 @@ stateat <- function(x, at)
   # the following data frame represent the board state in
   # dense matrix format
   board <- x$transition %>%
-    dplyr::filter(move <= at) %>%
-    dplyr::group_by(x, y) %>%
-    dplyr::summarize(value = sum(value)) %>%
-    dplyr::filter(value > 0L) %>%
-    dplyr::rename(color = value)
+    dplyr::filter_(~move <= at) %>%
+    dplyr::group_by_(~x, ~y) %>%
+    dplyr::summarize_(value = ~sum(value)) %>%
+    dplyr::filter_(~value > 0L) %>%
+    dplyr::rename_(color = ~value)
 
   # compute the number of prisoners
   capt <- x$transition %>%
-    dplyr::filter(move <= at, value < 0L) %>%
-    dplyr::group_by(value) %>%
-    dplyr::summarize(captured = length(move))
+    dplyr::filter_(~move <= at, ~value < 0L) %>%
+    dplyr::group_by_(~value) %>%
+    dplyr::summarize_(captured = ~length(move))
 
   b_captured <- 0L
-  flg <- capt[["value"]] == -BLACK
+  flg <- (capt$value == -BLACK)
   if (any(flg)) b_captured <- capt$captured[flg]
 
   w_captured <- 0L
@@ -145,17 +145,21 @@ stateat <- function(x, at)
 #' @param ... graphic parameters
 #' @return \code{ggplot} object
 #' @export
+#' @examples
+#' data(mimiaka)
+#' plotat(mimiaka, 127)
 plotat <- function(x, at,
                    marklast = TRUE, lastmarker = intToUtf8(9650), ...)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 
-  out <- stateat(x, at) %>% plot(...) # draw stone allocation
+  out <- stateat(x, at) %>% graphics::plot(...) # draw stone allocation
 
   # add marker to the last move
   if (marklast) {
-    dat2 <- dplyr::filter(x$transition, move <= at, move >= 1L, value > 0L) %>%
-      dplyr::arrange(move) %>% utils::tail(1)
+    dat2 <- x$transition %>%
+      dplyr::filter_(~move <= at, ~move >= 1L, ~value > 0L) %>%
+      dplyr::arrange_(~move) %>% utils::tail(1)
     if (nrow(dat2) == 1L)
       out <- addlabels(out, dat2$x, dat2$y, lastmarker, dat2$value)
   }
@@ -169,6 +173,9 @@ plotat <- function(x, at,
 #' @param from,to integers specifying range of move
 #' @return \code{\link{gokifu}} object
 #' @export
+#' @examples
+#' data(saikoyo)
+#' kifu(saikoyo)
 kifu <- function(x, from = 1L, to = 100L)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
@@ -182,23 +189,23 @@ kifu <- function(x, from = 1L, to = 100L)
     # then append the moves between 'from' to 'to'
     # note that moves are the ones with positive values
     # these are candidate move numbers to be shown in the kifu
-    dplyr::bind_rows(dplyr::filter(
-      x[["transition"]], move >= from, move <= to, value > 0L) %>%
-        dplyr::rename(color = value)) %>%
-    dplyr::arrange(move)
+    dplyr::bind_rows(dplyr::filter_(
+      x[["transition"]], ~move >= from, ~move <= to, ~value > 0L) %>%
+        dplyr::rename_(color = ~value)) %>%
+    dplyr::arrange_(~move)
 
   # finally, for each (x, y), the first entry (smallest move number)
   # is the ones to be marked in the kifu
   # the other moves are listed outside
-  flg <- !duplicated(dplyr::select(out, x, y))
+  flg <- !duplicated(dplyr::select_(out, ~x, ~y))
 
   # define three separate data frames
   # init      ... initial board state (shown on the board, no number)
   # numbered  ... moves to be shown on the board with number
   # noted     ... moves to be listed outside
-  init     <- dplyr::filter(out, move == 0L)
-  numbered <- dplyr::filter(out, move != 0L, flg)
-  noted    <- dplyr::filter(out, move != 0L, !flg)
+  init     <- dplyr::filter_(out, ~move == 0L)
+  numbered <- dplyr::filter_(out, ~move != 0L, flg)
+  noted    <- dplyr::filter_(out, ~move != 0L, !flg)
 
 
   out <- gokifu(init = init, numbered = numbered, noted = noted,
