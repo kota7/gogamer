@@ -10,7 +10,7 @@ get_moves(sgf)
 \item{sgf}{scalar character of text in sgf format}
 }
 \value{
-a \code{data.frame} object with five columns:
+a \code{data.frame} object with four columns:
   \describe{
     \item{color}{color (1: black, 2: white)}
     \item{x}{x coordinate}

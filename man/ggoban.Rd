@@ -12,7 +12,7 @@ ggoban(boardsize, ...)
 \item{...}{graphic parameters}
 }
 \value{
-\code{ggplot} object of goban
+Object of class \code{ggoban}, which inherits \code{ggplot}
 }
 \description{
 Draw go board

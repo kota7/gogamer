@@ -2,7 +2,7 @@
 #' Draw go board
 #' @param boardsize integer of boardsize
 #' @param ... graphic parameters
-#' @return \code{ggplot} object of goban
+#' @return Object of class \code{ggoban}, which inherits \code{ggplot}
 #' @examples
 #' ggoban(19)
 #' @export

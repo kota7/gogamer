@@ -8,6 +8,7 @@
 #' @param properties  a list of game properties
 #' @param moves  a data frame of game moves
 #' @return \code{gogame} object
+#' @export
 gogame <- function(properties, moves)
 {
   ### get/clean/guess board size
@@ -48,11 +49,27 @@ gogame <- function(properties, moves)
   properties$boardsize <- boardsize
 
 
+  ### clean handicap, komi
+  if (is.na(properties$komi))
+    properties$komi <- 0   # if not specified, assume komi is zero
+
+  if (!is.na(properties$handicap)) {
+    # conver to integer
+    properties$handicap <- gsub("[^0-9]+", "", properties$handicap) %>%
+      as.integer()
+
+    if (properties$handicap != sum(!moves$ismove))
+      warning("handicap property does not equal the number of setup stones, ",
+              properties$handicap, " vs ", sum(!moves$ismove))
+  } else {
+    properties$handicap <- sum(!moves$ismove)  # count the number of setups
+  }
+
   ### flip the y axis so that bottom-left corner is the origin
   # this is consistent with labeling convention in major software
   # including Quarry and CGoban
   # this is valid for SGF format, but may not be for other formats
-  moves[["y"]] <- boardsize - moves[["y"]] + 1L
+  moves$y <- boardsize - moves$y + 1L
 
 
   ### obtain board state transition
@@ -67,9 +84,40 @@ gogame <- function(properties, moves)
 #' @export
 print.gogame <- function(x, ...)
 {
-  # TODO: define!
-  cat("\n* Go game *\n")
-  cat("***\n")
+  cat("\n* Go game *\n\n")
+
+  cat(" White : ")
+  if (!is.na(x$whitename)) cat(x$whitename)
+  if (!is.na(x$whiterank)) cat(sprintf(" (%s)", as.character(x$whiterank)))
+  cat("\n")
+
+  cat(" Black : ")
+  if (!is.na(x$blackname)) cat(x$blackname)
+  if (!is.na(x$blackrank)) cat(sprintf(" (%s)", as.character(x$blackrank)))
+  cat("\n")
+
+  cat(" Result: ")
+  if (!is.na(x$result)) {
+    cat(x$result)
+  } else {
+    cat("Unknown")
+  }
+  maxnum <- max(x$transition$move)
+  if (is.integer(maxnum)) cat(sprintf(" (%d moves)", maxnum))
+  cat("\n")
+
+  cat("\n")
+  cat(sprintf(" %-12s: %s\n", "komi", as.character(x$komi), "\n"))
+  cat(sprintf(" %-12s: %s\n", "handicap", as.character(x$handicap), "\n"))
+  cat(sprintf(" %-12s: %s\n", "board size", as.character(x$boardsize), "\n"))
+  if (!is.na(x$rule))
+    cat(sprintf(" %-12s: %s\n", "rule", as.character(x$rule), "\n"))
+
+  cat("\n")
+  if (!is.na(x$date))
+    cat(sprintf("  %-12s: %s\n", "handicap", as.character(x$date), "\n"))
+  if (!is.na(x$event))
+    cat(sprintf("  %-12s: %s\n", "event", as.character(x$event), "\n"))
 }
 
 

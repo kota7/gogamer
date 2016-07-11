@@ -15,14 +15,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // prune_sgf
-std::string prune_sgf(std::string sgf, bool keep_first);
-RcppExport SEXP gogamer_prune_sgf(SEXP sgfSEXP, SEXP keep_firstSEXP) {
+std::string prune_sgf(std::string sgf, bool keepfirst);
+RcppExport SEXP gogamer_prune_sgf(SEXP sgfSEXP, SEXP keepfirstSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type sgf(sgfSEXP);
-    Rcpp::traits::input_parameter< bool >::type keep_first(keep_firstSEXP);
-    __result = Rcpp::wrap(prune_sgf(sgf, keep_first));
+    Rcpp::traits::input_parameter< bool >::type keepfirst(keepfirstSEXP);
+    __result = Rcpp::wrap(prune_sgf(sgf, keepfirst));
     return __result;
 END_RCPP
 }

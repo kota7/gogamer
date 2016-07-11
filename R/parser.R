@@ -1,6 +1,6 @@
 ### tag parsers ###
 
-#' Find the tag properties in sgf text.
+#' Find tag properties in sgf text
 #'
 #' @param sgf   scalar character of texts in sgf format
 #' @param tags  character vector of tags
@@ -39,7 +39,7 @@ get_props <- function(sgf, tags) {
 #'
 #' @param sgf  scalar character of text in sgf format
 #'
-#' @return  a \code{data.frame} object with five columns:
+#' @return  a \code{data.frame} object with four columns:
 #'   \describe{
 #'     \item{color}{color (1: black, 2: white)}
 #'     \item{x}{x coordinate}

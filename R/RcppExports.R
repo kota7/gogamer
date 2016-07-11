@@ -7,12 +7,12 @@ gogame_test <- function() {
 
 #' Remove branches from SGF text
 #' @param sgf  Scalar character formatted as SGF
-#' @param keep_first  Logical. If TRUE, keep the first branch.
+#' @param keepfirst  Logical. If TRUE, keep the first branch.
 #'   Otherwise, keep the last branch.
 #' @return Scalar character of SGF text where branches are removed
 #' @export
-prune_sgf <- function(sgf, keep_first = TRUE) {
-    .Call('gogamer_prune_sgf', PACKAGE = 'gogamer', sgf, keep_first)
+prune_sgf <- function(sgf, keepfirst = TRUE) {
+    .Call('gogamer_prune_sgf', PACKAGE = 'gogamer', sgf, keepfirst)
 }
 
 #' Obtains the transition of board configuration
