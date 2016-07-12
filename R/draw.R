@@ -82,27 +82,27 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
     gg <- gg +
       ggplot2::geom_point(
         data = dat, ggplot2::aes_string(x = "x", y = "y"),
-        size = graphic_param$emptyshadowsize,
+        size = graphic_param$emptylabelshadowsize,
         color = graphic_param$boardcolor) +
       ggplot2::geom_text(
         data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-        size = graphic_param$markersize,
-        color = graphic_param$emptymarkercolor)
+        size = graphic_param$labelsize,
+        color = graphic_param$emptylabelcolor)
   } else {
     if (!all(color %in% c(BLACK, WHITE)))
       stop("color must be ", BLACK, " or ", WHITE)
     for (j in unique(color))
     {
       if (j == BLACK) {
-        markercolor <- graphic_param$blackmarkercolor
+        labelcolor <- graphic_param$blacklabelcolor
       } else {
-        markercolor <- graphic_param$whitemarkercolor
+        labelcolor <- graphic_param$whitelabelcolor
       }
       dat2 <- dat[color == j,]
       gg <- gg +
         ggplot2::geom_text(
           data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-          size = graphic_param$markersize, color = markercolor)
+          size = graphic_param$labelsize, color = labelcolor)
     }
   }
 

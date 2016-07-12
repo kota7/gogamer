@@ -22,14 +22,14 @@ WHITE <- 2L
 
     # marker
     lastmovemarker = "\u25b2",
-    whitemarkercolor = "#000000", blackmarkercolor = "#ffffff",
-    markersize = 3.5,
-    emptymarkercolor = "#262626",  # empty markers are markers not on stone
-    emptyshadowsize = 5,           # size of shadow around empty markers
+    whitelabelcolor = "#000000", blacklabelcolor = "#ffffff",
+    labelsize = 3.5,
+    emptylabelcolor = "#262626",  # empty markers are markers not on stone
+    emptylabelshadowsize = 5,           # size of shadow around empty markers
 
     # board
     boardcolor = "#e1f0c0", gridcolor  = "#262626",
-    labelcolor = "#262626", labelsize = 3.5,
+    axislabelcolor = "#262626", axislabelsize = 3.5,
     starcolor = "#262626", starsize = 1.5,
     # axis labels
     xlabels = LETTERS[-9], ylabels = as.character(1:25),

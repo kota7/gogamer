@@ -72,7 +72,8 @@ ggoban <- function(boardsize, ...)
   out <- out +
     ggplot2::geom_text(
       data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-      size = graphic_param$labelsize, color = graphic_param$labelcolor)
+      size = graphic_param$axislabelsize,
+      color = graphic_param$axislabelcolor)
 
 
   # add stars
