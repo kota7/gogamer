@@ -50,9 +50,9 @@ print.gostate <- function(x, ...)
   graphic_param$xlabels <- graphic_param$xlabels[1:x$boardsize]
   graphic_param$ylabels <- graphic_param$ylabels[1:x$boardsize]
 
-  y <- matrix(graphic_param$empty_mark, nrow = x$boardsize, ncol = x$boardsize)
+  y <- matrix(graphic_param$emptymark, nrow = x$boardsize, ncol = x$boardsize)
   mark <- ifelse(x$board$color == BLACK,
-                 graphic_param$black_mark, graphic_param$white_mark)
+                 graphic_param$blackmark, graphic_param$whitemark)
   y[cbind(x$board$y, x$board$x)] <- mark
   y[] <- sprintf("%2s", y)
   y <- apply(y, 1, paste0, collapse = "")
@@ -90,7 +90,6 @@ print.gostate <- function(x, ...)
 #' @param x \code{gostate} object
 #' @param y not in use
 #' @param marklast logical indicating if last move should be marked
-#' @param lastmarker a character used as last move marker
 #' @param ... graphic parameters
 #'
 #' @return \code{ggoban} object, which inherits \code{ggplot} class
@@ -99,8 +98,7 @@ print.gostate <- function(x, ...)
 #' @method plot gostate
 #' @examples
 #' stateat(saikoyo, 116) %>% plot()
-plot.gostate <- function(x, y,
-                         marklast = TRUE, lastmarker = intToUtf8(9650), ...)
+plot.gostate <- function(x, y, marklast = TRUE, ...)
 {
   # draw stone allocation
   out <- ggoban(x$boardsize, ...) %>%
@@ -108,8 +106,10 @@ plot.gostate <- function(x, y,
 
   # add marker to the last move
   if (marklast && !is.null(x$lastmove)) {
-    out <- addlabels(out, x$lastmove[1],
-                     x$lastmove[2], lastmarker, x$lastmove[3])
+    graphic_param <- set_graphic_param(...)
+    out <-  out %>%
+      addlabels(x$lastmove[1], x$lastmove[2],
+                graphic_param$lastmovemarker, x$lastmove[3])
   }
 
   return(out)

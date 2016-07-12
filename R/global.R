@@ -21,6 +21,7 @@ WHITE <- 2L
     numbersize = 3,
 
     # marker
+    lastmovemarker = "\u25b2",
     whitemarkercolor = "#000000", blackmarkercolor = "#ffffff",
     markersize = 3.5,
     emptymarkercolor = "#262626",  # empty markers are markers not on stone
@@ -40,7 +41,7 @@ WHITE <- 2L
     moveperrow = 8,  # number of moves to show per line in the outside note
 
     # symbols to use for printing on console
-    black_mark = "@", white_mark = "O", empty_mark = "+"
+    blackmark = "@", whitemark = "O", emptymark = "+"
   ),
   parent = emptyenv()
 )
