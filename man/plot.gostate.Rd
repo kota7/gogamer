@@ -4,7 +4,7 @@
 \alias{plot.gostate}
 \title{Draw go board state as graphic}
 \usage{
-\method{plot}{gostate}(x, y, marklast = TRUE, ...)
+\method{plot}{gostate}(x, y, marklast = TRUE, markpoints = FALSE, ...)
 }
 \arguments{
 \item{x}{\code{gostate} object}
@@ -12,6 +12,8 @@
 \item{y}{not in use}
 
 \item{marklast}{logical indicating if last move should be marked}
+
+\item{markpoints}{logical indicating if territories are marked}
 
 \item{...}{graphic parameters}
 }

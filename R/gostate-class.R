@@ -8,12 +8,14 @@
 #' @param b_captured,w_captured  numbers of captured stone (integer)
 #' @param lastmove integer vector of length three that indicates the last move
 #' location and color in the order of (x, y, color)
+#' @param points \code{data.frame} of territory locations
 #' @return \code{gostate} returns an object of class "gostate"
 #'
 #' @examples
 #' gostate(data.frame(x = 4, y = 4, color = 1), 19, 0, 0)
 #' @export
-gostate <- function(board, boardsize, b_captured, w_captured, lastmove = NULL)
+gostate <- function(board, boardsize, b_captured, w_captured,
+                    lastmove = NULL, points = NULL)
 {
   # argument check
   if (!is.data.frame(board))
@@ -24,7 +26,7 @@ gostate <- function(board, boardsize, b_captured, w_captured, lastmove = NULL)
   out <- structure(
     .Data = list(board = board, boardsize = boardsize,
                  b_captured = b_captured, w_captured = w_captured,
-                 lastmove = lastmove),
+                 lastmove = lastmove, points = points),
     class = "gostate")
   return(out)
 }
@@ -90,6 +92,7 @@ print.gostate <- function(x, ...)
 #' @param x \code{gostate} object
 #' @param y not in use
 #' @param marklast logical indicating if last move should be marked
+#' @param markpoints logical indicating if territories are marked
 #' @param ... graphic parameters
 #'
 #' @return \code{ggoban} object, which inherits \code{ggplot} class
@@ -98,7 +101,7 @@ print.gostate <- function(x, ...)
 #' @method plot gostate
 #' @examples
 #' stateat(saikoyo, 116) %>% plot()
-plot.gostate <- function(x, y, marklast = TRUE, ...)
+plot.gostate <- function(x, y, marklast = TRUE, markpoints = FALSE, ...)
 {
   # draw stone allocation
   out <- ggoban(x$boardsize, ...) %>%
@@ -107,9 +110,14 @@ plot.gostate <- function(x, y, marklast = TRUE, ...)
   # add marker to the last move
   if (marklast && !is.null(x$lastmove)) {
     graphic_param <- set_graphic_param(...)
-    out <-  out %>%
+    out <- out %>%
       addlabels(x$lastmove[1], x$lastmove[2],
                 graphic_param$lastmovemarker, x$lastmove[3], ...)
+  }
+
+  if (markpoints && !is.null(x$points)) {
+    out <- out %>%
+      addterritory(x$points$x, x$points$y, x$points$color, ...)
   }
 
   return(out)

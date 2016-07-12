@@ -2,7 +2,7 @@
 % Please edit documentation in R/parser.R
 \name{get_moves}
 \alias{get_moves}
-\title{Obtain setup and plays in sgf text}
+\title{Obtain setup and plays in sgf}
 \usage{
 get_moves(sgf)
 }
@@ -19,7 +19,7 @@ a \code{data.frame} object with four columns:
   }
 }
 \description{
-Obtain setup and plays in sgf text
+Obtain setup and plays in sgf
 }
 \examples{
 get_moves("AB[pd][dp][pp][dd]W[dg]")

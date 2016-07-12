@@ -7,9 +7,10 @@
 #' other information such as player names and game setup.
 #' @param properties  a list of game properties
 #' @param moves  a data frame of game moves
+#' @param points a data frame of point locations
 #' @return \code{gogame} object
 #' @export
-gogame <- function(properties, moves)
+gogame <- function(properties, moves, points = NULL)
 {
   ### get/clean/guess board size
   # first, check boardsize properties
@@ -77,12 +78,20 @@ gogame <- function(properties, moves)
   moves$y <- boardsize - moves$y + 1L
 
 
+  if (is.null(points)) {
+    points <- data.frame(color = integer(0), x = integer(0), y = integer(0))
+  } else {
+    points$y <- boardsize - points$y + 1L
+  }
+
   ### obtain board state transition
   transition <- get_transitions(
     boardsize, moves$ismove, moves$x, moves$y, moves$color)
 
   return(structure(
-    .Data = c(properties, list(transition = transition)), class = "gogame"))
+    .Data = c(properties,
+              list(transition = transition), list(points = points)),
+    class = "gogame"))
 }
 
 
@@ -198,9 +207,15 @@ stateat <- function(x, at)
     lastmove <- NULL
   }
 
+  if (at >= max(x$transition$move)) {
+    points <- x$points
+  } else {
+    points <- NULL
+  }
+
   out <- gostate(board, boardsize = x$boardsize,
                  b_captured = b_captured, w_captured = w_captured,
-                 lastmove = lastmove)
+                 lastmove = lastmove, points = points)
   return(out)
 }
 

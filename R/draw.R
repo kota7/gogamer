@@ -27,7 +27,8 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
   gg <- gg +
     ggplot2::geom_point(
       data = dat, ggplot2::aes_string(x = "x", y = "y"),
-      size = graphic_param$stonesize, color = graphic_param$stonelinecolor)
+      size = graphic_param$stonesize,
+      color = graphic_param$stonelinecolor)
 
   # fill stones
   for (j in unique(color))
@@ -41,7 +42,8 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
-        size = graphic_param$stonesize*0.8, color = stonecolor)
+        size = graphic_param$stonesize*0.8,
+        color = stonecolor)
 
     if (!is.null(number)) {
       if (j == BLACK) {
@@ -53,7 +55,8 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
       gg <- gg +
         ggplot2::geom_text(
           data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-          size = graphic_param$numbersize, color = markercolor)
+          size = graphic_param$numbersize,
+          color = markercolor)
     }
   }
 
@@ -109,6 +112,51 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
   return(gg)
 }
 
+
+#' Add territory markers
+#' @param gg  \code{ggplot} object
+#' @param x,y integer vectors of stone locations
+#' @param color integer vector of stone colors
+#' @param ... graphic paramters
+#' @return Updated \code{ggplot} object
+#'
+#' @export
+addterritory <- function(gg, x, y, color, ...)
+{
+  graphic_param <- set_graphic_param(...)
+  if (!all(color %in% c(BLACK, WHITE)))
+    stop("color must be ", BLACK, " or ", WHITE)
+
+  # prepare data
+  dat <- data.frame(x = x, y = y)
+
+  # draw outline
+  gg <- gg +
+    ggplot2::geom_point(
+      data = dat, ggplot2::aes_string(x = "x", y = "y"),
+      size = graphic_param$territorysize,
+      color = graphic_param$territorylinecolor,
+      shape = graphic_param$territoryshape)
+
+  # fill stones
+  for (j in unique(color))
+  {
+    if (j == BLACK) {
+      stonecolor <- graphic_param$blackcolor
+    } else {
+      stonecolor <- graphic_param$whitecolor
+    }
+    dat2 <- dat[color == j,]
+    gg <- gg +
+      ggplot2::geom_point(
+        data = dat2, ggplot2::aes_string(x = "x", y = "y"),
+        size = graphic_param$territorysize*0.8,
+        color = stonecolor,
+        shape = graphic_param$territoryshape)
+  }
+
+  return(gg)
+}
 
 
 #' Get location of stars

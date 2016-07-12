@@ -1,6 +1,6 @@
 ### tag parsers ###
 
-#' Find tag properties in sgf text
+#' Find tag properties in sgf
 #'
 #' @param sgf   scalar character of texts in sgf format
 #' @param tags  character vector of tags
@@ -35,7 +35,7 @@ get_props <- function(sgf, tags) {
 
 
 
-#' Obtain setup and plays in sgf text
+#' Obtain setup and plays in sgf
 #'
 #' @param sgf  scalar character of text in sgf format
 #'
@@ -61,7 +61,7 @@ get_moves <- function(sgf) {
   props <- tolower(tmp[, 3]) %>% stringr::str_extract_all("[a-z]{2}")
   len <- lapply(props, length) %>% unlist()
   # expand tags
-  tags <- Map(rep, tags, len) %>% unlist()
+  tags <- Map(rep, tags, len) %>% unlist() %>% unname()
   props <- unlist(props)
 
   # define output
@@ -77,3 +77,45 @@ get_moves <- function(sgf) {
   return(out)
 }
 
+
+#' Obtains the point markers in sgf
+#' @param sgf Scalar character of sgf text
+#' @return \code{data.frame} with variables x, y, and color indicating
+#' the location of points on the board
+#' @export
+get_points <- function(sgf)
+{
+  tmp <- stringr::str_match_all(
+    sgf, "(?<![A-Z])(TB|TW)((\\[[A-Za-z]{2}\\])+)")[[1]]
+
+  if (nrow(tmp) == 0L)
+    return(data.frame(color = integer(0), x = integer(0), y = integer(0)))
+
+  if (nrow(tmp) > 2L) {
+    warning("TW, TB tags shouls appear only once in a game; ",
+            "only the last appearance is used")
+    index <- c(grep("TW", tmp[, 2]) %>% utils::tail(1),
+               grep("TB", tmp[, 2]) %>% utils::tail(1))
+    tmp <- tmp[index,]
+  }
+
+  tags <- tmp[, 2]
+  # props: list of character vectors
+  #        this is a vector since a tag may be associated with
+  #        multiple positions, e.g. AB[pp][dd]
+  props <- tolower(tmp[, 3]) %>% stringr::str_extract_all("[a-z]{2}")
+  len <- lapply(props, length) %>% unlist()
+  # expand tags
+  tags <- Map(rep, tags, len) %>% unlist() %>% unname()
+  props <- unlist(props)
+
+  # define output
+  out <- data.frame(
+    color = ifelse(tags == "TW", WHITE, BLACK),
+    x = (substring(props, 1, 1) %>% paste(collapse = "") %>%
+           utf8ToInt() %>% `-`(96L)),
+    y = (substring(props, 2, 2) %>% paste(collapse = "") %>%
+           utf8ToInt() %>% `-`(96L))
+  )
+  return(out)
+}

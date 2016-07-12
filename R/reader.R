@@ -37,7 +37,8 @@ parse_sgf <- function(sgf, keepfirst = TRUE) {
   ### parse plays, comments, and times ###
   sgf <- prune_sgf(sgf, keepfirst)
   moves <- get_moves(sgf)
+  points <- get_points(sgf)
 
   ### make gogame object ###
-  return(gogame(props, moves))
+  return(gogame(props, moves, points))
 }

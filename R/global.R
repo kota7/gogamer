@@ -27,6 +27,11 @@ WHITE <- 2L
     emptylabelcolor = "#262626",  # empty markers are markers not on stone
     emptylabelshadowsize = 5,           # size of shadow around empty markers
 
+    # score points
+    territorysize = 2,
+    territoryshape = 19,
+    territorylinecolor = "#000000",
+
     # board
     boardcolor = "#e1f0c0", gridcolor  = "#262626",
     axislabelcolor = "#262626", axislabelsize = 3.5,

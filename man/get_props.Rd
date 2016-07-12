@@ -2,7 +2,7 @@
 % Please edit documentation in R/parser.R
 \name{get_props}
 \alias{get_props}
-\title{Find tag properties in sgf text}
+\title{Find tag properties in sgf}
 \usage{
 get_props(sgf, tags)
 }
@@ -15,7 +15,7 @@ get_props(sgf, tags)
 Named list of game properties
 }
 \description{
-Find tag properties in sgf text
+Find tag properties in sgf
 }
 \details{
 This function finds the first appearance of each tag
