@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-gogamer: R package for go game data.
-====================================
+gogamer: R package for go game data
+===================================
 
 ![](readme-fig/README-unnamed-chunk-2-1.png)
 
@@ -84,6 +84,6 @@ plotat(x, at = 127)
 The image object inherits `ggplot`, hence you can save with `ggsave` function.
 
 ``` r
-library(ggplot)
+library(ggplot2)
 ggsave("goimage.pdf", width = 4.8, height = 4.8)
 ```

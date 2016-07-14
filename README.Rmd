@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-# gogamer: R package for go game data.
+# gogamer: R package for go game data
 
 ```{r, fig.height=4.8, fig.width=4.8, echo = FALSE}
 library(gogamer)
@@ -65,7 +65,7 @@ plotat(x, at = 127)
 
 The image object inherits `ggplot`, hence you can save with `ggsave` function.
 ```{r, eval=FALSE}
-library(ggplot)
+library(ggplot2)
 ggsave("goimage.pdf", width = 4.8, height = 4.8)
 ```
 
