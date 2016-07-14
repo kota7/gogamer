@@ -22,7 +22,7 @@ ggoban <- function(boardsize, ...)
   # i.e. if a paramter is given in '...',
   #      use it
   #      otherwise use the default setting
-  graphic_param <- set_graphic_param(...)
+  graphic_param <- set_graphic_param(boardsize = boardsize, ...)
 
   # trancate x and y labels
   graphic_param$xlabels <- graphic_param$xlabels[1:boardsize]
@@ -91,10 +91,8 @@ ggoban <- function(boardsize, ...)
 
 
 #' @export
-print.ggoban <- function(x, quiet = FALSE, ...)
+print.ggoban <- function(x, ...)
 {
   NextMethod(x)  # this will call "print.ggplot"
-  if (!quiet) {
-    cat("will suggest saving size...\n")
-  }
 }
+

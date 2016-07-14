@@ -9,8 +9,10 @@
 #' @return Updated \code{ggplot} object
 #' @export
 #' @examples
-#' ggoban(9) %>% addstones(c(5, 5), c(5, 3), c(1, 2))
 #' ggoban(19) %>% addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
+#' ggoban(9) %>%
+#'  addstones(x = c(5, 5, 4), y = c(5, 3, 3),
+#'            color = c(1, 2, 1), boardsize = 9)
 addstones <- function(gg, x, y, color, number = NULL, ...)
 {
   graphic_param <- set_graphic_param(...)
@@ -23,14 +25,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
   if (!is.null(number)) dat$label <- number
 
 
-  # draw outline
-  gg <- gg +
-    ggplot2::geom_point(
-      data = dat, ggplot2::aes_string(x = "x", y = "y"),
-      size = graphic_param$stonesize,
-      color = graphic_param$stonelinecolor)
-
-  # fill stones
+  # draw stones
   for (j in unique(color))
   {
     if (j == BLACK) {
@@ -42,8 +37,11 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
-        size = graphic_param$stonesize*0.8,
-        color = stonecolor)
+        shape = 21,
+        size = graphic_param$stonesize,
+        color = graphic_param$stonelinecolor,
+        fill = stonecolor,
+        stroke = graphic_param$stonelinewidth)
 
     if (!is.null(number)) {
       if (j == BLACK) {
@@ -119,24 +117,18 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
 #' @param color integer vector of stone colors
 #' @param ... graphic paramters
 #' @return Updated \code{ggplot} object
-#'
 #' @export
 addterritory <- function(gg, x, y, color, ...)
 {
   graphic_param <- set_graphic_param(...)
   if (!all(color %in% c(BLACK, WHITE)))
     stop("color must be ", BLACK, " or ", WHITE)
+  if (!(graphic_param$territoryshape %in% 21:25))
+    warning("territory may not be shown properly with ",
+            "'territoryshape' not in 21-25")
 
   # prepare data
   dat <- data.frame(x = x, y = y)
-
-  # draw outline
-  gg <- gg +
-    ggplot2::geom_point(
-      data = dat, ggplot2::aes_string(x = "x", y = "y"),
-      size = graphic_param$territorysize,
-      color = graphic_param$territorylinecolor,
-      shape = graphic_param$territoryshape)
 
   # fill stones
   for (j in unique(color))
@@ -150,13 +142,56 @@ addterritory <- function(gg, x, y, color, ...)
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
-        size = graphic_param$territorysize*0.8,
-        color = stonecolor,
-        shape = graphic_param$territoryshape)
+        shape = graphic_param$territoryshape,
+        size = graphic_param$territorysize,
+        color = graphic_param$territorylinecolor,
+        fill = stonecolor,
+        stroke = graphic_param$territoryslinewidth)
   }
 
   return(gg)
 }
+
+
+#' Add markers
+#' @param gg  \code{ggplot} object
+#' @param x,y integer vectors of stone locations
+#' @param color integer vector of stone colors
+#' @param marker scalar integer indicating the shape of marker
+#' @param ... graphic paramters
+#' @return Updated \code{ggplot} object
+#'
+#' @export
+addmarkers <- function(gg, x, y, color, marker = 17, ...)
+{
+  graphic_param <- set_graphic_param(...)
+  if (!all(color %in% c(BLACK, WHITE)))
+    stop("color must be ", BLACK, " or ", WHITE)
+
+  # prepare data
+  dat <- data.frame(x = x, y = y)
+
+  # draw markers
+  for (j in unique(color))
+  {
+    if (j == BLACK) {
+      markercolor <- graphic_param$blackmarkercolor
+    } else {
+      markercolor <- graphic_param$whitemarkercolor
+    }
+    dat2 <- dat[color == j,]
+    gg <- gg +
+      ggplot2::geom_point(
+        data = dat2, ggplot2::aes_string(x = "x", y = "y"),
+        size = graphic_param$markersize,
+        color = markercolor,
+        shape = marker)
+  }
+
+  return(gg)
+}
+
+
 
 
 #' Get location of stars

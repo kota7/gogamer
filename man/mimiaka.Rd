@@ -3,20 +3,20 @@
 \docType{data}
 \name{mimiaka}
 \alias{mimiaka}
-\title{Mimiaka game}
+\title{Mimiaka (ear-reddening) game}
 \format{\code{gogame} object}
 \source{
-TBA
+\itemize{
+  \item{Power, John. Invincible: The games of Shusaku. Kiseido Publishing Company 1982.}
+  \item{\url{http://senseis.xmp.net/?EarReddeningMove}}
+}
 }
 \usage{
 mimiaka
 }
 \description{
-Go game known as "Mimiaka game", between Genan Inseki
+Go game known as "Mimiaka (ear-redding) game", between Genan Inseki
 and Kuwabara Shusaku
-}
-\details{
-TBA
 }
 \keyword{datasets}
 

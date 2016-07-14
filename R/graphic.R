@@ -13,5 +13,12 @@ set_graphic_param <- function(...)
   args <- list(...)
   tochange <- intersect(names(out), names(args))
   out[tochange] <- args[tochange]
+
+  if (out$adjustsize && is.numeric(out$boardsize)) {
+    sizevars <- setdiff(names(out), "boardsize")
+    sizevars <- sizevars[grep("size$", sizevars)]
+    for (v in sizevars) out[[v]] <- out[[v]] / out$boardsize * 19
+  }
+
   return(out)
 }

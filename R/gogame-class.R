@@ -99,7 +99,7 @@ gogame <- function(properties, moves, points = NULL)
 #' @export
 print.gogame <- function(x, ...)
 {
-  cat("\n* Go game *\n\n")
+  cat("* Go game *\n\n")
 
   cat(" White : ")
   if (!is.na(x$whitename)) cat(x$whitename)

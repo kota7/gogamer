@@ -105,19 +105,21 @@ plot.gostate <- function(x, y, marklast = TRUE, markpoints = FALSE, ...)
 {
   # draw stone allocation
   out <- ggoban(x$boardsize, ...) %>%
-    addstones(x$board$x, x$board$y, x$board$color, ...)
+    addstones(x$board$x, x$board$y, x$board$color,
+              boardsize = x$boardsize, ...)
 
   # add marker to the last move
   if (marklast && !is.null(x$lastmove)) {
     graphic_param <- set_graphic_param(...)
     out <- out %>%
-      addlabels(x$lastmove[1], x$lastmove[2],
-                graphic_param$lastmovemarker, x$lastmove[3], ...)
+      addmarkers(x$lastmove[1], x$lastmove[2], x$lastmove[3],
+                 graphic_param$lastmovemarker, boardsize = x$boardsize, ...)
   }
 
   if (markpoints && !is.null(x$points)) {
     out <- out %>%
-      addterritory(x$points$x, x$points$y, x$points$color, ...)
+      addterritory(x$points$x, x$points$y, x$points$color,
+                   boardsize = x$boardsize, ...)
   }
 
   return(out)

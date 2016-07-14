@@ -7,9 +7,9 @@ Author: Kota Mori <kota.mori@aya.yale.edu>
 Maintainer: Kota Mori <kota.mori@aya.yale.edu>
 Description:
   Read and parse go game records written in the smart go format (SGF).
-License: GPL-2
+License: GPL-3
 Depends:
-    R (>= 2.14)
+    R (>= 3.1)
 Imports:
     dplyr,
     ggplot2,

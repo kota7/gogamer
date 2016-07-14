@@ -1,0 +1,68 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "readme-fig/README-"
+)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+gogamer is an R package for handling go game data.
+
+```{r, fig.height=4.8, fig.width=4.8, echo = FALSE}
+library(gogamer)
+library(magrittr)
+stateat(mimiaka, 127) %>% plot()
+```
+
+
+## How to use
+
+
+
+```{r}
+library(gogamer)
+```
+
+
+## What you can do
+
+You can read go game record file in SGF.
+
+```{r}
+x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
+class(x)
+print(x)
+```
+
+You can print the board configuration on the console.
+```{r}
+# argument 'at' specifies the move number
+stateat(x, at = 127)
+```
+
+Or you can draw as an image.
+
+```{r, fig.height=4.8, fig.width=4.8}
+plotat(x, at = 127)
+```
+
+The image object inherits `ggplot`, hence you can save with `ggsave` function.
+```{r, eval=FALSE}
+library(ggplot)
+ggsave("goimage.pdf", width = 4.8, height = 4.8)
+```
+
+
+

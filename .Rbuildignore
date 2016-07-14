@@ -1,4 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 
-data-manage
+script-ignored
+^README\.Rmd$
+^README-.*\.png$
+
+readme-fig

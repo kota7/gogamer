@@ -12,25 +12,40 @@ WHITE <- 2L
 # default graphic setting
 .default_graphic_param <- list2env(
   list(
+    boardsize = 19,
+    adjustsize = TRUE,
+    # if this is true, all sizes are adjusted by boardsize
+    # assuming the supplied numbers are corresponds to board size 19
+
+
     # stone
     blackcolor = "#000000", whitecolor = "#ffffff", stonelinecolor = "#000000",
-    stonesize = 6,
+    stonesize = 6, stonelinewidth = 0.7,
 
     # numbers
     whitenumbercolor = "#000000", blacknumbercolor = "#ffffff",
     numbersize = 3,
 
-    # marker
-    lastmovemarker = "\u25b2",
-    whitelabelcolor = "#000000", blacklabelcolor = "#ffffff",
+    # label
+    whitelabelcolor = "#000000",
+    blacklabelcolor = "#ffffff",
+    emptylabelcolor = "#262626",
+    emptylabelshadowsize = 5,       # size of shadow around empty markers
     labelsize = 3.5,
-    emptylabelcolor = "#262626",  # empty markers are markers not on stone
-    emptylabelshadowsize = 5,           # size of shadow around empty markers
+
+    # marker
+    whitemarkercolor = "#000000",
+    blackmarkercolor = "#ffffff",
+    emptymarkercolor = "#262626",  # empty markers are markers not on stone
+    markersize = 2.5,
+
+    lastmovemarker = 3,  # default maker used for last move indicator
 
     # score points
     territorysize = 2,
-    territoryshape = 19,
+    territoryshape = 21,
     territorylinecolor = "#000000",
+    territoryslinewidth = 0.5,
 
     # board
     boardcolor = "#e1f0c0", gridcolor  = "#262626",

@@ -6,17 +6,20 @@
 \title{sai vs toya koyo}
 \format{\code{gogame} object}
 \source{
-TBA
+Hotta, Yumi, Obata, Takeshi, and Umezawa, Yukari. Hikaru no Go: Gojasu Characters Guide. Shueisha 2002.
 }
 \usage{
 saikoyo
 }
 \description{
-Go game between sai and toya koyo played online
+Go game between sai and Toya Koyo played online
 in the comic "Hikaru no Go"
 }
 \details{
-TBA
+The game played between Sai and Toya Koyo on internet in the comic
+"Hikaru no Go", Episode 112-115.
+The game is identical to a Japanese professional game between
+Yoda Notimoto and Rin Kaiho on May 1st, 1997.
 }
 \keyword{datasets}
 

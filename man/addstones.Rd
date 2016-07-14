@@ -24,7 +24,9 @@ Updated \code{ggplot} object
 Add stones to go board
 }
 \examples{
-ggoban(9) \%>\% addstones(c(5, 5), c(5, 3), c(1, 2))
 ggoban(19) \%>\% addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
+ggoban(9) \%>\%
+ addstones(x = c(5, 5, 4), y = c(5, 3, 3),
+           color = c(1, 2, 1), boardsize = 9)
 }
 

@@ -34,7 +34,7 @@ parse_sgf <- function(sgf, keepfirst = TRUE) {
   # obtain properties and rename
   props <- get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
 
-  ### parse plays, comments, and times ###
+  ### parse plays and points ###
   sgf <- prune_sgf(sgf, keepfirst)
   moves <- get_moves(sgf)
   points <- get_points(sgf)
