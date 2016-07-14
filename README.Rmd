@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-gogamer is an R package for handling go game data.
+# gogamer: R package for go game data.
 
 ```{r, fig.height=4.8, fig.width=4.8, echo = FALSE}
 library(gogamer)
@@ -29,8 +29,13 @@ stateat(mimiaka, 127) %>% plot()
 
 ## How to use
 
+Install by
 
+```{r, eval=FALSE}
+devtools::install_github("kota7/gogamer")
+```
 
+Use by
 ```{r}
 library(gogamer)
 ```
@@ -46,13 +51,13 @@ class(x)
 print(x)
 ```
 
-You can print the board configuration on the console.
+You can print the board configuration on the console,
 ```{r}
 # argument 'at' specifies the move number
 stateat(x, at = 127)
 ```
 
-Or you can draw as an image.
+or draw as an image.
 
 ```{r, fig.height=4.8, fig.width=4.8}
 plotat(x, at = 127)

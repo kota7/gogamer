@@ -1,11 +1,20 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-gogamer is an R package for handling go game data.
+gogamer: R package for go game data.
+====================================
 
 ![](readme-fig/README-unnamed-chunk-2-1.png)
 
 How to use
 ----------
+
+Install by
+
+``` r
+devtools::install_github("kota7/gogamer")
+```
+
+Use by
 
 ``` r
 library(gogamer)
@@ -25,15 +34,15 @@ print(x)
 #> 
 #>  White : Genan Inseki (8p)
 #>  Black : Kuwabara Shusaku (4p)
-#>  Result: B+3 (325 moves)
+#>  Result: B+2 (325 moves)
 #> 
 #>  komi        : 0
 #>  handicap    : 0
 #>  board size  : 19
-#>  date        : July 1846
+#>  date        : 1846-07-21
 ```
 
-You can print the board configuration on the console.
+You can print the board configuration on the console,
 
 ``` r
 # argument 'at' specifies the move number
@@ -64,13 +73,13 @@ stateat(x, at = 127)
 #>   last move: black K11
 ```
 
-Or you can draw as an image.
+or draw as an image.
 
 ``` r
 plotat(x, at = 127)
 ```
 
-![](readme-fig/README-unnamed-chunk-6-1.png)
+![](readme-fig/README-unnamed-chunk-7-1.png)
 
 The image object inherits `ggplot`, hence you can save with `ggsave` function.
 

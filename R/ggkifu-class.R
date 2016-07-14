@@ -22,10 +22,7 @@ ggkifu <- function(board, note, boardsize, notenrow)
 
 
 #' @export
-print.ggkifu <- function(x, quiet = FALSE, ...)
+print.ggkifu <- function(x, ...)
 {
   NextMethod()  # print as ggplot or gtable
-  if (!quiet) {
-    cat("TODO: save size should be suggested...\n")
-  }
 }
