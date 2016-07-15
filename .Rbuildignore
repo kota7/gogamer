@@ -4,5 +4,6 @@
 script-ignored
 ^README\.Rmd$
 ^README-.*\.png$
-
 readme-fig
+
+.travis.yml
