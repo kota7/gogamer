@@ -246,7 +246,6 @@ plotat <- function(x, at, ...)
 #' @return \code{\link{gokifu}} object
 #' @export
 #' @examples
-#' data(saikoyo)
 #' kifu(saikoyo)
 kifu <- function(x, from = 1L, to = 100L)
 {
