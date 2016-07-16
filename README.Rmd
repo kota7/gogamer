@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # gogamer: R package for go game data
 
-```{r, fig.height=4.8, fig.width=4.8, echo = FALSE}
+```{r, fig.height=5, fig.width=5, echo = FALSE}
 library(gogamer)
 library(magrittr)
 stateat(mimiaka, 127) %>% plot()
@@ -59,14 +59,14 @@ stateat(x, at = 127)
 
 or draw as an image.
 
-```{r, fig.height=4.8, fig.width=4.8}
+```{r, fig.height=5, fig.width=5}
 plotat(x, at = 127)
 ```
 
 The image object inherits `ggplot`, hence you can save with `ggsave` function.
 ```{r, eval=FALSE}
 library(ggplot2)
-ggsave("goimage.pdf", width = 4.8, height = 4.8)
+ggsave("goimage.pdf", width = 5, height = 5)
 ```
 
 

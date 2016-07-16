@@ -12,6 +12,12 @@ WHITE <- 2L
 # default graphic setting
 .default_graphic_param <- list2env(
   list(
+    targetwidth = 5,
+    # this specifies the output width used for
+    # 'ggsave' or insertion to rmarkdown document
+    # all sizes are proportionately adjusted
+    # at the call of 'set_graphic_param'
+
     boardsize = 19,
     adjustsize = TRUE,
     # if this is true, all sizes are adjusted by boardsize

@@ -85,5 +85,5 @@ The image object inherits `ggplot`, hence you can save with `ggsave` function.
 
 ``` r
 library(ggplot2)
-ggsave("goimage.pdf", width = 4.8, height = 4.8)
+ggsave("goimage.pdf", width = 5, height = 5)
 ```

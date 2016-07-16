@@ -1,0 +1,51 @@
+---
+title: "graphic test"
+author: "Kota Mori"
+date: "July 17, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(gogamer)
+```
+
+Default size is 5
+```{r, fig.width=5, fig.height=5}
+plotat(saikoyo, 116)
+ggsave("script-ignored/output/test.pdf", width = 5, height = 5)
+ggsave("script-ignored/output/test.png", width = 5, height = 5)
+```
+
+If fig.width and fig.height change, stone sizes are no good
+```{r, fig.width=2, fig.height=2}
+plotat(saikoyo, 116)
+```
+
+```{r, fig.width=8, fig.height=8}
+plotat(saikoyo, 116)
+```
+
+
+Use 'targetwidth' option to adjust the size
+```{r, fig.width=2, fig.height=2}
+plotat(saikoyo, 116, targetwidth = 2)
+```
+
+```{r, fig.width=8, fig.height=8}
+plotat(saikoyo, 116, targetwidth = 8)
+```
+
+
+More extreme cases
+```{r, fig.width=1, fig.height=1}
+plotat(saikoyo, 116, targetwidth = 1)
+```
+
+```{r, fig.width=20, fig.height=20}
+plotat(saikoyo, 116, targetwidth = 20)
+```
