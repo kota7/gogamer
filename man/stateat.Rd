@@ -18,4 +18,7 @@ stateat(x, at)
 This function obtains the board state at the move number.
 The result is stored in a \code{\link{gostate}} object.
 }
+\examples{
+stateat(saikoyo, 116)
+}
 

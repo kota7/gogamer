@@ -170,6 +170,8 @@ is.gogame <- function(x)
 #' @param at integer of the move number
 #' @return \code{\link{gostate}} object
 #' @export
+#' @examples
+#' stateat(saikoyo, 116)
 stateat <- function(x, at)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
