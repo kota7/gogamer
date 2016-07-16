@@ -18,6 +18,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
+[![Build Status](https://travis-ci.org/kota7/gogamer.svg?branch=master)](https://travis-ci.org/kota7/gogamer)
+
 # gogamer: R package for go game data
 
 ```{r, fig.height=5, fig.width=5, echo = FALSE}
