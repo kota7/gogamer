@@ -40,3 +40,23 @@ print.ggkifu <- function(x, quiet = FALSE, ...)
 }
 
 
+#' @param x An R object
+#' @return Logical.
+#' @export
+#' @rdname ggkifu
+is.ggkifu <- function(x)
+{
+  return(inherits(x, "ggkifu"))
+}
+
+
+#' Suggested size used for saving
+#' @param obj \code{ggkifu} object
+#' @return Numeric vector of size two
+#' @export
+suggested_size <- function(obj)
+{
+  if (!is.ggkifu(obj)) stop("object is not ggkifu class")
+  return(attr(obj, "savesize"))
+}
+

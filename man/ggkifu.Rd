@@ -2,9 +2,12 @@
 % Please edit documentation in R/ggkifu-class.R
 \name{ggkifu}
 \alias{ggkifu}
+\alias{is.ggkifu}
 \title{One-page kifu image}
 \usage{
 ggkifu(board, note, boardsize, heights = c(7, 1), savesize = c(5, 6))
+
+is.ggkifu(x)
 }
 \arguments{
 \item{board}{\code{ggplot} object of board}
@@ -18,9 +21,13 @@ ratio between board and note}
 
 \item{savesize}{Numeric vector of size two, indicating
 appropriate pair of width and height when saving}
+
+\item{x}{An R object}
 }
 \value{
 \code{ggkifu} object
+
+Logical.
 }
 \description{
 One-page kifu image

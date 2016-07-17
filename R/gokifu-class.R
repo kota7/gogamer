@@ -160,9 +160,12 @@ plot.gokifu <- function(x, y, ...)
 
   # compute the number of lines of outside note
   note_lines <- ceiling(nrow(x$noted) / graphic_param$moveperrow)
+
+  # compute appropriate size ratio between board and note
   if (note_lines > 0) {
     # magic formula for computing the height
-    note_height <- (0.2*note_lines + 0.4) / 5 * graphic_param$targetwidth
+    note_height <- (0.18*note_lines + 0.42) * graphic_param$targetwidth /
+      .default_graphic_param$targetwidth
   } else {
     note_height <- 0
   }
@@ -183,7 +186,7 @@ plot.gokifu <- function(x, y, ...)
 #' @return \code{ggplot} object
 kifunote <- function(x, ...)
 {
-  graphic_param <- set_graphic_param(...)
+  graphic_param <- set_graphic_param(boardsize = x$boardsize, ...)
 
   k <- graphic_param$moveperrow
   colsize <- 4
