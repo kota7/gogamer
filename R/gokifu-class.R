@@ -48,7 +48,7 @@ print.gokifu <- function(x, ...)
 
   # header
   if (x$from > 0L) {
-    id <- which(x$move == x$from)
+    id <- which(x$numbered$move == x$from)
     color1 <- ifelse(x$numbered$color[id] == BLACK, "Black", "White")
     move1  <- x$numbered$move[id]
   } else {
@@ -56,7 +56,7 @@ print.gokifu <- function(x, ...)
     move1  <- -1
   }
   if (x$to > 0L) {
-    id <- which(x$move == x$to)
+    id <- which(x$numbered$move == x$to)
     color2 <- ifelse(x$numbered$color[id] == BLACK, "Black", "White")
     move2  <- x$numbered$move[id]
   } else {
