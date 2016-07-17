@@ -55,10 +55,6 @@ plotat(saikoyo, 116, targetwidth = 20)
 gogamer:::kifunote(kifu(mimiaka))
 ```
 
-```{r, fig.width=5, fig.height=5.6}
-gogamer:::kifunote(kifu(mimiaka))
-```
-
 
 ```{r, fig.width=5, fig.height=1.4}
 x <- read_sgf("../tests/sample/ko.sgf")

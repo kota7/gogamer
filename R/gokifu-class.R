@@ -111,8 +111,8 @@ print.gokifu <- function(x, ...)
     dplyr::group_by_(~linenum) %>%
     dplyr::summarize_(~paste0(z, collapse = "; ")) %>%
     `[[`(2) %>%
-    paste0(collapse = "\n")
-  cat("\n  ", z, "\n")
+    paste0(collapse = "\n  ")
+  cat("\n ", z, "\n")
 }
 
 
