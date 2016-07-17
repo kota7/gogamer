@@ -110,7 +110,7 @@ Or you may also print kifu on console.
 
 ``` r
 kifu(x, from = 1, to = 127)
-#>  
+#> Black 1 - Black 127 
 #> 
 #>        A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
 #>      ---------------------------------------------------------
