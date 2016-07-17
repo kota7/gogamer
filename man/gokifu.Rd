@@ -4,18 +4,16 @@
 \alias{gokifu}
 \title{Kifu (go game record) for a range of move}
 \usage{
-gokifu(init, numbered, noted, boardsize, from, to)
+gokifu(init, numbered, noted, boardsize)
 }
 \arguments{
 \item{init}{initial board state (\code{data.frame})}
 
-\item{numbered}{moves to be numberd on board (\code{data.frame})}
+\item{numbered}{moves to be numberd on the board (\code{data.frame})}
 
-\item{noted}{moves to be listed ontside of boarde (\code{data.frame})}
+\item{noted}{moves to be listed ontside the board (\code{data.frame})}
 
 \item{boardsize}{integer of board size}
-
-\item{from, to}{integers specifying the range of moves`}
 }
 \value{
 \code{gokifu} object

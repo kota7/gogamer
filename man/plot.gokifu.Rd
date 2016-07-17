@@ -4,21 +4,20 @@
 \alias{plot.gokifu}
 \title{Draw kifu}
 \usage{
-\method{plot}{gokifu}(x, y, ...)
+\method{plot}{gokifu}(x, y, adjust_origin = TRUE, ...)
 }
 \arguments{
 \item{x}{\code{kifu} object}
 
 \item{y}{not in use (just for argument consistency with generic function)}
 
+\item{adjust_origin}{Logical.  If this is true, numbers are deducted
+by a multiple of 100 when appropriate}
+
 \item{...}{graphical paramters}
 }
 \value{
-list of three graphic objects:
-\code{board}: \code{ggplot2} object of the board image,
-\code{notes}: \code{ggplot2} object of the outside note, and
-\code{combined}: \code{gtable} object the combine them.
-one for the board, the other for outside note
+\code{\link{ggkifu}} object
 }
 \description{
 Draw kifu

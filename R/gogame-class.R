@@ -281,7 +281,7 @@ kifu <- function(x, from = 1L, to = 100L)
   noted    <- dplyr::filter_(out[!flg,], ~move != 0L)
 
   out <- gokifu(init = init, numbered = numbered, noted = noted,
-                boardsize = x$boardsize, from = from, to = to)
+                boardsize = x$boardsize)
   return(out)
 }
 

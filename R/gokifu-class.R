@@ -2,14 +2,22 @@
 
 #' Kifu (go game record) for a range of move
 #' @param init     initial board state (\code{data.frame})
-#' @param numbered moves to be numberd on board (\code{data.frame})
-#' @param noted    moves to be listed ontside of boarde (\code{data.frame})
+#' @param numbered moves to be numberd on the board (\code{data.frame})
+#' @param noted    moves to be listed ontside the board (\code{data.frame})
 #' @param boardsize integer of board size
-#' @param from,to integers specifying the range of moves`
 #' @return \code{gokifu} object
 #' @export
-gokifu <- function(init, numbered, noted, boardsize, from, to)
+gokifu <- function(init, numbered, noted, boardsize)
 {
+  # obetain the move numbers
+  if (nrow(numbered) == 0) {
+    from <- NA_integer_
+    to   <- NA_integer_
+  } else {
+    from <- min(numbered$move)
+    to   <- max(numbered$move)
+  }
+
   return(
     structure(
       .Data = list(init = init, numbered = numbered, noted = noted,
@@ -19,11 +27,82 @@ gokifu <- function(init, numbered, noted, boardsize, from, to)
 }
 
 
+#' Print kifu on console
+#' @param x \code{gokifu} object
+#' @param adjust_origin Logical. If this is true, numbers are
+#' deducted by a multiple of 100 if appropriate
+#' @param ... graphical parameters
 #' @export
-print.gokifu <- function(x, ...)
+print.gokifu <- function(x, adjust_origin = TRUE, ...)
 {
-  cat("* kifu *\n\n")
-  cat("move:", x$from, "-", x$to, "\n")
+  graphic_param <- set_graphic_param(...)
+
+  # trancate x and y labels
+  graphic_param$xlabels <- graphic_param$xlabels[1:x$boardsize]
+  graphic_param$ylabels <- graphic_param$ylabels[1:x$boardsize]
+
+  # origin is the new origin
+  if (adjust_origin) {
+    origin <- floor(min(x$numbered$move) / 100) * 100
+  } else {
+    origin <- 0L
+  }
+
+  # header
+  x$numberd <- dplyr::arrange_(x$numbered, ~move)
+  color1 <- ifelse(x$numbered$color[1] == BLACK, "Black", "White")
+  color2 <- ifelse(utils::tail(x$numbered$color, 1) == BLACK, "Black", "White")
+  move1 <- x$numbered$move[1]
+  move2 <- utils::tail(x$numbered$move, 1)
+  w <- sprintf("%s %d - %s %d", color1, move1 - origin, color2, move2 - origin)
+  if (origin > 0L) {
+    w <- paste(w, sprintf("(%d - %d)", move1, move2), sep = " ")
+  }
+  cat(w, "\n\n")
+
+
+  # initial board state
+  y <- matrix(graphic_param$emptymark, nrow = x$boardsize, ncol = x$boardsize)
+  mark <- ifelse(x$init$color == BLACK,
+                 graphic_param$blackmark, graphic_param$whitemark)
+  y[cbind(x$init$y, x$init$x)] <- mark
+
+  # insert numbers
+  y[cbind(x$numbered$y, x$numbered$x)] <- as.character(x$numbered$move - origin)
+  y[] <- sprintf("%3s", y)
+  y <- apply(y, 1, paste0, collapse = "")
+
+
+  # add vertical label
+  y <- paste(sprintf("%3s| ", graphic_param$ylabels), y, sep = "")
+
+  # flip y-axis so that the  origin is at the left bottom
+  y <- rev(y)
+
+  # add horizontal label
+  y <- c(paste("     ",
+               sprintf("%3s", graphic_param$xlabels) %>% paste0(collapse = ""),
+               sep = ""),
+         paste("     ", paste0(rep("---", x$boardsize), collapse = ""), sep= ""),
+         y)
+  y <- paste0(y, collapse = "\n")
+  cat(y, "\n")
+
+  # outside note
+  z <- sprintf("%s%d=%s%s",
+               ifelse(x$noted$color == BLACK, "B", "W"),
+               x$noted$move - origin,
+               graphic_param$xlabels[x$noted$x],
+               graphic_param$ylabels[x$noted$y])
+  maxlen <- x$boardsize * 3L  # nchar per line
+  cumlen <- cumsum(nchar(z) + 2)
+  linenum <- floor(cumlen/maxlen)
+  z <- data.frame(z, linenum, stringsAsFactors = FALSE) %>%
+    dplyr::group_by_(~linenum) %>%
+    dplyr::summarize_(~paste0(z, collapse = "; ")) %>%
+    `[[`(2) %>%
+    paste0(collapse = "\n")
+  cat("\n  ", z, "\n")
 }
 
 
@@ -37,14 +116,12 @@ as.list.gokifu <- function(x, ...)
 #' Draw kifu
 #' @param x \code{kifu} object
 #' @param y not in use (just for argument consistency with generic function)
+#' @param adjust_origin  Logical.  If this is true, numbers are deducted
+#' by a multiple of 100 when appropriate
 #' @param ... graphical paramters
-#' @return list of three graphic objects:
-#' \code{board}: \code{ggplot2} object of the board image,
-#' \code{notes}: \code{ggplot2} object of the outside note, and
-#' \code{combined}: \code{gtable} object the combine them.
-#' one for the board, the other for outside note
+#' @return \code{\link{ggkifu}} object
 #' @export
-plot.gokifu <- function(x, y, ...)
+plot.gokifu <- function(x, y, adjust_origin = TRUE, ...)
 {
   # board plot
   out1 <- ggoban(x$boardsize, ...) %>%
