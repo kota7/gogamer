@@ -15,11 +15,19 @@ set_graphic_param <- function(...)
   out[tochange] <- args[tochange]
 
   # adjust size based on the boardsize
-  if (out$adjustsize && is.numeric(out$boardsize)) {
+  if (out$adjustsizeonboard && is.numeric(out$boardsize)) {
     sizevars <- setdiff(names(out), "boardsize")
     sizevars <- sizevars[grep("size$", sizevars)]
+    sizevars <- sizevars[regexpr("^note", sizevars) < 0]
     for (v in sizevars) out[[v]] <- out[[v]] / out$boardsize * 19
   }
+  if (out$adjustsizeonnote && is.numeric(out$boardsize)) {
+    sizevars <- setdiff(names(out), "boardsize")
+    sizevars <- sizevars[grep("size$", sizevars)]
+    sizevars <- sizevars[regexpr("^note", sizevars) > 0]
+    for (v in sizevars) out[[v]] <- out[[v]] / out$boardsize * 19
+  }
+
 
   # adjust size based on the target width
   # here is magic formula for the size adjustment

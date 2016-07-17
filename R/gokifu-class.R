@@ -10,9 +10,9 @@
 gokifu <- function(init, numbered, noted, boardsize)
 {
   # obetain the move numbers
-  if (nrow(numbered) == 0) {
-    from <- NA_integer_
-    to   <- NA_integer_
+  if (nrow(numbered) == 0L) {
+    from <- 0L
+    to   <- 0L
   } else {
     from <- min(numbered$move)
     to   <- max(numbered$move)
@@ -29,11 +29,9 @@ gokifu <- function(init, numbered, noted, boardsize)
 
 #' Print kifu on console
 #' @param x \code{gokifu} object
-#' @param adjust_origin Logical. If this is true, numbers are
-#' deducted by a multiple of 100 if appropriate
 #' @param ... graphical parameters
 #' @export
-print.gokifu <- function(x, adjust_origin = TRUE, ...)
+print.gokifu <- function(x, ...)
 {
   graphic_param <- set_graphic_param(...)
 
@@ -41,19 +39,31 @@ print.gokifu <- function(x, adjust_origin = TRUE, ...)
   graphic_param$xlabels <- graphic_param$xlabels[1:x$boardsize]
   graphic_param$ylabels <- graphic_param$ylabels[1:x$boardsize]
 
-  # origin is the new origin
-  if (adjust_origin) {
-    origin <- floor(min(x$numbered$move) / 100) * 100
+  # set the new origin
+  if (graphic_param$adjustorigin && !is.na(x$from)) {
+    origin <- floor(x$from / 100) * 100
   } else {
     origin <- 0L
   }
 
   # header
-  x$numberd <- dplyr::arrange_(x$numbered, ~move)
-  color1 <- ifelse(x$numbered$color[1] == BLACK, "Black", "White")
-  color2 <- ifelse(utils::tail(x$numbered$color, 1) == BLACK, "Black", "White")
-  move1 <- x$numbered$move[1]
-  move2 <- utils::tail(x$numbered$move, 1)
+  if (x$from > 0L) {
+    id <- which(x$move == x$from)
+    color1 <- ifelse(x$numbered$color[id] == BLACK, "Black", "White")
+    move1  <- x$numbered$move[id]
+  } else {
+    color1 <- ""
+    move1  <- -1
+  }
+  if (x$to > 0L) {
+    id <- which(x$move == x$to)
+    color2 <- ifelse(x$numbered$color[id] == BLACK, "Black", "White")
+    move2  <- x$numbered$move[id]
+  } else {
+    color2 <- ""
+    move2  <- -1
+  }
+
   w <- sprintf("%s %d - %s %d", color1, move1 - origin, color2, move2 - origin)
   if (origin > 0L) {
     w <- paste(w, sprintf("(%d - %d)", move1, move2), sep = " ")
@@ -116,21 +126,30 @@ as.list.gokifu <- function(x, ...)
 #' Draw kifu
 #' @param x \code{kifu} object
 #' @param y not in use (just for argument consistency with generic function)
-#' @param adjust_origin  Logical.  If this is true, numbers are deducted
-#' by a multiple of 100 when appropriate
 #' @param ... graphical paramters
 #' @return \code{\link{ggkifu}} object
 #' @export
-plot.gokifu <- function(x, y, adjust_origin = TRUE, ...)
+plot.gokifu <- function(x, y, ...)
 {
+  graphic_param <- set_graphic_param(boardsize = x$boardsize, ...)
+
+  # set the new origin
+  if (graphic_param$adjustorigin && !is.na(x$from)) {
+    origin <- floor(x$from / 100) * 100
+  } else {
+    origin <- 0L
+  }
+
   # board plot
   out1 <- ggoban(x$boardsize, ...) %>%
     # add initial stones
     # it is okay to have data with no rows
-    addstones(x$init$x, x$init$y, x$init$color, ...) %>%
+    addstones(x = x$init$x, y = x$init$y, color = x$init$color,
+              boardsize = x$boardsize, ...) %>%
     # add numbered stones
-    addstones(x$numbered$x, x$numbered$y,
-              x$numbered$color, x$numbered$move, ...)
+    addstones(x = x$numbered$x, y = x$numbered$y, color = x$numbered$color,
+              number = x$numbered$move - origin,
+              boardsize = x$boardsize, ...)
 
   # outside note
   if (nrow(x$noted) >= 1L) {
@@ -138,10 +157,23 @@ plot.gokifu <- function(x, y, adjust_origin = TRUE, ...)
   } else {
     out2 <- NULL
   }
-  #return(list(out1, out2))
-  return(ggkifu(board = out1, note = out2,
-                boardsize = x$boardsize, notenrow = 3))
-  # TODO: notenrow must be calculated
+
+  # compute the number of lines of outside note
+  note_lines <- ceiling(nrow(x$noted) / graphic_param$moveperrow)
+  if (note_lines > 0) {
+    # magic formula for computing the height
+    note_height <- (0.2*note_lines + 0.4) / 5 * graphic_param$targetwidth
+  } else {
+    note_height <- 0
+  }
+  heights <- c(graphic_param$targetwidth, note_height)
+
+  # compute suggested size for saving
+  savesize <- c(width = heights[1], height = sum(heights))
+
+
+  return(ggkifu(board = out1, note = out2, boardsize = x$boardsize,
+                heights = heights, savesize = savesize))
 }
 
 
@@ -185,7 +217,7 @@ kifunote <- function(x, ...)
   dat <- data.frame(xx, yy, ll)
   out <- out +
     ggplot2::geom_text(data = dat,
-                       ggplot2::aes(x = xx, y= yy, label = ll),
+                       ggplot2::aes_string(x = "xx", y = "yy", label = "ll"),
                        color = graphic_param$notetextcolor,
                        size = graphic_param$notetextsize,
                        hjust = 0)

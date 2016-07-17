@@ -4,7 +4,7 @@
 \alias{ggkifu}
 \title{One-page kifu image}
 \usage{
-ggkifu(board, note, boardsize, notenrow)
+ggkifu(board, note, boardsize, heights = c(7, 1), savesize = c(5, 6))
 }
 \arguments{
 \item{board}{\code{ggplot} object of board}
@@ -13,7 +13,11 @@ ggkifu(board, note, boardsize, notenrow)
 
 \item{boardsize}{integer of board size}
 
-\item{notenrow}{integer of number of rows of note}
+\item{heights}{Numeric vector of size two, indicates the vertical size
+ratio between board and note}
+
+\item{savesize}{Numeric vector of size two, indicating
+appropriate pair of width and height when saving}
 }
 \value{
 \code{ggkifu} object

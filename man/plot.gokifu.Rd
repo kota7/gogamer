@@ -4,15 +4,12 @@
 \alias{plot.gokifu}
 \title{Draw kifu}
 \usage{
-\method{plot}{gokifu}(x, y, adjust_origin = TRUE, ...)
+\method{plot}{gokifu}(x, y, ...)
 }
 \arguments{
 \item{x}{\code{kifu} object}
 
 \item{y}{not in use (just for argument consistency with generic function)}
-
-\item{adjust_origin}{Logical.  If this is true, numbers are deducted
-by a multiple of 100 when appropriate}
 
 \item{...}{graphical paramters}
 }

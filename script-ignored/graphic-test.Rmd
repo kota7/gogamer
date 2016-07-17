@@ -17,8 +17,8 @@ library(gogamer)
 Default size is 5
 ```{r, fig.width=5, fig.height=5}
 plotat(saikoyo, 116)
-ggsave("script-ignored/output/test.pdf", width = 5, height = 5)
-ggsave("script-ignored/output/test.png", width = 5, height = 5)
+ggplot2::ggsave("output/test.pdf", width = 5, height = 5)
+ggplot2::ggsave("output/test.png", width = 5, height = 5)
 ```
 
 If fig.width and fig.height change, stone sizes are no good
@@ -48,4 +48,47 @@ plotat(saikoyo, 116, targetwidth = 1)
 
 ```{r, fig.width=20, fig.height=20}
 plotat(saikoyo, 116, targetwidth = 20)
+```
+
+
+```{r, fig.width=5, fig.height=0.6}
+gogamer:::kifunote(kifu(mimiaka))
+```
+
+```{r, fig.width=5, fig.height=5.6}
+gogamer:::kifunote(kifu(mimiaka))
+```
+
+
+```{r, fig.width=5, fig.height=1.4}
+x <- read_sgf("../tests/sample/ko.sgf")
+print(x)
+gogamer:::kifunote(kifu(x, 1, 108))
+```
+
+
+```{r, fig.width=5, fig.height=6.68}
+plot(kifu(x, 1, 108))
+```
+
+```{r, fig.width=5, fig.height=6.68}
+x <- read_sgf("../tests/sample/ko.sgf")
+print(x)
+invisible(plot(kifu(x, 1, 108)))
+```
+
+```{r, fig.width=5, fig.height=5.6}
+plot(kifu(mimiaka))
+```
+
+```{r, fig.width=7, fig.height=7.84}
+plot(kifu(mimiaka), targetwidth = 7)
+```
+
+
+```{r, fig.width=5, fig.height=6}
+y <-  read_sgf("../tests/sample/ko9.sgf")
+print(y)
+plotat(y, 80)
+plot(kifu(y))
 ```

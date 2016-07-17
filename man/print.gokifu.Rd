@@ -4,13 +4,10 @@
 \alias{print.gokifu}
 \title{Print kifu on console}
 \usage{
-\method{print}{gokifu}(x, adjust_origin = TRUE, ...)
+\method{print}{gokifu}(x, ...)
 }
 \arguments{
 \item{x}{\code{gokifu} object}
-
-\item{adjust_origin}{Logical. If this is true, numbers are
-deducted by a multiple of 100 if appropriate}
 
 \item{...}{graphical parameters}
 }

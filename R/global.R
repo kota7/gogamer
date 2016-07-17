@@ -19,9 +19,11 @@ WHITE <- 2L
     # at the call of 'set_graphic_param'
 
     boardsize = 19,
-    adjustsize = TRUE,
-    # if this is true, all sizes are adjusted by boardsize
-    # assuming the supplied numbers are corresponds to board size 19
+    adjustsizeonboard = TRUE,
+    # if this is true, all sizes on board are adjusted by boardsize
+    # assuming the supplied numbers corresponds to board size 19
+    adjustsizeonnote = FALSE,
+    # the same for sizes on outside notes
 
 
     # stone
@@ -62,9 +64,12 @@ WHITE <- 2L
 
     # kifu outside notes
     notebackcolor = "#eff7df", notetextcolor = "#101010",
-    notestonesize = 4.5, notenumbersize = 2.5,
+    notestonesize = 5, notenumbersize = 2.5,
     notetextsize = 3,
     moveperrow = 8,  # number of moves to show per line in the outside note
+    adjustorigin = TRUE,
+    # if this is true, the numebers in kifu are deducted by a multiple of 100
+    # whenever appropriate
 
     # symbols to use for printing on console
     blackmark = "@", whitemark = "O", emptymark = "+"
