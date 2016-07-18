@@ -52,7 +52,7 @@ WHITE <- 2L
     territorysize = 2,
     territoryshape = 21,
     territorylinecolor = "#262626",
-    territoryslinewidth = 0.5,
+    territorylinewidth = 0.5,
 
     # board
     boardcolor = "#e2f1c1", gridcolor  = "#262626",

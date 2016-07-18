@@ -5,14 +5,13 @@
 #' @param x,y integer vectors of stone locations
 #' @param color integer vector of stone colors
 #' @param number integer vector of numbers on stones
-#' @param ... graphic paramters
+#' @param ... graphic parameters
 #' @return Updated \code{ggplot} object
 #' @export
+#' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @examples
-#' ggoban(19) %>% addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
-#' ggoban(9) %>%
-#'  addstones(x = c(5, 5, 4), y = c(5, 3, 3),
-#'            color = c(1, 2, 1), boardsize = 9)
+#' ggoban(19) %>%
+#'   addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
 addstones <- function(gg, x, y, color, number = NULL, ...)
 {
   if (is.ggoban(gg)) {
@@ -71,12 +70,13 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
 #' @param x,y integer vectors of stone locations
 #' @param label character vector of labels
 #' @param color integer vector of stone colors
-#' @param ... graphic paramters
+#' @param ... graphic parameters
 #' @return Updated \code{ggplot} object
 #' @export
+#' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @examples
-#' ggoban(19) %>% addstones(c(16, 4), c(16, 3), c(1, 2)) %>%
-#'   addlabels(4, 3, "X", 2) %>%
+#' ggoban(19) %>%
+#'   addstones(c(16, 4), c(16, 3), c(1, 2)) %>%
 #'   addlabels(c(4, 3), c(17, 16), c("a", "b"))
 addlabels <- function(gg, x, y, label, color = NULL, ...)
 {
@@ -125,6 +125,7 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
 #' @param color integer vector of stone colors
 #' @param ... graphic paramters
 #' @return Updated \code{ggplot} object
+#' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @export
 addterritory <- function(gg, x, y, color, ...)
 {
@@ -159,7 +160,7 @@ addterritory <- function(gg, x, y, color, ...)
         size = graphic_param$endogenous$territorysize,
         color = graphic_param$territorylinecolor,
         fill = stonecolor,
-        stroke = graphic_param$territoryslinewidth)
+        stroke = graphic_param$territorylinewidth)
   }
 
   return(gg)
@@ -171,10 +172,14 @@ addterritory <- function(gg, x, y, color, ...)
 #' @param x,y integer vectors of stone locations
 #' @param color integer vector of stone colors
 #' @param marker scalar integer indicating the shape of marker
-#' @param ... graphic paramters
+#' @param ... graphic parameters
 #' @return Updated \code{ggplot} object
-#'
+#' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @export
+#' @examples
+#' ggoban(19) %>%
+#'   addstones(10, 10, 1) %>%
+#'   addmarkers(10, 10, 1)
 addmarkers <- function(gg, x, y, color, marker = 17, ...)
 {
   if (is.ggoban(gg)) {

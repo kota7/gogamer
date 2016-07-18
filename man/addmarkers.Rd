@@ -15,12 +15,20 @@ addmarkers(gg, x, y, color, marker = 17, ...)
 
 \item{marker}{scalar integer indicating the shape of marker}
 
-\item{...}{graphic paramters}
+\item{...}{graphic parameters}
 }
 \value{
 Updated \code{ggplot} object
 }
 \description{
 Add markers
+}
+\examples{
+ggoban(19) \%>\%
+  addstones(10, 10, 1) \%>\%
+  addmarkers(10, 10, 1)
+}
+\seealso{
+\code{\link{ggoban}}, \code{\link{graphic_parameters}}
 }
 

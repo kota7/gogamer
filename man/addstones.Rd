@@ -15,7 +15,7 @@ addstones(gg, x, y, color, number = NULL, ...)
 
 \item{number}{integer vector of numbers on stones}
 
-\item{...}{graphic paramters}
+\item{...}{graphic parameters}
 }
 \value{
 Updated \code{ggplot} object
@@ -24,9 +24,10 @@ Updated \code{ggplot} object
 Add stones to go board
 }
 \examples{
-ggoban(19) \%>\% addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
-ggoban(9) \%>\%
- addstones(x = c(5, 5, 4), y = c(5, 3, 3),
-           color = c(1, 2, 1), boardsize = 9)
+ggoban(19) \%>\%
+  addstones(c(10, 11), c(10, 10), c(1, 2), c(10, 11))
+}
+\seealso{
+\code{\link{ggoban}}, \code{\link{graphic_parameters}}
 }
 

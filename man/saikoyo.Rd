@@ -12,7 +12,7 @@ Hotta, Yumi, Obata, Takeshi, and Umezawa, Yukari. Hikaru no Go: Gojasu Character
 saikoyo
 }
 \description{
-Go game between sai and Toya Koyo played online
+Go game between Sai and Toya Koyo played online
 in the comic "Hikaru no Go"
 }
 \details{

@@ -3,7 +3,7 @@
 
 #' sai vs toya koyo
 #'
-#' @description Go game between sai and Toya Koyo played online
+#' @description Go game between Sai and Toya Koyo played online
 #' in the comic "Hikaru no Go"
 #'
 #' @details The game played between Sai and Toya Koyo on internet in the comic

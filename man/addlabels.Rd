@@ -15,7 +15,7 @@ addlabels(gg, x, y, label, color = NULL, ...)
 
 \item{color}{integer vector of stone colors}
 
-\item{...}{graphic paramters}
+\item{...}{graphic parameters}
 }
 \value{
 Updated \code{ggplot} object
@@ -24,8 +24,11 @@ Updated \code{ggplot} object
 Add text label on board
 }
 \examples{
-ggoban(19) \%>\% addstones(c(16, 4), c(16, 3), c(1, 2)) \%>\%
-  addlabels(4, 3, "X", 2) \%>\%
+ggoban(19) \%>\%
+  addstones(c(16, 4), c(16, 3), c(1, 2)) \%>\%
   addlabels(c(4, 3), c(17, 16), c("a", "b"))
+}
+\seealso{
+\code{\link{ggoban}}, \code{\link{graphic_parameters}}
 }
 

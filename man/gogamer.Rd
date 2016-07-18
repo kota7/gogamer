@@ -4,12 +4,8 @@
 \name{gogamer}
 \alias{gogamer}
 \alias{gogamer-package}
-\title{gogamer: A package for parsing a SGF (smart go format) file.}
+\title{gogamer: R package for go game data}
 \description{
-This package provides utilities for parsing text files in smart go format.
-}
-\section{Reader}{
-
-\code{readSGF}
+Read and parse go game data and create images with extensive flexibility.
 }
 

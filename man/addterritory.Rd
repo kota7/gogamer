@@ -21,4 +21,7 @@ Updated \code{ggplot} object
 \description{
 Add territory markers
 }
+\seealso{
+\code{\link{ggoban}}, \code{\link{graphic_parameters}}
+}
 

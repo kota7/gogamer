@@ -1,16 +1,12 @@
 ### package documentation ###
 
-#' gogamer: A package for parsing a SGF (smart go format) file.
+#' gogamer: R package for go game data
 #'
-#' This package provides utilities for parsing text files in smart go format.
-#'
-#' @section Reader:
-#' \code{readSGF}
+#' @description Read and parse go game data and create images with extensive flexibility.
 #'
 #' @docType package
 #' @name gogamer
 NULL
-###
 
 
 ### enable Rcpp ###
