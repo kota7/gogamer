@@ -8,12 +8,16 @@ read_sgf(path, keepfirst = TRUE, ...)
 }
 \arguments{
 \item{path}{character string of the path to
-a smart go format (SGF) file.  Can be local or online}
+a smart go format (SGF) file. Can be local or online}
 
-\item{keepfirst}{logical indicating the branch choice rule}
+\item{keepfirst}{logical specifying the branch choice rule.
+If TRUE, keep the first appearing branch.
+Otherwise, keep the last branch.}
 
-\item{...}{arguments passed to \code{\link{readLines}}
-If specified, declares the encoding used on a file.}
+\item{...}{arguments passed to \code{\link{readLines}}}
+}
+\value{
+\code{\link{gogame}} object
 }
 \description{
 Read and parse a SGF file

@@ -4,10 +4,10 @@
 \alias{is.ggoban}
 \title{Check if object is ggoban class}
 \usage{
-is.ggoban(obj)
+is.ggoban(x)
 }
 \arguments{
-\item{obj}{R object}
+\item{x}{R object}
 }
 \value{
 Logical. True if and only if \code{obj} inherits \code{ggoban} class.

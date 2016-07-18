@@ -6,6 +6,6 @@
 \alias{gogamer-package}
 \title{gogamer: R package for go game data}
 \description{
-Read and parse go game data and create images with extensive flexibility.
+Read and parse go game data and create images with flexibility.
 }
 

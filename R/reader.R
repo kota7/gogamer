@@ -1,28 +1,30 @@
 
 #' Read and parse a SGF file
 #'
-#' @param path    character string of the path to
-#'   a smart go format (SGF) file.  Can be local or online
-#' @param keepfirst logical indicating the branch choice rule
+#' @param path   character string of the path to
+#' a smart go format (SGF) file. Can be local or online
+#' @param keepfirst  logical specifying the branch choice rule.
+#'   If TRUE, keep the first appearing branch.
+#'   Otherwise, keep the last branch.
 #' @param ... arguments passed to \code{\link{readLines}}
-#'   If specified, declares the encoding used on a file.
-#'
+#' @return \code{\link{gogame}} object
 #' @export
 read_sgf <- function(path, keepfirst = TRUE, ...) {
   readLines(path, ...) %>%
     paste0(collapse = "\n") %>%
-    parse_sgf(keepfirst = keepfirst)
+    parse_sgf(keepfirst = keepfirst) %>%
+    return()
 }
 
 
 
 #' Parse text of the smart go format.
 #'
-#' @param sgf     scalar character of sgf text.
+#' @param sgf scalar character of sgf text.
 #' @param keepfirst  logical specifying the branch choice rule.
 #'   If TRUE, keep the first appearing branch.
 #'   Otherwise, keep the last branch.
-#'
+#' @return \code{\link{gogame}} object
 #' @export
 parse_sgf <- function(sgf, keepfirst = TRUE) {
   ### obtain meta information ###

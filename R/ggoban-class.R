@@ -111,10 +111,10 @@ print.ggoban <- function(x, ...)
 
 
 #' Check if object is ggoban class
-#' @param obj R object
+#' @param x R object
 #' @return Logical. True if and only if \code{obj} inherits \code{ggoban} class.
 #' @export
-is.ggoban <- function(obj)
+is.ggoban <- function(x)
 {
-  return(inherits(obj, "ggoban"))
+  return(inherits(x, "ggoban"))
 }

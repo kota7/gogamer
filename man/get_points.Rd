@@ -10,8 +10,7 @@ get_points(sgf)
 \item{sgf}{Scalar character of sgf text}
 }
 \value{
-\code{data.frame} with variables x, y, and color indicating
-the location of points on the board
+\code{data.frame} with variables \code{x}, \code{y}, and \code{color}
 }
 \description{
 Obtains the point markers in sgf

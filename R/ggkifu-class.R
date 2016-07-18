@@ -26,7 +26,11 @@ ggkifu <- function(board, note, boardsize,
   return(x)
 }
 
-
+#' Print kifu on concole
+#' @param x \code{ggkifu} object
+#' @param quiet Logical. If true, print suggested size for saving
+#' @param ... Not in use
+#' @method print ggkifu
 #' @export
 print.ggkifu <- function(x, quiet = FALSE, ...)
 {
@@ -40,10 +44,10 @@ print.ggkifu <- function(x, quiet = FALSE, ...)
 }
 
 
+#' Check if object is ggkifu class
 #' @param x An R object
-#' @return Logical.
+#' @return Logical
 #' @export
-#' @rdname ggkifu
 is.ggkifu <- function(x)
 {
   return(inherits(x, "ggkifu"))

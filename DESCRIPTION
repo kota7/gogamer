@@ -1,12 +1,12 @@
 Package: gogamer
 Type: Package
 Title: R package for go game data
-Version: 0.2.1
+Version: 0.2.2
 Date: 2016-01-24
 Author: Kota Mori <kota.mori@aya.yale.edu>
 Maintainer: Kota Mori <kota.mori@aya.yale.edu>
 Description:
-  Read and parse go game data and create images with extensive flexibility.
+  Read and parse go game data and create images with flexibility.
 License: MIT + file LICENSE
 Depends:
     R (>= 3.1)

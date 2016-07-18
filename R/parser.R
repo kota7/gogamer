@@ -80,8 +80,7 @@ get_moves <- function(sgf) {
 
 #' Obtains the point markers in sgf
 #' @param sgf Scalar character of sgf text
-#' @return \code{data.frame} with variables x, y, and color indicating
-#' the location of points on the board
+#' @return \code{data.frame} with variables \code{x}, \code{y}, and \code{color}
 #' @export
 get_points <- function(sgf)
 {

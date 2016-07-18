@@ -13,6 +13,9 @@ parse_sgf(sgf, keepfirst = TRUE)
 If TRUE, keep the first appearing branch.
 Otherwise, keep the last branch.}
 }
+\value{
+\code{\link{gogame}} object
+}
 \description{
 Parse text of the smart go format.
 }
