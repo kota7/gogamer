@@ -4,12 +4,16 @@
 \alias{kifu}
 \title{Kifu for certain move range}
 \usage{
-kifu(x, from = 1L, to = 100L)
+kifu(x, from = 1L, to = 100L, restart = NA_integer_)
 }
 \arguments{
 \item{x}{\code{gogame} object}
 
-\item{from, to}{integers specifying range of move}
+\item{from, to}{Positive integers. Range of moves}
+
+\item{restart}{Positive integer. If supplied, this number is used as the
+smallest move number in the range. If not supplied, original move numbers
+are used as they are.}
 }
 \value{
 \code{\link{gokifu}} object

@@ -135,7 +135,7 @@ plot.gokifu <- function(x, y, ...)
 
   # set the new origin
   if (graphic_param$adjustorigin && !is.na(x$from)) {
-    origin <- floor(x$from / 100) * 100
+    origin <- floor((x$from - 1) / 100) * 100
   } else {
     origin <- 0L
   }
@@ -164,8 +164,8 @@ plot.gokifu <- function(x, y, ...)
   # compute appropriate size ratio between board and note
   if (note_lines > 0) {
     # magic formula for computing the height
-    note_height <- (0.18*note_lines + 0.42) * graphic_param$targetwidth /
-      .default_graphic_param$targetwidth
+    fact <- graphic_param$endogenous$notestonesize / 5.25 * 0.18
+    note_height <- (fact * note_lines + 0.42) * graphic_param$targetwidth / 5
   } else {
     note_height <- 0
   }
@@ -191,6 +191,14 @@ kifunote <- function(x, ...)
   k <- graphic_param$moveperrow
   colsize <- 4
 
+  # set the new origin
+  if (graphic_param$adjustorigin && !is.na(x$from)) {
+    origin <- floor((x$from - 1) / 100) * 100
+  } else {
+    origin <- 0L
+  }
+
+
   n <- nrow(x$noted)
 
   # positions of each move
@@ -210,9 +218,9 @@ kifunote <- function(x, ...)
                      fill = graphic_param$notebackcolor))
 
   # add stones
-  out <- addstones(out, xx, yy, x$noted$color, x$noted$move,
-                   stonesize  = graphic_param$notestonesize,
-                   numbersize = graphic_param$notenumbersize)
+  out <- addstones(out, xx, yy, x$noted$color, x$noted$move - origin,
+                   stonesize  = graphic_param$endogenous$notestonesize,
+                   numbersize = graphic_param$endogenous$notenumbersize)
   # add text
   ll <- paste("    ",
               graphic_param$xlabels[x$noted$x],
@@ -222,8 +230,10 @@ kifunote <- function(x, ...)
     ggplot2::geom_text(data = dat,
                        ggplot2::aes_string(x = "xx", y = "yy", label = "ll"),
                        color = graphic_param$notetextcolor,
-                       size = graphic_param$notetextsize,
+                       size = graphic_param$endogenous$notetextsize,
                        hjust = 0)
+
+  attr(out, "graphic_param") <- graphic_param
   return(out)
 }
 

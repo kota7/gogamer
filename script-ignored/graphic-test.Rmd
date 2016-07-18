@@ -95,3 +95,23 @@ plot(kifu(y))
 plot(kifu(y), adjustsizeonnote = TRUE, moveperrow = 4)
 ```
 
+
+When label is not added
+```{r, fig.width=5, fig.height=5}
+plotat(saikoyo, 116, targetwidth = 5, axislabels = TRUE)
+plotat(saikoyo, 116, targetwidth = 5, axislabels = FALSE)
+plotat(y, 100, targetwidth = 5, axislabels = TRUE)
+plotat(y, 100, targetwidth = 5, axislabels = FALSE)
+library(magrittr)
+ggoban(11, axislabels = FALSE) %>% addstones(1, 1, 1, boardsize = 11)
+ggoban(13, axislabels = FALSE) %>% addstones(1, 1, 1, boardsize = 13)
+ggoban(19, axislabels = FALSE) %>% addstones(1, 1, 1, boardsize = 19)
+```
+
+```{r, fig.width=8, fig.height=8}
+plotat(saikoyo, 116, targetwidth = 8, axislabels = TRUE)
+plotat(saikoyo, 116, targetwidth = 8, axislabels = FALSE)
+plotat(y, 100, targetwidth = 8, axislabels = TRUE)
+plotat(y, 100, targetwidth = 8, axislabels = FALSE)
+```
+

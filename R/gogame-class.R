@@ -244,12 +244,15 @@ plotat <- function(x, at, ...)
 
 #' Kifu for certain move range
 #' @param x \code{gogame} object
-#' @param from,to integers specifying range of move
+#' @param from,to  Positive integers. Range of moves
+#' @param restart  Positive integer. If supplied, this number is used as the
+#' smallest move number in the range. If not supplied, original move numbers
+#' are used as they are.
 #' @return \code{\link{gokifu}} object
 #' @export
 #' @examples
 #' kifu(saikoyo)
-kifu <- function(x, from = 1L, to = 100L)
+kifu <- function(x, from = 1L, to = 100L, restart = NA_integer_)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 
@@ -279,6 +282,16 @@ kifu <- function(x, from = 1L, to = 100L)
   init     <- dplyr::filter_(out, ~move == 0L)
   numbered <- dplyr::filter_(out[flg,], ~move != 0L)
   noted    <- dplyr::filter_(out[!flg,], ~move != 0L)
+
+  # replace the move numbers by the specified first number
+  if (!is.na(restart)) {
+    moves <- c(numbered$move, noted$move)
+    if (length(moves) > 0L) {
+      deviation <- min(moves) - restart
+      numbered$move <- numbered$move - deviation
+      noted$move <- noted$move - deviation
+    }
+  }
 
   out <- gokifu(init = init, numbered = numbered, noted = noted,
                 boardsize = x$boardsize)

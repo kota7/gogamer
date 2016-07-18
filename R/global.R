@@ -25,7 +25,6 @@ WHITE <- 2L
     adjustsizeonnote = FALSE,
     # the same for sizes on outside notes
 
-
     # stone
     blackcolor = "#111111", whitecolor = "#f5f5f5", stonelinecolor = "#101010",
     stonesize = 6, stonelinewidth = 0.7,
@@ -61,6 +60,7 @@ WHITE <- 2L
     starcolor = "#262626", starsize = 1.5,
     # axis labels
     xlabels = LETTERS[-9], ylabels = as.character(1:25),
+    axislabels = TRUE,  # if true, show axis labels
 
     # kifu outside notes
     notebackcolor = "#eff7df", notetextcolor = "#101010",
@@ -72,7 +72,29 @@ WHITE <- 2L
     # whenever appropriate
 
     # symbols to use for printing on console
-    blackmark = "@", whitemark = "O", emptymark = "+"
+    blackmark = "@", whitemark = "O", emptymark = "+",
+
+
+    # parameters endogeneously determined
+    # these are supposed to filled by a call of set_graphic_param()
+    endogenous = list(
+      # for ggoban object
+      boardlimits = NULL,  # length of board edge
+      stonesize = NULL,    # size of stones
+      numbersize = NULL,   # size of numbers on stone
+      labelsize = NULL,    # size of labels on stone
+      emptylabelshadowsize = NULL, # size of label background put on empty point
+      markersize = NULL,    # size of markers on stone or board
+      territorysize = NULL, # size of territory points
+      axislabelsize = NULL, # size of axis label
+      starsize = NULL,      # size of star marker
+
+      # for kifu outside note
+      notestonesize = NULL,    # size of stones on note
+      notenumbersize = NULL,   # size of numbers on note
+      notetextsize = NULL     # size of text on note
+
+    )
   ),
   parent = emptyenv()
 )

@@ -28,15 +28,25 @@ ggoban <- function(boardsize, ...)
   graphic_param$xlabels <- graphic_param$xlabels[1:boardsize]
   graphic_param$ylabels <- graphic_param$ylabels[1:boardsize]
 
+  # board limits,
+  #if (graphic_param$axislabels) {
+  #  # add 1 to each side for labels
+  #  boardlimits <- c(0, boardsize + 1)
+  #} else {
+  #  # if the axis are not added, the margin size should be taken into account
+  #  marginsize <- 0.05 * (boardsize - 19)
+  #  boardlimits <- c(1 - marginsize, boardsize + marginsize)
+  #}
+  boardlimits <- graphic_param$endogenous$boardlimits
 
   out <- ggplot2::ggplot(dat) +
     # fix aspect ratio
     ggplot2::coord_fixed() +
     # set the board size
     ggplot2::scale_x_continuous(
-      breaks = 1:boardsize, limits = c(0, boardsize + 1)) +
+      breaks = 1:boardsize, limits = boardlimits) +
     ggplot2::scale_y_continuous(
-      breaks = 1:boardsize, limits = c(0, boardsize + 1)) +
+      breaks = 1:boardsize, limits = boardlimits) +
     # make the board empty and fill by specified color
     ggplot2::theme(
       panel.grid.major = ggplot2::element_blank(),
@@ -52,40 +62,43 @@ ggoban <- function(boardsize, ...)
                           color = graphic_param$gridcolor)
 
 
-  # dummy data for board grid
-  dat <- dplyr::bind_rows(
-    data.frame(x = 1:boardsize, y = 0,
-               label = graphic_param$xlabels, stringsAsFactors = FALSE),
-    data.frame(x = 1:boardsize, y = boardsize+1,
-               label = graphic_param$xlabels, stringsAsFactors = FALSE),
-    data.frame(x = 0, y = 1:boardsize,
-               label = graphic_param$ylabels, stringsAsFactors = FALSE),
-    data.frame(x = boardsize+1, y = 1:boardsize,
-               label = graphic_param$ylabels, stringsAsFactors = FALSE)
-  )
+  if (graphic_param$axislabels) {
+    # dummy data for board axis labels
+    dat <- dplyr::bind_rows(
+      data.frame(x = 1:boardsize, y = 0,
+                 label = graphic_param$xlabels, stringsAsFactors = FALSE),
+      data.frame(x = 1:boardsize, y = boardsize+1,
+                 label = graphic_param$xlabels, stringsAsFactors = FALSE),
+      data.frame(x = 0, y = 1:boardsize,
+                 label = graphic_param$ylabels, stringsAsFactors = FALSE),
+      data.frame(x = boardsize+1, y = 1:boardsize,
+                 label = graphic_param$ylabels, stringsAsFactors = FALSE)
+    )
 
-  # add labels at four edges
-  # decided not to use axis labels since ggplot2 does not support
-  # editing axis label positions, and this won't change soon
-  # cowplot::switch_axis_position is an option but seems not very stable
-  # rather, axis labels are added manually using geom_text()
-  out <- out +
-    ggplot2::geom_text(
-      data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-      size = graphic_param$axislabelsize,
-      color = graphic_param$axislabelcolor)
-
+    # add labels at four edges
+    # decided not to use axis labels since ggplot2 does not support
+    # editing axis label positions, and this won't change soon
+    # cowplot::switch_axis_position is an option but seems not very stable
+    # rather, axis labels are added manually using geom_text()
+    out <- out +
+      ggplot2::geom_text(
+        data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
+        size = graphic_param$endogenous$axislabelsize,
+        color = graphic_param$axislabelcolor)
+  }
 
   # add stars
   dat <- star_position(boardsize)
   out <- out +
     ggplot2::geom_point(
       data = dat, ggplot2::aes_string(x = "x", y = "y"),
-      size = graphic_param$starsize, color = graphic_param$starcolor)
+      size = graphic_param$endogenous$starsize, color = graphic_param$starcolor)
 
   # give class name and boardsize attribute
   class(out) <- c("ggoban", class(out))
-  attr(out, "boardsize") <- boardsize
+
+  # store the graphic_param for the later reference
+  attr(out, "graphic_param") <- graphic_param
   return(out)
 }
 
@@ -96,3 +109,12 @@ print.ggoban <- function(x, ...)
   NextMethod(x)  # this will call "print.ggplot"
 }
 
+
+#' Check if object is ggoban class
+#' @param obj R object
+#' @return Logical. True if and only if \code{obj} inherits \code{ggoban} class.
+#' @export
+is.ggoban <- function(obj)
+{
+  return(inherits(obj, "ggoban"))
+}

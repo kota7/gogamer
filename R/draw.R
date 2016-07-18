@@ -15,7 +15,11 @@
 #'            color = c(1, 2, 1), boardsize = 9)
 addstones <- function(gg, x, y, color, number = NULL, ...)
 {
-  graphic_param <- set_graphic_param(...)
+  if (is.ggoban(gg)) {
+    graphic_param <- update_graphic_param(attr(gg, "graphic_param"), ...)
+  } else {
+    graphic_param <- set_graphic_param(...)
+  }
 
   if (!all(color %in% c(BLACK, WHITE)))
     stop("color must be ", BLACK, " or ", WHITE)
@@ -38,7 +42,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
         shape = 21,
-        size = graphic_param$stonesize,
+        size = graphic_param$endogenous$stonesize,
         color = graphic_param$stonelinecolor,
         fill = stonecolor,
         stroke = graphic_param$stonelinewidth)
@@ -53,7 +57,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
       gg <- gg +
         ggplot2::geom_text(
           data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-          size = graphic_param$numbersize,
+          size = graphic_param$endogenous$numbersize,
           color = markercolor)
     }
   }
@@ -76,18 +80,22 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
 #'   addlabels(c(4, 3), c(17, 16), c("a", "b"))
 addlabels <- function(gg, x, y, label, color = NULL, ...)
 {
-  graphic_param <- set_graphic_param(...)
+  if (is.ggoban(gg)) {
+    graphic_param <- update_graphic_param(attr(gg, "graphic_param"), ...)
+  } else {
+    graphic_param <- set_graphic_param(...)
+  }
 
   dat <- data.frame(x = x, y = y, label = label)
   if (is.null(color)) {
     gg <- gg +
       ggplot2::geom_point(
         data = dat, ggplot2::aes_string(x = "x", y = "y"),
-        size = graphic_param$emptylabelshadowsize,
+        size = graphic_param$endogenous$emptylabelshadowsize,
         color = graphic_param$boardcolor) +
       ggplot2::geom_text(
         data = dat, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-        size = graphic_param$labelsize,
+        size = graphic_param$endogenous$labelsize,
         color = graphic_param$emptylabelcolor)
   } else {
     if (!all(color %in% c(BLACK, WHITE)))
@@ -103,7 +111,7 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
       gg <- gg +
         ggplot2::geom_text(
           data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
-          size = graphic_param$labelsize, color = labelcolor)
+          size = graphic_param$endogenous$labelsize, color = labelcolor)
     }
   }
 
@@ -120,7 +128,12 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
 #' @export
 addterritory <- function(gg, x, y, color, ...)
 {
-  graphic_param <- set_graphic_param(...)
+  if (is.ggoban(gg)) {
+    graphic_param <- update_graphic_param(attr(gg, "graphic_param"), ...)
+  } else {
+    graphic_param <- set_graphic_param(...)
+  }
+
   if (!all(color %in% c(BLACK, WHITE)))
     stop("color must be ", BLACK, " or ", WHITE)
   if (!(graphic_param$territoryshape %in% 21:25))
@@ -143,7 +156,7 @@ addterritory <- function(gg, x, y, color, ...)
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
         shape = graphic_param$territoryshape,
-        size = graphic_param$territorysize,
+        size = graphic_param$endogenous$territorysize,
         color = graphic_param$territorylinecolor,
         fill = stonecolor,
         stroke = graphic_param$territoryslinewidth)
@@ -164,7 +177,13 @@ addterritory <- function(gg, x, y, color, ...)
 #' @export
 addmarkers <- function(gg, x, y, color, marker = 17, ...)
 {
-  graphic_param <- set_graphic_param(...)
+  if (is.ggoban(gg)) {
+    graphic_param <- update_graphic_param(attr(gg, "graphic_param"), ...)
+  } else {
+    graphic_param <- set_graphic_param(...)
+  }
+
+
   if (!all(color %in% c(BLACK, WHITE)))
     stop("color must be ", BLACK, " or ", WHITE)
 
@@ -183,7 +202,7 @@ addmarkers <- function(gg, x, y, color, marker = 17, ...)
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
-        size = graphic_param$markersize,
+        size = graphic_param$endogenous$markersize,
         color = markercolor,
         shape = marker)
   }

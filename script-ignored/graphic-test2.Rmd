@@ -1,0 +1,163 @@
+---
+title: "graphic test"
+author: "Kota Mori"
+date: "July 17, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(gogamer)
+library(magrittr)
+```
+
+
+## Changing target width
+```{r, fig.width=5, fig.height=5}
+plotat(saikoyo, 116, targetwidth = 5)
+```
+
+```{r, fig.width=10, fig.height=10}
+plotat(saikoyo, 116, targetwidth = 10)
+```
+
+```{r, fig.width=3, fig.height=3}
+plotat(saikoyo, 116, targetwidth = 3)
+```
+
+
+## Changing colors
+```{r, fig.width=5, fig.height=5}
+plotat(saikoyo, 116, boardcolor = "pink",
+       blackcolor = "green", whitecolor = "orange")
+```
+
+
+## Remove axis label
+```{r, fig.width=5, fig.height=5}
+plotat(saikoyo, 116, axislabels = FALSE)
+```
+
+
+## Various board size
+```{r, fig.width=5, fig.height=5}
+ggoban(13) %>% addstones(c(7, 8, 1), c(7, 7, 1), c(1, 2, 1))
+ggoban(9) %>% addstones(c(5, 6, 1), c(5, 5, 1), c(1, 2, 1))
+ggoban(13, axislabels = FALSE) %>% addstones(c(7, 8, 1), c(7, 7, 1), c(1, 2, 1))
+ggoban(9, axislabels = FALSE) %>% addstones(c(5, 6, 1), c(5, 5, 1), c(1, 2, 1))
+```
+
+
+## Territory plot
+```{r, fig.width=5, fig.height=5}
+x <- read_sgf("../tests/sample/points.sgf")
+plotat(x, 100, markpoints = TRUE)
+plotat(x, 100, markpoints = TRUE, marklast = FALSE, territoryshape = 22)
+plotat(x, 100, markpoints = TRUE, blackcolor = "blue", whitecolor = "red")
+plotat(x, 100, markpoints = TRUE, marklast = FALSE, axislabels = FALSE,
+       boardcolor = "grey95", whitecolor = "white", blackcolor = "black")
+```
+
+
+
+## Kifu image
+
+### Setting arbitrary start number
+```{r, fig.width=5, fig.height=5}
+kifu(saikoyo, 11, 20, restart = 1) %>% plot()
+```
+
+### Deduct multiple of hundred if appropriate, or disable it
+```{r, fig.width=5, fig.height=5}
+kifu(saikoyo, 99, 120) %>% plot()
+kifu(saikoyo, 100, 120) %>% plot()
+kifu(saikoyo, 101, 120) %>% plot()
+kifu(saikoyo, 199, 220) %>% plot()
+kifu(saikoyo, 200, 220) %>% plot()
+kifu(saikoyo, 201, 220) %>% plot()
+kifu(saikoyo, 201, 220) %>% plot(adjustorigin = FALSE)
+```
+
+
+
+### without footnote
+```{r, fig.width=5, fig.height=5}
+kifu(saikoyo) %>% plot()
+kifu(saikoyo) %>% plot(axislabels = FALSE)
+```
+
+
+### with footnote
+```{r, fig.width=5, fig.height=5.6}
+# fig.width=5, fig.height=5.6
+kifu(mimiaka) %>% plot()
+kifu(mimiaka) %>% plot(axislabels = FALSE)
+```
+
+```{r, fig.width=5, fig.height=6.32}
+y <- read_sgf("../tests/sample/ko.sgf")
+kifu(y, 1, 108) %>% plot()
+```
+
+```{r, fig.width=5, fig.height=5.6}
+# check for numbers in the note
+kifu(y, 101, 108) %>% plot()
+kifu(y, 101, 108) %>% plot(axislabels = FALSE)
+```
+
+
+### For smaller board
+```{r, fig.width=5, fig.height=5.96}
+# fig.width=5, fig.height=5.96
+z <- read_sgf("../tests/sample/ko9.sgf")
+kifu(z) %>% plot()
+```
+
+
+### For smaller board with size in the footnote adjusted
+```{r, fig.width=5, fig.height=7.58}
+# fig.width=5, fig.height=7.58
+kifu(z) %>% plot(adjustsizeonnote = TRUE, moveperrow = 4)
+```
+
+
+#### With various number of lines
+```{r, fig.width=5, fig.height=5.6}
+kifu(z, 1, 15) %>% plot()
+# fig.width=5, fig.height=5.6
+```
+
+```{r, fig.width=5, fig.height=5.78}
+# fig.width=5, fig.height=5.78
+kifu(z, 5, 40) %>% plot()
+```
+
+```{r, fig.width=5, fig.height=5.78}
+# fig.width=5, fig.height=5.78
+kifu(z, 3, 12) %>% plot(adjustsizeonnote = TRUE, moveperrow = 4)
+```
+
+```{r, fig.width=5, fig.height=6.5}
+# fig.width=5, fig.height=6.5
+kifu(z, 3, 40) %>% plot(adjustsizeonnote = TRUE, moveperrow = 4)
+```
+
+
+#### Experiment
+```{r, fig.width=5, fig.height=0.96}
+# fig.width=5, fig.height=0.96
+a <- kifu(z) %>% gogamer:::kifunote()
+a
+attr(a, "graphic_param")$endogenous$notestonesize
+```
+
+```{r, fig.width=5, fig.height=0.96}
+# fig.width=5, fig.height=0.96
+b <- kifu(z) %>% gogamer:::kifunote(adjustsizeonnote = TRUE, moveperrow = 4)
+b
+attr(b, "graphic_param")$endogenous$notestonesize
+```
