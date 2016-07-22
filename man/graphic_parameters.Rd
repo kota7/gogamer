@@ -14,9 +14,12 @@ The complete list of available parameters are given below
 \describe{
 \item{\code{targetwidth}}{Width to be used when exporting the image.
 Other size parameters are adjusted in accordance with this parameter (\code{5})}
+\item{\code{colortheme}}{Color template. If specified,
+changes various colors. Currently supports:
+\code{"standard"}, \code{"bw"} and \code{"pastel"} (\code{NULL})}
 \item{\code{boardsize}}{Size of board (\code{19})}
 
-\item{\code{boardcolor}}{Color of board (\code{"#e2f1c1"})}
+\item{\code{boardcolor}}{Color of board (\code{"#ecf0b7"})}
 \item{\code{gridcolor}}{Color of grid lines (\code{"#262626"})}
 \item{\code{starcolor}}{Color of stars on board (\code{"#262626"})}
 \item{\code{starsize}}{Size of stars on board (\code{1.5})}
@@ -38,14 +41,14 @@ Color of numbers on stones (\code{"#f0f0f0"}, \code{"#0f0f0f"})}
 
 \item{\code{blacklabelcolor}, \code{whitelabelcolor}, \code{emptylabelcolor}}{
 Colors of labels put on stones and empty points
-(\code{"#f0f0f0"}, \code{"#0e0e0e"}, \code{"#262626"})}
+(\code{"#f0f0f0"}, \code{"#0f0f0f"}, \code{"#262626"})}
 \item{\code{labelsize}}{Size of labels (\code{3.5})}
 \item{\code{emptylabelshadowsize}}{Size of background for labels
 put on empty points (\code{5})}
 
 \item{\code{blackmarkercolor}, \code{whitemarkercolor}, \code{emptymarkercolor}}{
 Colors of markers put on stones and empty points
-(\code{"#f0f0f0"}, \code{"#0e0e0e"}, \code{"#262626"})}
+(\code{"#f0f0f0"}, \code{"#0f0f0f"}, \code{"#262626"})}
 \item{\code{markersize}}{Size of markers (\code{2.5})}
 
 \item{\code{lastmovemarker}}{Shape of marker indicating the last move (\code{3})}

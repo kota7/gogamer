@@ -34,14 +34,14 @@ WHITE <- 2L
     numbersize = 3,
 
     # label
-    whitelabelcolor = "#0e0e0e",
+    whitelabelcolor = "#0f0f0f",
     blacklabelcolor = "#f0f0f0",
     emptylabelcolor = "#262626",
     emptylabelshadowsize = 5,       # size of shadow around empty markers
     labelsize = 3.5,
 
     # marker
-    whitemarkercolor = "#0e0e0e",
+    whitemarkercolor = "#0f0f0f",
     blackmarkercolor = "#f0f0f0",
     emptymarkercolor = "#262626",  # empty markers are markers not on stone
     markersize = 2.5,
@@ -55,7 +55,7 @@ WHITE <- 2L
     territorylinewidth = 0.5,
 
     # board
-    boardcolor = "#e2f1c1", gridcolor  = "#262626",
+    boardcolor = "#ecf0b7", gridcolor  = "#262626",
     axislabelcolor = "#262626", axislabelsize = 3.5,
     starcolor = "#262626", starsize = 1.5,
     # axis labels
@@ -63,7 +63,7 @@ WHITE <- 2L
     axislabels = TRUE,  # if true, show axis labels
 
     # kifu outside notes
-    notebackcolor = "#eff7df", notetextcolor = "#101010",
+    notebackcolor = "#ffffcc", notetextcolor = "#101010",
     notestonesize = 5, notenumbersize = 2.5,
     notetextsize = 3,
     moveperrow = 8,  # number of moves to show per line in the outside note
@@ -74,6 +74,14 @@ WHITE <- 2L
     # symbols to use for printing on console
     blackmark = "@", whitemark = "O", emptymark = "+",
 
+
+    # color theme
+    # if specified, all color parameters are changed
+    # currently supports:
+    # - standard (default)
+    # - bw
+    # - pastel
+    colortheme = NULL,
 
     # parameters endogeneously determined
     # these are supposed to filled by a call of set_graphic_param()
@@ -101,8 +109,60 @@ WHITE <- 2L
 
 
 
+# predefined color template
+# referred to when 'colortheme' graphic parameter is specified
+.color_themes <- list(
 
+  # standard color set
+  standard = list(
+    boardcolor = "#ecf0b7", starcolor = "#262626",
+    gridcolor = "#262626", axislabelcolor = "#262626",
 
+    blackcolor = "#111111", whitecolor = "#f5f5f5",
+    stonelinecolor = "#101010",
+    blacknumbercolor = "#f0f0f0", whitenumbercolor = "#0f0f0f",
+    blacklabelcolor = "#f0f0f0", whitelabelcolor = "#0f0f0f",
+    emptylabelcolor = "#262626",
+    blackmarkercolor = "#f0f0f0", whitemarkercolor = "#0f0f0f",
+    emptymarkercolor = "#262626",
+    territorylinecolor = "#262626",
+
+    notebackcolor = "#ffffcc", notetextcolor = "#101010"
+  ),
+
+  bw = list(
+    boardcolor = "#ffffff", starcolor = "#000000",
+    gridcolor = "#000000", axislabelcolor = "#000000",
+
+    blackcolor = "#000000", whitecolor = "#ffffff",
+    stonelinecolor = "#000000",
+    blacknumbercolor = "#ffffff", whitenumbercolor = "#000000",
+    blacklabelcolor = "#ffffff", whitelabelcolor = "#000000",
+    emptylabelcolor = "#000000",
+    blackmarkercolor = "#ffffff", whitemarkercolor = "#000000",
+    emptymarkercolor = "#000000",
+    territorylinecolor = "#000000",
+
+    notebackcolor = "#ffffff", notetextcolor = "#000000"
+  ),
+
+  pastel = list(
+    boardcolor = "#ffffd6", starcolor = "#552055",
+    gridcolor = "#552055", axislabelcolor = "#552055",
+
+    blackcolor = "#8989ff", whitecolor = "#ff8989",
+    stonelinecolor = "#7f607f",
+    blacknumbercolor = "#552055", whitenumbercolor = "#552055",
+    blacklabelcolor = "#552055", whitelabelcolor = "#552055",
+    emptylabelcolor = "#552055",
+    blackmarkercolor = "#552055", whitemarkercolor = "#552055",
+    emptymarkercolor = "#552055",
+    territorylinecolor = "#552055",
+
+    notebackcolor = "#ffffdb", notetextcolor = "#552055"
+  )
+
+)
 
 
 

@@ -17,4 +17,7 @@ An updated list of graphic parameters
 \description{
 Update graphic parameters
 }
+\seealso{
+\code{\link{graphic_parameters}}
+}
 
