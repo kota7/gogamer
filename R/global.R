@@ -160,6 +160,22 @@ WHITE <- 2L
     territorylinecolor = "#552055",
 
     notebackcolor = "#ffffdb", notetextcolor = "#552055"
+  ),
+
+  dark = list(
+    boardcolor = "#111111", starcolor = "#dedede",
+    gridcolor = "#dedede", axislabelcolor = "#dedede",
+
+    blackcolor = "#050505", whitecolor = "#f9f9f9",
+    stonelinecolor = "#888888",
+    blacknumbercolor = "#ffffff", whitenumbercolor = "#000000",
+    blacklabelcolor = "#ffffff", whitelabelcolor = "#000000",
+    emptylabelcolor = "#000000",
+    blackmarkercolor = "#ffffff", whitemarkercolor = "#000000",
+    emptymarkercolor = "#000000",
+    territorylinecolor = "#888888",
+
+    notebackcolor = "#222222", notetextcolor = "#dddddd"
   )
 
 )

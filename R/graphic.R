@@ -13,9 +13,8 @@
 #' \describe{
 #' \item{\code{targetwidth}}{Width to be used when exporting the image.
 #' Other size parameters are adjusted in accordance with this parameter (\code{5})}
-#' \item{\code{colortheme}}{Color template. If specified,
-#' changes various colors. Currently supports:
-#' \code{"standard"}, \code{"bw"} and \code{"pastel"} (\code{NULL})}
+#' \item{\code{colortheme}}{Predefined color template. Currently supports:
+#' \code{"standard"}, \code{"bw"}, \code{"pastel"}, and \code{"dark"} (\code{NULL})}
 #' \item{\code{boardsize}}{Size of board (\code{19})}
 #'
 #' \item{\code{boardcolor}}{Color of board (\code{"#ecf0b7"})}

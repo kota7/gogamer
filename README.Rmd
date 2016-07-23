@@ -46,7 +46,6 @@ library(gogamer)
 ## What you can do
 
 You can read go game record file in SGF.
-
 ```{r}
 x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
 class(x)
@@ -60,7 +59,6 @@ stateat(x, at = 127)
 ```
 
 or draw as an image.
-
 ```{r, fig.height=5, fig.width=5}
 plotat(x, at = 127)
 ```
@@ -70,6 +68,15 @@ hence you can save it with `ggsave` function.
 ```{r, eval=FALSE}
 library(ggplot2)
 ggsave("goimage.pdf", width = 5, height = 5)
+```
+
+
+Images can be edited flexibly.
+```{r, fig.height=5, fig.width=5}
+plotat(x, at = 127, 
+       boardcolor = "gray15", gridcolor = "gray85", starcolor = "gray85",
+       blackcolor = "black", whitecolor = "white", stonelinecolor = "gray50",
+       axislabels = FALSE, lastmovemarker = 2)
 ```
 
 

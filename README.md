@@ -90,13 +90,24 @@ library(ggplot2)
 ggsave("goimage.pdf", width = 5, height = 5)
 ```
 
+Images can be edited flexibly.
+
+``` r
+plotat(x, at = 127, 
+       boardcolor = "gray15", gridcolor = "gray85", starcolor = "gray85",
+       blackcolor = "black", whitecolor = "white", stonelinecolor = "gray50",
+       axislabels = FALSE, lastmovemarker = 2)
+```
+
+![](readme-fig/README-unnamed-chunk-9-1.png)
+
 You can also draw kifu (game record) image as below. Again, the object supports `ggsave` function.
 
 ``` r
 plot(kifu(x, from = 1, to = 127))
 ```
 
-![](readme-fig/README-unnamed-chunk-9-1.png)
+![](readme-fig/README-unnamed-chunk-10-1.png)
 
     #> TableGrob (2 x 1) "arrange": 2 grobs
     #>   z     cells    name           grob
