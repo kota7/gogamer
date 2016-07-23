@@ -55,7 +55,7 @@ WHITE <- 2L
     territorylinewidth = 0.5,
 
     # board
-    boardcolor = "#ecf0b7", gridcolor  = "#262626",
+    boardcolor = "#e7e18f", gridcolor  = "#262626",
     axislabelcolor = "#262626", axislabelsize = 3.5,
     starcolor = "#262626", starsize = 1.5,
     # axis labels
@@ -63,7 +63,7 @@ WHITE <- 2L
     axislabels = TRUE,  # if true, show axis labels
 
     # kifu outside notes
-    notebackcolor = "#ffffcc", notetextcolor = "#101010",
+    notebackcolor = "#ffe5cc", notetextcolor = "#101010",
     notestonesize = 5, notenumbersize = 2.5,
     notetextsize = 3,
     moveperrow = 8,  # number of moves to show per line in the outside note
@@ -115,7 +115,7 @@ WHITE <- 2L
 
   # standard color set
   standard = list(
-    boardcolor = "#ecf0b7", starcolor = "#262626",
+    boardcolor = "#e7e18f", starcolor = "#262626",
     gridcolor = "#262626", axislabelcolor = "#262626",
 
     blackcolor = "#111111", whitecolor = "#f5f5f5",
@@ -127,7 +127,7 @@ WHITE <- 2L
     emptymarkercolor = "#262626",
     territorylinecolor = "#262626",
 
-    notebackcolor = "#ffffcc", notetextcolor = "#101010"
+    notebackcolor = "#ffe5cc", notetextcolor = "#101010"
   ),
 
   bw = list(
