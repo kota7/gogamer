@@ -225,7 +225,7 @@ stateat <- function(x, at)
 #' Plot the go board state by ggplot
 #' @param x \code{gogame} object
 #' @param at Move number (integer)
-#' @param ... arguments passed to \code{\link{print.gostate}}
+#' @param ... arguments passed to \code{\link{plot.gostate}}
 #' @return \code{ggplot} object
 #' @export
 #' @examples

@@ -11,7 +11,7 @@ plotat(x, at, ...)
 
 \item{at}{Move number (integer)}
 
-\item{...}{arguments passed to \code{\link{print.gostate}}}
+\item{...}{arguments passed to \code{\link{plot.gostate}}}
 }
 \value{
 \code{ggplot} object

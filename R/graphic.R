@@ -1,4 +1,4 @@
-#' Graphic parameters
+#' Graphic parameters for go game images
 #' @description Customize go images
 #' @examples
 #' ggoban(19, boardcolor = "yellow", gridcolor = "blue") %>%
@@ -74,7 +74,8 @@
 #' \item{\code{adjustsizeonnote}}{Adjust all sizes for outside note in
 #' accordance with the board size (\code{FALSE})}
 #' }
-#' @name graphic_parameters
+#' @name gogame_graphics
+#' @aliases graphic_parameters
 NULL
 
 

@@ -13,7 +13,7 @@
 
 \item{marklast}{logical indicating if last move should be marked}
 
-\item{markpoints}{logical indicating if territories are marked}
+\item{markpoints}{logical indicating if territories should be marked}
 
 \item{...}{graphic parameters}
 }
@@ -25,5 +25,8 @@ Draw go board state as graphic
 }
 \examples{
 stateat(saikoyo, 116) \%>\% plot()
+}
+\seealso{
+\code{\link{gogame_graphics}}
 }
 

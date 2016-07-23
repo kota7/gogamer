@@ -92,11 +92,12 @@ print.gostate <- function(x, ...)
 #' @param x \code{gostate} object
 #' @param y not in use
 #' @param marklast logical indicating if last move should be marked
-#' @param markpoints logical indicating if territories are marked
+#' @param markpoints logical indicating if territories should be marked
 #' @param ... graphic parameters
 #'
 #' @return \code{ggoban} object, which inherits \code{ggplot} class
 #'
+#' @seealso \code{\link{gogame_graphics}}
 #' @export
 #' @method plot gostate
 #' @examples
