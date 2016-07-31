@@ -168,6 +168,12 @@ kifu(mimiaka) %>% plot(colortheme = "crystal")
 ```{r, fig.width=5, fig.height=5}
 a <- read_sgf("../tests/sample/tsumego1.sgf")
 plotat(a, 0)
+kifu(a, 1, 5) %>% plot()
+b <- read_sgf("../tests/sample/tsumego2.sgf")
+plotat(b, 0)
+```
+```{r, fig.width=5, fig.height=5.6}
+kifu(b, 1, 9) %>% plot()
 ```
 
 
