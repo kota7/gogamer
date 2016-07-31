@@ -59,16 +59,19 @@ gogame <- function(properties, moves, points = NULL)
 
 
   ### clean handicap
+  # Decided NOT to
+  # - check if the handicap is consistent with the number of setup moves
+  # - guess and fill the handicap propperty based on the number of setup moves
   if (!is.na(properties$handicap)) {
     # convert to integer
     properties$handicap <- gsub("[^0-9]+", "", properties$handicap) %>%
       as.integer()
     # check the handicap property is consitent with the moves
-    if (properties$handicap != sum(!moves$ismove))
-      warning("handicap property does not equal the number of setup stones, ",
-              properties$handicap, " vs ", sum(!moves$ismove))
+    #if (properties$handicap != sum(!moves$ismove))
+    #  warning("handicap property does not equal the number of setup stones, ",
+    #          properties$handicap, " vs ", sum(!moves$ismove))
   } else {
-    properties$handicap <- sum(!moves$ismove)  # count the number of setups
+    #properties$handicap <- sum(!moves$ismove)  # count the number of setups
   }
 
   ### flip the y axis so that bottom-left corner is the origin
@@ -123,7 +126,8 @@ print.gogame <- function(x, ...)
 
   cat("\n")
   cat(sprintf(" %-12s: %s\n", "komi", as.character(x$komi), "\n"))
-  cat(sprintf(" %-12s: %s\n", "handicap", as.character(x$handicap), "\n"))
+  if (!is.na(x$handicap))
+    cat(sprintf(" %-12s: %s\n", "handicap", as.character(x$handicap), "\n"))
   cat(sprintf(" %-12s: %s\n", "board size", as.character(x$boardsize), "\n"))
 
   if (!is.na(x$rule))

@@ -51,28 +51,45 @@ get_props <- function(sgf, tags) {
 #' get_moves("AB[pd][dp][pp][dd]W[dg]")
 get_moves <- function(sgf) {
   tmp <- stringr::str_match_all(
-    sgf, "(?<![A-Z])(AB|AW|B|W)((\\[[A-Za-z]{2}\\])+)")[[1]]
+    sgf, "(?<![A-Z])(AB|AW|B|W)((\\[[A-Za-z]{2}(:[A-Za-z]{2}){0,1}\\])+)")[[1]]
 
   # tags: character vector of tags
   tags <- tmp[, 2]
   # props: list of character vectors
   #        this is a vector since a tag may be associated with
   #        multiple positions, e.g. AB[pp][dd]
-  props <- tolower(tmp[, 3]) %>% stringr::str_extract_all("[a-z]{2}")
+  props <- tolower(tmp[, 3]) %>% stringr::str_extract_all("[a-z:]{2,5}")
   len <- lapply(props, length) %>% unlist()
   # expand tags
   tags <- Map(rep, tags, len) %>% unlist() %>% unname()
   props <- unlist(props)
 
-  # define output
-  out <- data.frame(
-    color = ifelse(regexpr("W", tags) > 0, WHITE, BLACK),
-    x = (substring(props, 1, 1) %>% paste(collapse = "") %>%
-           utf8ToInt() %>% `-`(96L)),
-    y = (substring(props, 2, 2) %>% paste(collapse = "") %>%
-           utf8ToInt() %>% `-`(96L)),
-    ismove = (tags %in% c("B", "W"))
-  )
+  # expand props with colon, e.g. bb:cd
+  withColon <- (substring(props, 3, 3) == ":")
+  x1 <- substring(props, 1, 1)
+  y1 <- substring(props, 2, 2)
+  x2 <- substring(props, 4, 4)
+  y2 <- substring(props, 5, 5)
+  # impute the same letter if there is no ':'
+  x2[!withColon] <- x1[!withColon]
+  y2[!withColon] <- y1[!withColon]
+
+  x <- Map(seq,
+           utf8ToInt(paste0(x1, collapse = "")),
+           utf8ToInt(paste0(x2, collapse = ""))) %>%
+    lapply(`-`, 96L)
+  y <- Map(seq,
+           utf8ToInt(paste0(y1, collapse = "")),
+           utf8ToInt(paste0(y2, collapse = ""))) %>%
+    lapply(`-`, 96L)
+  d <- Map(expand.grid, x = x, y = y)
+  # tags must be repeated as many as the number of rows
+  len <- lapply(d, nrow) %>% unlist()
+  tags <- Map(rep, tags, len) %>% unlist() %>% unname()
+
+  out <- data.frame(color = ifelse(regexpr("W", tags) > 0, WHITE, BLACK)) %>%
+    dplyr::bind_cols(dplyr::bind_rows(d)) %>%
+    dplyr::mutate(ismove = tags %in% c("B", "W"))
 
   return(out)
 }

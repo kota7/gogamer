@@ -164,6 +164,13 @@ kifu(mimiaka) %>% plot(colortheme = "crystal")
 ```
 
 
+## Partial board
+```{r, fig.width=5, fig.height=5}
+a <- read_sgf("../tests/sample/tsumego1.sgf")
+plotat(a, 0)
+```
+
+
 
 #### Experiment
 ```{r, fig.width=5, fig.height=0.96}

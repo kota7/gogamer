@@ -19,6 +19,9 @@ WHITE <- 2L
     # at the call of 'set_graphic_param'
 
     boardsize = 19,
+
+    xlim = NULL, ylim = NULL, # specify these to draw a partial board
+
     adjustsizeonboard = TRUE,
     # if this is true, all sizes on board are adjusted by boardsize
     # assuming the supplied numbers corresponds to board size 19
@@ -103,7 +106,6 @@ WHITE <- 2L
       notestonesize = NULL,    # size of stones on note
       notenumbersize = NULL,   # size of numbers on note
       notetextsize = NULL     # size of text on note
-
     )
   ),
   parent = emptyenv()

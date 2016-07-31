@@ -136,7 +136,6 @@ set_graphic_param <- function(...)
   ratio <- (effective_boardsize - 20)/19 + 1
   if (out$adjustsizeonboard && is.numeric(out$boardsize)) {
     for (v in gobansizevars)
-      #out$endogenous[[v]] <- out$endogenous[[v]] / effective_boardsize * 20
       out$endogenous[[v]] <- out$endogenous[[v]] / ratio
   }
   if (out$adjustsizeonnote && is.numeric(out$boardsize)) {
