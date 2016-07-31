@@ -8,18 +8,20 @@
 Customize go images
 }
 \details{
-Images can be customized easily and flexibly by passing appropriate
+Go game images can be customized flexibly by passing appropriate
 graphic parameters to functions that create images.
 The complete list of available parameters are given below
-(default values in parentheses)
+(default values in parentheses).
 \describe{
 \item{\code{targetwidth}}{Width to be used when exporting the image.
 Other size parameters are adjusted in accordance with this parameter (\code{5})}
 \item{\code{colortheme}}{Predefined color template. Currently supports:
-\code{"standard"}, \code{"bw"}, \code{"pastel"}, and \code{"dark"} (\code{NULL})}
+\code{"standard"}, \code{"bw"}, \code{"pastel"}, \code{"dark"}
+and \code{"crystal"} (\code{NULL})}
 \item{\code{boardsize}}{Size of board (\code{19})}
 
 \item{\code{boardcolor}}{Color of board (\code{"#ecf0b7"})}
+\item{\code{boardalpha}}{Transparency of board (\code{1})}
 \item{\code{gridcolor}}{Color of grid lines (\code{"#262626"})}
 \item{\code{starcolor}}{Color of stars on board (\code{"#262626"})}
 \item{\code{starsize}}{Size of stars on board (\code{1.5})}
@@ -31,6 +33,7 @@ Other size parameters are adjusted in accordance with this parameter (\code{5})}
 
 \item{\code{blackcolor}, \code{whitecolor}}{Stone colors on the board
 (\code{"#111111"}, \code{"#f5f5f5"})}
+\item{\code{stonealpha}}{Transparency of stones (\code{1})}
 \item{\code{stonesize}}{Size of stones (\code{6})}
 \item{\code{stonelinecolor}}{Color of stone line (\code{"#101010"})}
 \item{\code{stonelinewidth}}{Width of stone line (\code{0.7})}

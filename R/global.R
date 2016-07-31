@@ -26,7 +26,8 @@ WHITE <- 2L
     # the same for sizes on outside notes
 
     # stone
-    blackcolor = "#111111", whitecolor = "#f5f5f5", stonelinecolor = "#101010",
+    blackcolor = "#111111", whitecolor = "#f5f5f5",
+    stonelinecolor = "#101010", stonealpha = 1,
     stonesize = 6, stonelinewidth = 0.7,
 
     # numbers
@@ -56,6 +57,7 @@ WHITE <- 2L
 
     # board
     boardcolor = "#e7e18f", gridcolor  = "#262626",
+    boardalpha = 1,
     axislabelcolor = "#262626", axislabelsize = 3.5,
     starcolor = "#262626", starsize = 1.5,
     # axis labels
@@ -116,9 +118,11 @@ WHITE <- 2L
   # standard color set
   standard = list(
     boardcolor = "#e7e18f", starcolor = "#262626",
+    boardalpha = 1,
     gridcolor = "#262626", axislabelcolor = "#262626",
 
     blackcolor = "#111111", whitecolor = "#f5f5f5",
+    stonealpha = 1,
     stonelinecolor = "#101010",
     blacknumbercolor = "#f0f0f0", whitenumbercolor = "#0f0f0f",
     blacklabelcolor = "#f0f0f0", whitelabelcolor = "#0f0f0f",
@@ -132,9 +136,11 @@ WHITE <- 2L
 
   bw = list(
     boardcolor = "#ffffff", starcolor = "#000000",
+    boardalpha = 1,
     gridcolor = "#000000", axislabelcolor = "#000000",
 
     blackcolor = "#000000", whitecolor = "#ffffff",
+    stonealpha = 1,
     stonelinecolor = "#000000",
     blacknumbercolor = "#ffffff", whitenumbercolor = "#000000",
     blacklabelcolor = "#ffffff", whitelabelcolor = "#000000",
@@ -148,9 +154,11 @@ WHITE <- 2L
 
   pastel = list(
     boardcolor = "#ffffd6", starcolor = "#552055",
+    boardalpha = 1,
     gridcolor = "#552055", axislabelcolor = "#552055",
 
     blackcolor = "#8989ff", whitecolor = "#ff8989",
+    stonealpha = 1,
     stonelinecolor = "#7f607f",
     blacknumbercolor = "#552055", whitenumbercolor = "#552055",
     blacklabelcolor = "#552055", whitelabelcolor = "#552055",
@@ -164,9 +172,11 @@ WHITE <- 2L
 
   dark = list(
     boardcolor = "#111111", starcolor = "#dedede",
+    boardalpha = 1,
     gridcolor = "#dedede", axislabelcolor = "#dedede",
 
     blackcolor = "#050505", whitecolor = "#f9f9f9",
+    stonealpha = 1,
     stonelinecolor = "#888888",
     blacknumbercolor = "#ffffff", whitenumbercolor = "#000000",
     blacklabelcolor = "#ffffff", whitelabelcolor = "#000000",
@@ -176,6 +186,25 @@ WHITE <- 2L
     territorylinecolor = "#888888",
 
     notebackcolor = "#222222", notetextcolor = "#dddddd"
+  ),
+
+  crystal = list(
+    boardcolor = "#ffffef", starcolor = "#262626",
+    boardalpha = 0.9,
+    gridcolor = "#006047", axislabelcolor = "#006047",
+
+    blackcolor = "#9393ff", whitecolor = "#ff9393",
+    stonealpha = 0.8,
+    stonelinecolor = "#262626",
+    blacknumbercolor = "#552055", whitenumbercolor = "#552055",
+    blacklabelcolor = "#552055", whitelabelcolor = "#552055",
+    emptylabelcolor = "#552055",
+    blackmarkercolor = "#552055", whitemarkercolor = "#552055",
+    emptymarkercolor = "#552055",
+    territorylinecolor = "#552055",
+
+    notebackcolor = "#ffd1dc", notetextcolor = "#552055"
+
   )
 
 )

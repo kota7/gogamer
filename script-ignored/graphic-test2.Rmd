@@ -62,6 +62,14 @@ plotat(x, 100, markpoints = TRUE, marklast = FALSE, axislabels = FALSE,
        boardcolor = "grey95", whitecolor = "white", blackcolor = "black")
 ```
 
+## Test for color themes
+```{r, fig.width=5, fig.height=5}
+plotat(saikoyo, 116, colortheme = "standard")
+plotat(saikoyo, 116, colortheme = "dark")
+plotat(saikoyo, 116, colortheme = "bw")
+plotat(saikoyo, 116, colortheme = "pastel")
+plotat(saikoyo, 116, colortheme = "crystal")
+```
 
 
 ## Kifu image

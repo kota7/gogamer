@@ -8,9 +8,6 @@
 #' @export
 ggoban <- function(boardsize, ...)
 {
-  # TODO:
-  #   for now, board margin is fixed to 1
-  #   but may be better to have it adjusted by the boardsize
 
   # dummy data for board grid
   dat <- dplyr::bind_rows(
@@ -54,7 +51,9 @@ ggoban <- function(boardsize, ...)
       axis.ticks = ggplot2::element_blank(),
       axis.text  = ggplot2::element_blank(),
       axis.title = ggplot2::element_blank(),
-      panel.background = ggplot2::element_rect(fill = graphic_param$boardcolor)
+      panel.background = ggplot2::element_rect(
+        fill = scales::alpha(graphic_param$boardcolor,
+                             graphic_param$boardalpha))
     ) +
     # draw grid
     ggplot2::geom_segment(ggplot2::aes_string(x = "x", y = "y",

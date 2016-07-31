@@ -43,21 +43,22 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
         shape = 21,
         size = graphic_param$endogenous$stonesize,
         color = graphic_param$stonelinecolor,
+        alpha = graphic_param$stonealpha,
         fill = stonecolor,
         stroke = graphic_param$stonelinewidth)
 
     if (!is.null(number)) {
       if (j == BLACK) {
-        markercolor <- graphic_param$blacknumbercolor
+        numbercolor <- graphic_param$blacknumbercolor
       } else {
-        markercolor <- graphic_param$whitenumbercolor
+        numbercolor <- graphic_param$whitenumbercolor
       }
 
       gg <- gg +
         ggplot2::geom_text(
           data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
           size = graphic_param$endogenous$numbersize,
-          color = markercolor)
+          color = numbercolor)
     }
   }
 
@@ -159,6 +160,7 @@ addterritory <- function(gg, x, y, color, ...)
         shape = graphic_param$territoryshape,
         size = graphic_param$endogenous$territorysize,
         color = graphic_param$territorylinecolor,
+        alpha = graphic_param$stonealpha,
         fill = stonecolor,
         stroke = graphic_param$territorylinewidth)
   }
