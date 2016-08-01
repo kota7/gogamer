@@ -108,7 +108,7 @@ get_points <- function(sgf)
     return(data.frame(color = integer(0), x = integer(0), y = integer(0)))
 
   if (nrow(tmp) > 2L) {
-    warning("TW, TB tags shouls appear only once in a game; ",
+    warning("TW, TB tags should appear only once in a game; ",
             "only the last appearance is used")
     index <- c(grep("TW", tmp[, 2]) %>% utils::tail(1),
                grep("TB", tmp[, 2]) %>% utils::tail(1))
