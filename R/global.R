@@ -92,7 +92,10 @@ WHITE <- 2L
     # these are supposed to filled by a call of set_graphic_param()
     endogenous = list(
       # for ggoban object
-      boardlimits = NULL,  # length of board edge
+      #boardlimits = NULL,  # length of board edge
+      # to enable partial board, will replace boardlimits by these two
+      boardxlim = NULL, boardylim = NULL,
+
       stonesize = NULL,    # size of stones
       numbersize = NULL,   # size of numbers on stone
       labelsize = NULL,    # size of labels on stone

@@ -118,8 +118,9 @@ set_graphic_param <- function(...)
     marginsize <- 0.03 * (19 - out$boardsize)
     boardlimits <- c(1 - marginsize, out$boardsize + marginsize)
   }
-  out$endogenous$boardlimits <- boardlimits
-
+  #out$endogenous$boardlimits <- boardlimits
+  out$endogenous$boardxlim <- boardlimits
+  out$endogenous$boardylim <- boardlimits
 
   # size parameters
   # get size parameter names

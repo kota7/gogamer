@@ -8,13 +8,6 @@
 #' @export
 ggoban <- function(boardsize, ...)
 {
-
-  # dummy data for board grid
-  dat <- dplyr::bind_rows(
-    data.frame(x = 1, y = 1:boardsize, xend = boardsize, yend = 1:boardsize),
-    data.frame(x = 1:boardsize, y = 1, xend = 1:boardsize, yend = boardsize)
-  )
-
   # set local graphic paramters
   # i.e. if a paramter is given in '...',
   #      use it
@@ -34,16 +27,30 @@ ggoban <- function(boardsize, ...)
   #  marginsize <- 0.05 * (boardsize - 19)
   #  boardlimits <- c(1 - marginsize, boardsize + marginsize)
   #}
-  boardlimits <- graphic_param$endogenous$boardlimits
+  boardxlim <- graphic_param$endogenous$boardxlim
+  boardylim <- graphic_param$endogenous$boardylim
+
+  boardxlim <- c(3, 7)
+  # dummy data for board grid
+  dat <- dplyr::bind_rows(
+    data.frame(x = 1, y = 1:boardsize, xend = boardsize, yend = 1:boardsize),
+    data.frame(x = 1:boardsize, y = 1, xend = 1:boardsize, yend = boardsize)
+  )
+  # trancate x and y coorinates by the boardlimits
+  dat$x <- pmax(dat$x, boardxlim[1]) %>% pmin(boardxlim[2])
+  dat$xend <- pmax(dat$xend, boardxlim[1]) %>% pmin(boardxlim[2])
+  dat$y <- pmax(dat$y, boardylim[1]) %>% pmin(boardylim[2])
+  dat$yend <- pmax(dat$yend, boardylim[1]) %>% pmin(boardylim[2])
+  dat <- dat[!duplicated(dat),]
 
   out <- ggplot2::ggplot(dat) +
     # fix aspect ratio
     ggplot2::coord_fixed() +
     # set the board size
     ggplot2::scale_x_continuous(
-      breaks = 1:boardsize, limits = boardlimits) +
+      breaks = 1:boardsize, limits = boardxlim) +
     ggplot2::scale_y_continuous(
-      breaks = 1:boardsize, limits = boardlimits) +
+      breaks = 1:boardsize, limits = boardylim) +
     # make the board empty and fill by specified color
     ggplot2::theme(
       panel.grid.major = ggplot2::element_blank(),
@@ -73,6 +80,9 @@ ggoban <- function(boardsize, ...)
       data.frame(x = boardsize+1, y = 1:boardsize,
                  label = graphic_param$ylabels, stringsAsFactors = FALSE)
     )
+    # filter the points out of bounds
+    dat <- dat %>% dplyr::filter_(~x >= boardxlim[1], ~x <= boardxlim[2],
+                                  ~y >= boardylim[1], ~y <= boardylim[2])
 
     # add labels at four edges
     # decided not to use axis labels since ggplot2 does not support
@@ -88,6 +98,9 @@ ggoban <- function(boardsize, ...)
 
   # add stars
   dat <- star_position(boardsize)
+  dat <- dat %>% dplyr::filter_(~x >= boardxlim[1], ~x <= boardxlim[2],
+                                ~y >= boardylim[1], ~y <= boardylim[2])
+
   out <- out +
     ggplot2::geom_point(
       data = dat, ggplot2::aes_string(x = "x", y = "y"),
