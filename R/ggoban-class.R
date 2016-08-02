@@ -115,6 +115,12 @@ ggoban <- function(boardsize, ...)
 
   # store the graphic_param for the later reference
   attr(out, "graphic_param") <- graphic_param
+
+  # store suggested size for saving methods
+  wd <- graphic_param$targetwidth
+  ht <- wd / diff(boardxlim) * diff(boardylim)
+  attr(out, "savesize") <- c(wd, ht)
+
   return(out)
 }
 
@@ -123,6 +129,10 @@ ggoban <- function(boardsize, ...)
 print.ggoban <- function(x, ...)
 {
   NextMethod(x)  # this will call "print.ggplot"
+  wd <- attr(x, "savesize")[1]
+  ht <- attr(x, "savesize")[2]
+  cat("\nsuggested size for saving:\n",
+      sprintf("  width = %.2f, height = %.2f\n", wd, ht))
 }
 
 

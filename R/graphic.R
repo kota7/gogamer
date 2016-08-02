@@ -17,6 +17,8 @@
 #' \code{"standard"}, \code{"bw"}, \code{"pastel"}, \code{"dark"}
 #' and \code{"crystal"} (\code{NULL})}
 #' \item{\code{boardsize}}{Size of board (\code{19})}
+#' \item{\code{xlim}, \code{ylim}}{Use to draw a partial board image
+#' (\code{NULL}, \code{NULL})}
 #'
 #' \item{\code{boardcolor}}{Color of board (\code{"#ecf0b7"})}
 #' \item{\code{boardalpha}}{Transparency of board (\code{1})}

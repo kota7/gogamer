@@ -109,14 +109,6 @@ plot(kifu(x, from = 1, to = 127))
 
 ![](readme-fig/README-unnamed-chunk-10-1.png)
 
-    #> TableGrob (2 x 1) "arrange": 2 grobs
-    #>   z     cells    name           grob
-    #> 1 1 (1-1,1-1) arrange gtable[layout]
-    #> 2 2 (2-2,1-1) arrange gtable[layout]
-    #> 
-    #> suggested size for saving:
-    #>    width = 5.00, height = 5.60
-
 Or you may also print kifu on console.
 
 ``` r

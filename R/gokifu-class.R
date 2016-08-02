@@ -169,10 +169,13 @@ plot.gokifu <- function(x, y, ...)
   } else {
     note_height <- 0
   }
-  heights <- c(graphic_param$targetwidth, note_height)
+
+  board_width <- attr(out1, "savesize")[1]
+  board_height <- attr(out1, "savesize")[2]
+  heights <- c(board_height, note_height)
 
   # compute suggested size for saving
-  savesize <- c(width = heights[1], height = sum(heights))
+  savesize <- c(width = board_width, height = sum(heights))
 
 
   return(ggkifu(board = out1, note = out2, boardsize = x$boardsize,

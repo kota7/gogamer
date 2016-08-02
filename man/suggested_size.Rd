@@ -7,7 +7,7 @@
 suggested_size(obj)
 }
 \arguments{
-\item{obj}{\code{ggkifu} object}
+\item{obj}{\code{ggoban} or \code{ggkifu} object}
 }
 \value{
 Numeric vector of size two

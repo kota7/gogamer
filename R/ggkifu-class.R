@@ -26,21 +26,14 @@ ggkifu <- function(board, note, boardsize,
   return(x)
 }
 
-#' Print kifu on concole
-#' @param x \code{ggkifu} object
-#' @param quiet Logical. If true, print suggested size for saving
-#' @param ... Not in use
-#' @method print ggkifu
 #' @export
-print.ggkifu <- function(x, quiet = FALSE, ...)
+print.ggkifu <- function(x, ...)
 {
   NextMethod()  # print as ggplot or gtable
-  if (!quiet) {
-    wd <- attr(x, "savesize")[1]
-    ht <- attr(x, "savesize")[2]
-    cat("\nsuggested size for saving:\n",
-        sprintf("  width = %.2f, height = %.2f\n", wd, ht))
-  }
+  wd <- attr(x, "savesize")[1]
+  ht <- attr(x, "savesize")[2]
+  cat("\nsuggested size for saving:\n",
+      sprintf("  width = %.2f, height = %.2f\n", wd, ht))
 }
 
 
@@ -55,12 +48,13 @@ is.ggkifu <- function(x)
 
 
 #' Suggested size used for saving
-#' @param obj \code{ggkifu} object
+#' @param obj \code{ggoban} or \code{ggkifu} object
 #' @return Numeric vector of size two
 #' @export
 suggested_size <- function(obj)
 {
-  if (!is.ggkifu(obj)) stop("object is not ggkifu class")
+  if (!is.ggkifu(obj) && !is.ggoban(obj))
+    stop("object must be either ggoban or ggkifu class")
   return(attr(obj, "savesize"))
 }
 
