@@ -220,7 +220,12 @@ kifunote <- function(x, ...)
   # add stones
   out <- addstones(out, xx, yy, x$noted$color, x$noted$move - origin,
                    stonesize  = graphic_param$endogenous$notestonesize,
-                   numbersize = graphic_param$endogenous$notenumbersize, ...)
+                   numbersize = graphic_param$endogenous$notenumbersize,
+                   # ensure that the stones are printed in the note
+                   xlim = range(xx), ylim = range(yy),
+                   # size is not controlled automatically
+                   adjustsizeonboard = FALSE, ...)
+
   # add text
   ll <- paste("    ",
               graphic_param$xlabels[x$noted$x],

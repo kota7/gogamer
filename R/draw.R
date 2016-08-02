@@ -27,7 +27,6 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
   dat <- data.frame(x = x, y = y)
   if (!is.null(number)) dat$label <- number
 
-
   # draw stones
   for (j in unique(color))
   {
@@ -37,6 +36,13 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
       stonecolor <- graphic_param$whitecolor
     }
     dat2 <- dat[color == j,]
+    # filter the points by the bordlimit
+    dat2 <- dat2 %>%
+      dplyr::filter_(~x >= graphic_param$endogenous$boardxlim[1],
+                     ~x <= graphic_param$endogenous$boardxlim[2],
+                     ~y >= graphic_param$endogenous$boardylim[1],
+                     ~y <= graphic_param$endogenous$boardylim[2])
+
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
@@ -89,6 +95,12 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
 
   dat <- data.frame(x = x, y = y, label = label)
   if (is.null(color)) {
+    # filter the points by the bordlimit
+    dat <- dat %>%
+      dplyr::filter_(~x >= graphic_param$endogenous$boardxlim[1],
+                     ~x <= graphic_param$endogenous$boardxlim[2],
+                     ~y >= graphic_param$endogenous$boardylim[1],
+                     ~y <= graphic_param$endogenous$boardylim[2])
     gg <- gg +
       ggplot2::geom_point(
         data = dat, ggplot2::aes_string(x = "x", y = "y"),
@@ -109,6 +121,12 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
         labelcolor <- graphic_param$whitelabelcolor
       }
       dat2 <- dat[color == j,]
+      # filter the points by the bordlimit
+      dat2 <- dat2 %>%
+        dplyr::filter_(~x >= graphic_param$endogenous$boardxlim[1],
+                       ~x <= graphic_param$endogenous$boardxlim[2],
+                       ~y >= graphic_param$endogenous$boardylim[1],
+                       ~y <= graphic_param$endogenous$boardylim[2])
       gg <- gg +
         ggplot2::geom_text(
           data = dat2, ggplot2::aes_string(x = "x", y = "y", label = "label"),
@@ -154,6 +172,12 @@ addterritory <- function(gg, x, y, color, ...)
       stonecolor <- graphic_param$whitecolor
     }
     dat2 <- dat[color == j,]
+    # filter the points by the bordlimit
+    dat2 <- dat2 %>%
+      dplyr::filter_(~x >= graphic_param$endogenous$boardxlim[1],
+                     ~x <= graphic_param$endogenous$boardxlim[2],
+                     ~y >= graphic_param$endogenous$boardylim[1],
+                     ~y <= graphic_param$endogenous$boardylim[2])
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),
@@ -206,6 +230,13 @@ addmarkers <- function(gg, x, y, color, marker = 17, ...)
       markercolor <- graphic_param$whitemarkercolor
     }
     dat2 <- dat[color == j,]
+    # filter the points by the bordlimit
+    dat2 <- dat2 %>%
+      dplyr::filter_(~x >= graphic_param$endogenous$boardxlim[1],
+                     ~x <= graphic_param$endogenous$boardxlim[2],
+                     ~y >= graphic_param$endogenous$boardylim[1],
+                     ~y <= graphic_param$endogenous$boardylim[2])
+
     gg <- gg +
       ggplot2::geom_point(
         data = dat2, ggplot2::aes_string(x = "x", y = "y"),

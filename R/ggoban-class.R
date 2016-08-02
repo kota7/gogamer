@@ -30,18 +30,22 @@ ggoban <- function(boardsize, ...)
   boardxlim <- graphic_param$endogenous$boardxlim
   boardylim <- graphic_param$endogenous$boardylim
 
-  boardxlim <- c(3, 7)
   # dummy data for board grid
   dat <- dplyr::bind_rows(
-    data.frame(x = 1, y = 1:boardsize, xend = boardsize, yend = 1:boardsize),
-    data.frame(x = 1:boardsize, y = 1, xend = 1:boardsize, yend = boardsize)
+    data.frame(x = 1L, y = 1L:boardsize, xend = boardsize, yend = 1L:boardsize),
+    data.frame(x = 1L:boardsize, y = 1L, xend = 1L:boardsize, yend = boardsize)
   )
+  # remove cases out of bounds
+  oob <- ((dat$x == dat$xend) & (dat$x < boardxlim[1] | dat$x > boardxlim[2])) |
+    ((dat$y == dat$yend) & (dat$y < boardylim[1] | dat$y > boardylim[2]))
+  dat <- dat[!oob,]
   # trancate x and y coorinates by the boardlimits
   dat$x <- pmax(dat$x, boardxlim[1]) %>% pmin(boardxlim[2])
   dat$xend <- pmax(dat$xend, boardxlim[1]) %>% pmin(boardxlim[2])
   dat$y <- pmax(dat$y, boardylim[1]) %>% pmin(boardylim[2])
   dat$yend <- pmax(dat$yend, boardylim[1]) %>% pmin(boardylim[2])
   dat <- dat[!duplicated(dat),]
+  #print(dat)
 
   out <- ggplot2::ggplot(dat) +
     # fix aspect ratio

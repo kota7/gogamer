@@ -109,18 +109,39 @@ set_graphic_param <- function(...)
 
   # set endogenous parameters
   # boardlimit
-  if (out$axislabels) {
-    # add 1 to each side for labels
-    # seems this works well for most boardsize
-    boardlimits <- c(0, out$boardsize + 1)
+  if (is.null(out$xlim)) {
+    boardxlim <- c(1L, out$boardsize)
   } else {
-    # if the axis are not added, the margin size should be taken into account
-    marginsize <- 0.03 * (19 - out$boardsize)
-    boardlimits <- c(1 - marginsize, out$boardsize + marginsize)
+    boardxlim <- out$xlim
   }
-  #out$endogenous$boardlimits <- boardlimits
-  out$endogenous$boardxlim <- boardlimits
-  out$endogenous$boardylim <- boardlimits
+  if (is.null(out$ylim)) {
+    boardylim <- c(1L, out$boardsize)
+  } else {
+    boardylim <- out$ylim
+  }
+
+  # determine the margin size
+  # if axislabel is not added, the margin size depends on the boardlimits
+  # since stones are so big that they may not fit in the image for small board
+  m <- 0.2 + 0.03 * (18 - diff(boardxlim))
+  m <- max(m, 0)
+  xmar <- c(-m, m)
+  m <- 0.2 + 0.03 * (18 - diff(boardylim))
+  m <- max(m, 0)
+  ymar <- c(-m, m)
+  if (out$axislabels) {
+    # add 1 if axislabels = true and the limit is to the edge
+    if (boardxlim[1] == 1L)            xmar[1] <- -1L
+    if (boardxlim[2] == out$boardsize) xmar[2] <- 1L
+    if (boardylim[1] == 1L)            ymar[1] <- -1L
+    if (boardylim[2] == out$boardsize) ymar[2] <- 1L
+  }
+
+  boardxlim <- boardxlim + xmar
+  boardylim <- boardylim + ymar
+  out$endogenous$boardxlim <- boardxlim
+  out$endogenous$boardylim <- boardylim
+
 
   # size parameters
   # get size parameter names
@@ -133,7 +154,7 @@ set_graphic_param <- function(...)
   out$endogenous[sizevars] <- out[sizevars]
 
   # adjust size based on the effective boardsize
-  effective_boardsize <- diff(boardlimits)
+  effective_boardsize <- diff(boardxlim)
   ratio <- (effective_boardsize - 20)/19 + 1
   if (out$adjustsizeonboard && is.numeric(out$boardsize)) {
     for (v in gobansizevars)
@@ -149,6 +170,7 @@ set_graphic_param <- function(...)
   ratio <- 0.25 * (out$targetwidth - 4.8) + 1
   for (v in sizevars)
     out$endogenous[[v]] <- out$endogenous[[v]] * ratio
+
 
 
   return(out)

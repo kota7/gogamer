@@ -86,6 +86,8 @@ WHITE <- 2L
     # - standard (default)
     # - bw
     # - pastel
+    # - dark
+    # - crystal
     colortheme = NULL,
 
     # parameters endogeneously determined
@@ -108,7 +110,7 @@ WHITE <- 2L
       # for kifu outside note
       notestonesize = NULL,    # size of stones on note
       notenumbersize = NULL,   # size of numbers on note
-      notetextsize = NULL     # size of text on note
+      notetextsize = NULL      # size of text on note
     )
   ),
   parent = emptyenv()
