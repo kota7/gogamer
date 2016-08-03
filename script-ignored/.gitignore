@@ -1,1 +1,5 @@
 output
+
+# Generate by Rmd 
+*.htm
+*.html

@@ -20,9 +20,9 @@ test_that("Extract game plays", {
   sgf <- "(;GM[1];B[pd];W[cq];B[dp];W[dq];B[fp])"
   expect_equal(
     get_moves(sgf),
-    data.frame(color  = c(1, 2, 1, 2, 1),
-               x      = c(16, 3, 4, 4, 6),
-               y      = c(4, 17, 16, 17, 16),
+    data.frame(color  = c(1L, 2L, 1L, 2L, 1L),
+               x      = c(16L, 3L, 4L, 4L, 6L),
+               y      = c(4L, 17L, 16L, 17L, 16L),
                ismove = c(TRUE, TRUE, TRUE, TRUE, TRUE))
   )
 })
@@ -32,9 +32,9 @@ test_that("Extract game plays with setups", {
   sgf <- "(;GM[1];AB[pd][dp][pp];W[dc];B[cf];W[cd];B[dj])"
   expect_equal(
     get_moves(sgf),
-    data.frame(color  = c(1, 1, 1, 2, 1, 2, 1),
-               x      = c(16, 4, 16, 4, 3, 3, 4),
-               y      = c(4, 16, 16, 3, 6, 4, 10),
+    data.frame(color  = c(1L, 1L, 1L, 2L, 1L, 2L, 1L),
+               x      = c(16L, 4L, 16L, 4L, 3L, 3L, 4L),
+               y      = c(4L, 16L, 16L, 3L, 6L, 4L, 10L),
                ismove = c(FALSE, FALSE, FALSE, TRUE, TRUE, TRUE, TRUE))
   )
 
@@ -42,9 +42,11 @@ test_that("Extract game plays with setups", {
   expect_equal(
     get_moves(sgf) %>% dplyr::arrange_("color", "x", "y"),
     # sorting so that the same outcome is obtained
-    data.frame(color  = c(rep(1, 6), rep(2, 8)),
-               x      = c(2, 2, 2, 3, 3, 3, 16, 16, 17, 17, 18, 18, 19, 19),
-               y      = c(2, 3, 4, 2, 3, 4, 17, 18, 17, 18, 17, 18, 17, 18),
+    data.frame(color  = c(rep(1L, 6L), rep(2L, 8L)),
+               x      = c(2L, 2L, 2L, 3L, 3L, 3L, 16L,
+                          16L, 17L, 17L, 18L, 18L, 19L, 19L),
+               y      = c(2L, 3L, 4L, 2L, 3L, 4L, 17L, 18L,
+                          17L, 18L, 17L, 18L, 17L, 18L),
                ismove = FALSE)
   )
 })
