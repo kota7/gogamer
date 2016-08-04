@@ -15,6 +15,10 @@ prune_sgf <- function(sgf, keepfirst = TRUE) {
     .Call('gogamer_prune_sgf', PACKAGE = 'gogamer', sgf, keepfirst)
 }
 
+sgftree_test <- function(sgf) {
+    invisible(.Call('gogamer_sgftree_test', PACKAGE = 'gogamer', sgf))
+}
+
 #' Obtains the transition of board configuration
 #' @param boardsize integer of the board size
 #' @param ismove_vec logical vector indicating moves, as opposed to setup

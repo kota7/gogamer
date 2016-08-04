@@ -26,6 +26,16 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// sgftree_test
+void sgftree_test(std::string sgf);
+RcppExport SEXP gogamer_sgftree_test(SEXP sgfSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::string >::type sgf(sgfSEXP);
+    sgftree_test(sgf);
+    return R_NilValue;
+END_RCPP
+}
 // get_transitions
 Rcpp::DataFrame get_transitions(unsigned int boardsize, std::vector<bool> ismove_vec, std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec, std::vector<unsigned int> color_vec);
 RcppExport SEXP gogamer_get_transitions(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP) {
