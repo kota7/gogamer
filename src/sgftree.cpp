@@ -36,7 +36,19 @@ Tree<std::string> get_sgftree(const std::string &sgf)
   for (unsigned int i = i0; i < sgf.size(); i++)
   {
     Rcpp::Rcout << "at " << i << ": " << sgf[i] <<
-      " myid = " << myid << " parentid = " << parentid << "\n";
+      " myid = " << myid << " parentid = " << parentid;
+    if (intag) {
+      Rcpp::Rcout << " intag = true";
+    } else {
+      Rcpp::Rcout << " intag = false";
+    }
+    if (inbranch) {
+      Rcpp::Rcout << " inbranch = true";
+    } else{
+      Rcpp::Rcout << " inbranch = false";
+    }
+    Rcpp::Rcout << "\n";
+
     // finish if all node is closed
     if (opencount == 0) break;
 
@@ -63,7 +75,7 @@ Tree<std::string> get_sgftree(const std::string &sgf)
     } else if (!intag && sgf[i] == '[') {
       // new tag starts
       intag = true;
-    } else if (intag && sgf[i] == ']' && sgf[i-1] == '\\') {
+    } else if (intag && sgf[i] == ']' && sgf[i-1] != '\\') {
       intag = false;
     }
   }
@@ -94,4 +106,21 @@ void sgftree_test(std::string sgf)
 
 /*** R
 gogamer:::sgftree_test("(aaa (bbb (ccc)(ddd)) (eee) (fff (ggg)))")
+
+c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
+  "RU[Japanese]SZ[19]KM[0.00]PW[White]PB[Black];B[qd];W[dc](;B[cp]",
+  ";W[pq])(;B[dq];W[pp];B[ce];W[ed];B[ci];W[od](;B[oc](;W[pd]",
+  ";B[pc];W[qe];B[nd])(;W[nc];B[pc];W[nd];B[qf];W[jd]))(;B[ld]",
+  ";W[pg];B[oe];W[ne];B[of];W[qc];B[qf];W[rd];",
+  "B[pc];W[pd];B[qe];W[rc];B[nd])))") %>%
+  paste0(collapse = "") %>% gogamer:::sgftree_test()
+
+c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
+  "RU[Japanese]SZ[19]KM[0.00]",
+  "PW[White]PB[Black]",
+  ";B[pd];W[dd];B[dp]C[special characters in comments...",
+  "( yay[! )  { foo }  [ bar \\]; \\\\ ])") %>%
+  paste0(collapse = "") %>% gogamer:::sgftree_test()
+
+
 */
