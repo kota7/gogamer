@@ -3,6 +3,11 @@
 #include <string>
 #include "tree.h"
 
+
+Tree<std::string> get_sgftree(const std::string &sgf);
+
+
+
 Tree<std::string> get_sgftree(const std::string &sgf)
 {
   // parse SGF string and returns a tree of SGF nodes
