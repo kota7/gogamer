@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include "tree.h"
-
+#include <regex>
 
 struct Move
 {
@@ -19,6 +19,7 @@ struct Move
     y = yy;
     ismove = bb;
   }
+
 };
 
 
