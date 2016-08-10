@@ -1,11 +1,4 @@
-#include <Rcpp.h>
-#include <vector>
-#include <string>
-#include "tree.h"
-
-
-Tree<std::string> get_sgftree(const std::string &sgf);
-
+#include "sgftree.h"
 
 
 Tree<std::string> get_sgftree(const std::string &sgf)
@@ -89,6 +82,105 @@ Tree<std::string> get_sgftree(const std::string &sgf)
 }
 
 
+GoNode ParseSgfNode(const std::string &sgf)
+{
+  // TODO: need to deploy
+  GoNode g;
+  g.comment = "test";
+  std::vector<Move> moves;
+  moves.push_back(Move(1, 1, 1, true));
+  g.moves = moves;
+  return g;
+}
+
+
+Tree<GoNode> sgf2tree(const std::string &sgf)
+{
+  Tree<GoNode> out;
+
+  // Find the main branch
+  unsigned int startindex;
+  bool flg = false;
+  for (unsigned int i = 0; i < sgf.size(); i++)
+  {
+    if (sgf[i] == '(') {
+      startindex = i+1;
+      flg = true;
+      break;
+    }
+  }
+
+  // return an empty tree if no branch is found
+  if (!flg) return out;
+
+  // Go to the recursive procedure to fill the tree
+  int parentid = -1;
+  ParseSgfBranch(sgf, startindex, parentid, out);
+  return out;
+}
+
+
+void ParseSgfBranch(
+    const std::string &sgf, unsigned int &index,
+    int parentid, Tree<GoNode> &out)
+{
+  // find the first node (i.e. ';')
+  bool intag = false;
+  bool innode = false;
+  unsigned int nodestart = index;
+  while (index < sgf.size())
+  {
+    if (!intag && sgf[index] == '[') {
+      intag = true;
+    } else if (intag && sgf[index] == ']' && sgf[index-1] != '\\') {
+      intag = false;
+    } else if (!intag && sgf[index] == ';') {
+      // current node ends, if any
+      if (innode) {
+        Rcpp::Rcout << "id: " << out.size() <<
+          "  parent: " << parentid << "  " <<
+          sgf.substr(nodestart, index-nodestart) << "\n";
+
+        out.AddNode(ParseSgfNode(
+            sgf.substr(nodestart, index-nodestart)), parentid);
+        parentid = out.size() - 1;
+      }
+      // new node starts
+      nodestart = index + 1;
+      innode = true;
+    } else if (!intag && sgf[index] == ')') {
+      // branch closed
+      // hence, current node ends
+      if (innode) {
+        Rcpp::Rcout << "id: " << out.size() <<
+          "  parent: " << parentid << "  " <<
+            sgf.substr(nodestart, index-nodestart) << "\n";
+
+        out.AddNode(ParseSgfNode(
+            sgf.substr(nodestart, index-nodestart)), parentid);
+      }
+      return;
+    } else if (!intag && sgf[index] == '(') {
+      // new branch starts
+      // hence, current node ends
+      if (innode) {
+        Rcpp::Rcout << "id: " << out.size() <<
+          "  parent: " << parentid << "  " <<
+            sgf.substr(nodestart, index-nodestart) << "\n";
+
+        out.AddNode(ParseSgfNode(
+            sgf.substr(nodestart, index-nodestart)), parentid);
+        parentid = out.size() - 1;
+      }
+      index++;
+      innode = false;
+      ParseSgfBranch(sgf, index, parentid, out);
+    }
+    index++;
+  }
+}
+
+
 // test for sgftree function
 // [[Rcpp::export]]
 void sgftree_test(std::string sgf)
@@ -106,11 +198,18 @@ void sgftree_test(std::string sgf)
       Rcpp::Rcout << c[j] << " ";
     Rcpp::Rcout << "\n";
   }
+
+  sgf2tree(sgf);
 }
 
 
+
+
+
+
+
 /*** R
-gogamer:::sgftree_test("(aaa (bbb (ccc)(ddd)) (eee) (fff (ggg)))")
+gogamer:::sgftree_test("(;a1 ; a2;a3 (;bbb (;ccc)(;ddd)) (;eee) (;fff (;ggg)))")
 
 c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
   "RU[Japanese]SZ[19]KM[0.00]PW[White]PB[Black];B[qd];W[dc](;B[cp]",
