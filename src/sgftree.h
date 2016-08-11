@@ -2,45 +2,21 @@
 #include <vector>
 #include <string>
 #include "tree.h"
-#include <regex>
-
-struct Move
-{
-  // this structure stores game plays and setups
-  unsigned int color;
-  unsigned int x;
-  unsigned int y;
-  bool ismove;
-  Move() {}
-  Move(unsigned int cc, unsigned int xx, unsigned int yy, bool bb)
-  {
-    color = cc;
-    x = xx;
-    y = yy;
-    ismove = bb;
-  }
-
-};
 
 
-struct GoNode
-{
-  // stores events occuring at a node of go game
-  std::string comment;
-  std::vector<Move> moves;
-};
 
 
-// parse an entire SGF into a tree of game nodes
-// sgf2tree is the main interface to parse SGF text into a node tree
-// ParseBranch is a recursive function to be called from sgf2tree
-// ParseSgf is parse text into a node object form SGF of a single node
-Tree<GoNode> sgf2tree(const std::string &sgf);
+// parse an SGF text into a tree of game nodes
+// ParseBranch is a recursive function to be called by MakeSgfNodeTree
+Tree<std::string> MakeSgfNodeTree(const std::string &sgf);
 void ParseSgfBranch(const std::string &sgf, unsigned int &index,
-                 int parentid, Tree<GoNode> &out);
-GoNode ParseSgfNode(const std::string &sgf);
+                 int parentid, Tree<std::string> &out);
+
+// parse an SGF text into a tree of branches
+Tree<std::string> MakeSgfBranchTree(const std::string &sgf);
 
 
 
 
-Tree<std::string> get_sgftree(const std::string &sgf);
+// interacting with R
+Rcpp::List make_nodetree(std::string sgf, bool bynode = true);

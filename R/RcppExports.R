@@ -19,6 +19,10 @@ sgftree_test <- function(sgf) {
     invisible(.Call('gogamer_sgftree_test', PACKAGE = 'gogamer', sgf))
 }
 
+make_sgftree <- function(sgf, bynode = TRUE) {
+    .Call('gogamer_make_sgftree', PACKAGE = 'gogamer', sgf, bynode)
+}
+
 #' Obtains the transition of board configuration
 #' @param boardsize integer of the board size
 #' @param ismove_vec logical vector indicating moves, as opposed to setup

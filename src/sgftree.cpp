@@ -1,7 +1,7 @@
 #include "sgftree.h"
 
 
-Tree<std::string> get_sgftree(const std::string &sgf)
+Tree<std::string> MakeSgfBranchTree(const std::string &sgf)
 {
   // parse SGF string and returns a tree of SGF nodes
   // As a special case, where there is no branch in the input,
@@ -33,20 +33,6 @@ Tree<std::string> get_sgftree(const std::string &sgf)
   bool inbranch = true; // indicates we are not in a branch, not in-between
   for (unsigned int i = i0; i < sgf.size(); i++)
   {
-    Rcpp::Rcout << "at " << i << ": " << sgf[i] <<
-      " myid = " << myid << " parentid = " << parentid;
-    if (intag) {
-      Rcpp::Rcout << " intag = true";
-    } else {
-      Rcpp::Rcout << " intag = false";
-    }
-    if (inbranch) {
-      Rcpp::Rcout << " inbranch = true";
-    } else{
-      Rcpp::Rcout << " inbranch = false";
-    }
-    Rcpp::Rcout << "\n";
-
     // finish if all node is closed
     if (opencount == 0) break;
 
@@ -82,21 +68,11 @@ Tree<std::string> get_sgftree(const std::string &sgf)
 }
 
 
-GoNode ParseSgfNode(const std::string &sgf)
-{
-  // TODO: need to deploy
-  GoNode g;
-  g.comment = "test";
-  std::vector<Move> moves;
-  moves.push_back(Move(1, 1, 1, true));
-  g.moves = moves;
-  return g;
-}
 
 
-Tree<GoNode> sgf2tree(const std::string &sgf)
+Tree<std::string> MakeSgfNodeTree(const std::string &sgf)
 {
-  Tree<GoNode> out;
+  Tree<std::string> out;
 
   // Find the main branch
   unsigned int startindex;
@@ -122,7 +98,7 @@ Tree<GoNode> sgf2tree(const std::string &sgf)
 
 void ParseSgfBranch(
     const std::string &sgf, unsigned int &index,
-    int parentid, Tree<GoNode> &out)
+    int parentid, Tree<std::string> &out)
 {
   // find the first node (i.e. ';')
   bool intag = false;
@@ -137,12 +113,7 @@ void ParseSgfBranch(
     } else if (!intag && sgf[index] == ';') {
       // current node ends, if any
       if (innode) {
-        Rcpp::Rcout << "id: " << out.size() <<
-          "  parent: " << parentid << "  " <<
-          sgf.substr(nodestart, index-nodestart) << "\n";
-
-        out.AddNode(ParseSgfNode(
-            sgf.substr(nodestart, index-nodestart)), parentid);
+        out.AddNode(sgf.substr(nodestart, index-nodestart), parentid);
         parentid = out.size() - 1;
       }
       // new node starts
@@ -152,24 +123,14 @@ void ParseSgfBranch(
       // branch closed
       // hence, current node ends
       if (innode) {
-        Rcpp::Rcout << "id: " << out.size() <<
-          "  parent: " << parentid << "  " <<
-            sgf.substr(nodestart, index-nodestart) << "\n";
-
-        out.AddNode(ParseSgfNode(
-            sgf.substr(nodestart, index-nodestart)), parentid);
+        out.AddNode(sgf.substr(nodestart, index-nodestart), parentid);
       }
       return;
     } else if (!intag && sgf[index] == '(') {
       // new branch starts
       // hence, current node ends
       if (innode) {
-        Rcpp::Rcout << "id: " << out.size() <<
-          "  parent: " << parentid << "  " <<
-            sgf.substr(nodestart, index-nodestart) << "\n";
-
-        out.AddNode(ParseSgfNode(
-            sgf.substr(nodestart, index-nodestart)), parentid);
+        out.AddNode(sgf.substr(nodestart, index-nodestart), parentid);
         parentid = out.size() - 1;
       }
       index++;
@@ -181,12 +142,13 @@ void ParseSgfBranch(
 }
 
 
+
 // test for sgftree function
 // [[Rcpp::export]]
 void sgftree_test(std::string sgf)
 {
   std::vector<unsigned int> c;
-  Tree<std::string> t = get_sgftree(sgf);
+  Tree<std::string> t = MakeSgfBranchTree(sgf);
   Rcpp::Rcout << "get_sgftree() has finished!\n";
   Rcpp::Rcout << "SGF = " << sgf << "\n";
   for (unsigned int i = 0; i < t.size(); i++)
@@ -199,7 +161,24 @@ void sgftree_test(std::string sgf)
     Rcpp::Rcout << "\n";
   }
 
-  sgf2tree(sgf);
+  MakeSgfNodeTree(sgf);
+}
+
+
+
+// interacting with R
+// [[Rcpp::export]]
+Rcpp::List make_sgftree(std::string sgf, bool bynode = true)
+{
+  Tree<std::string> t;
+  if (bynode) {
+    t = MakeSgfNodeTree(sgf);
+  } else {
+    t = MakeSgfBranchTree(sgf);
+  }
+
+  Rcpp::List out = TreeToList(t);
+  return out;
 }
 
 
@@ -207,24 +186,27 @@ void sgftree_test(std::string sgf)
 
 
 
-
 /*** R
-gogamer:::sgftree_test("(;a1 ; a2;a3 (;bbb (;ccc)(;ddd)) (;eee) (;fff (;ggg)))")
-
-c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
-  "RU[Japanese]SZ[19]KM[0.00]PW[White]PB[Black];B[qd];W[dc](;B[cp]",
-  ";W[pq])(;B[dq];W[pp];B[ce];W[ed];B[ci];W[od](;B[oc](;W[pd]",
-  ";B[pc];W[qe];B[nd])(;W[nc];B[pc];W[nd];B[qf];W[jd]))(;B[ld]",
-  ";W[pg];B[oe];W[ne];B[of];W[qc];B[qf];W[rd];",
-  "B[pc];W[pd];B[qe];W[rc];B[nd])))") %>%
-  paste0(collapse = "") %>% gogamer:::sgftree_test()
-
-c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
-  "RU[Japanese]SZ[19]KM[0.00]",
-  "PW[White]PB[Black]",
-  ";B[pd];W[dd];B[dp]C[special characters in comments...",
-  "( yay[! )  { foo }  [ bar \\]; \\\\ ])") %>%
-  paste0(collapse = "") %>% gogamer:::sgftree_test()
+s1 <- "(;a1 ; a2;a3 (;bbb (;ccc)(;ddd)) (;eee) (;fff (;ggg)))"
+s2 <- c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
+        "RU[Japanese]SZ[19]KM[0.00]PW[White]PB[Black];B[qd];W[dc](;B[cp]",
+        ";W[pq])(;B[dq];W[pp];B[ce];W[ed];B[ci];W[od](;B[oc](;W[pd]",
+        ";B[pc];W[qe];B[nd])(;W[nc];B[pc];W[nd];B[qf];W[jd]))(;B[ld]",
+        ";W[pg];B[oe];W[ne];B[of];W[qc];B[qf];W[rd];",
+        "B[pc];W[pd];B[qe];W[rc];B[nd])))") %>% paste0(collapse = "")
+s3 <- c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
+        "RU[Japanese]SZ[19]KM[0.00]",
+        "PW[White]PB[Black]",
+        ";B[pd];W[dd];B[dp]C[special characters in comments...",
+        "( yay[! )  { foo }  [ bar \\]; \\\\ ])") %>% paste0(collapse = "")
 
 
+gogamer:::make_sgftree(s1, TRUE)
+gogamer:::make_sgftree(s1, FALSE)
+
+gogamer:::make_sgftree(s2, TRUE)
+gogamer:::make_sgftree(s2, FALSE)
+
+gogamer:::make_sgftree(s3, TRUE)
+gogamer:::make_sgftree(s3, FALSE)
 */

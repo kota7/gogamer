@@ -25,13 +25,19 @@ public:
   void AddNode(T x, int p);
 
   // access private members
-  // TODO: assert i < nodecount
+  // TODO?: assert i < nodecount
   int GetParent(unsigned int i) const { return parent[i]; }
   T Get(unsigned int i) const { return data[i]; }
   std::vector<unsigned int> GetChildren(unsigned int i) const
     { return children[i]; }
   bool IsLeaf(unsigned int i) const { return isleaf[i]; }
   unsigned int size() const { return nodecount; }
+
+  // make a List object
+  // Since this is a friend function, it can access to private members
+  // This function is defined by type since some data type may not be
+  // convertible to R object
+  friend Rcpp::List TreeToList(Tree<std::string> t);
 };
 
 
@@ -59,9 +65,34 @@ void Tree<T>::AddNode(T x, int p)
     // p is not a leaf any more
     isleaf[p] = false;
   }
-
 }
 
 
+// parse a string tree into a List object
+// indices are converted to one-based
+// leaf is computed as a vector of leaf indices
+Rcpp::List TreeToList(Tree<std::string> t)
+{
+  std::vector<int> leafid;
+  std::vector<int> parent(t.size());
+  std::vector< std::vector<int> > children(t.size());
+  for (unsigned int i = 0; i < t.size(); i++)
+  {
+    if (t.isleaf[i]) leafid.push_back(i + 1);
 
+    parent[i] = t.parent[i] + 1;
+    children[i].resize(t.children[i].size());
+    for (unsigned int j = 0; j < t.children[i].size(); j++)
+      children[i][j] = t.children[i][j] + 1;
+  }
+
+
+  Rcpp::List out = Rcpp::List::create(
+    Rcpp::Named("data")     = t.data,
+    Rcpp::Named("parent")   = parent,
+    Rcpp::Named("children") = children,
+    Rcpp::Named("leaf")     = leafid
+  );
+  return out;
+}
 
