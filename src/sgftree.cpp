@@ -201,12 +201,12 @@ s3 <- c("(;GM[1]FF[4]CA[UTF-8]AP[CGoban:3]ST[2]",
         "( yay[! )  { foo }  [ bar \\]; \\\\ ])") %>% paste0(collapse = "")
 
 
-gogamer:::make_sgftree(s1, TRUE)
-gogamer:::make_sgftree(s1, FALSE)
+make_sgftree(s1, TRUE)
+make_sgftree(s1, FALSE)
 
-gogamer:::make_sgftree(s2, TRUE)
-gogamer:::make_sgftree(s2, FALSE)
+make_sgftree(s2, TRUE)
+make_sgftree(s2, FALSE)
 
-gogamer:::make_sgftree(s3, TRUE)
-gogamer:::make_sgftree(s3, FALSE)
+make_sgftree(s3, TRUE)
+make_sgftree(s3, FALSE)
 */

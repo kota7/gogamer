@@ -34,6 +34,124 @@ get_props <- function(sgf, tags) {
 
 
 
+#' Parse SGF of each node
+#' @param sgf A character vector of SGF nodes
+#'
+#' @return A list
+parse_sgfnode <- function(sgf)
+{
+  n <- length(sgf)
+
+  # parse moves. By SGF rule, there must be only one move in each node
+  tmp <- stringr::str_match(
+    sgf, "(?<![A-Z])(B|W)\\[([A-Za-z]{0,2})\\]")
+  # compute coordinates
+  x1 <- rep(NA_integer_, n)
+  x2 <- rep(NA_integer_, n)
+  # empty = (0, 0)
+  x1[which(tmp[, 3] == "")] <- 0
+  x2[which(tmp[, 3] == "")] <- 0
+
+  index <- grep("[a-z]+", tmp[, 3])
+  x1[index] <- substring(tmp[index, 3], 1, 1) %>%
+    paste0(collapse = "") %>% utf8ToInt() %>% `-`(96L)
+  x2[index] <- substring(tmp[index, 3], 2, 2) %>%
+    paste0(collapse = "") %>% utf8ToInt() %>% `-`(96L)
+  index <- which(!is.na(tmp[, 1]))
+  out1 <- data.frame(
+    id = index, color = ifelse(tmp[index, 2] == "W", WHITE, BLACK),
+    x = x1[index], y = x2[index], ismove = TRUE)
+  ####
+
+  # parse 'add black' and 'add white'
+  # and 'points'
+  tmp <- stringr::str_match(
+    sgf, "(?<![A-Z])A(B)((\\[(.*?)\\])+)") %>%
+    rbind(stringr::str_match(
+      sgf, "(?<![A-Z])A(W)((\\[(.*?)\\])+)")) %>%
+    rbind(stringr::str_match(
+      sgf, "(?<![A-Z])T(B)((\\[(.*?)\\])+)")) %>%
+    rbind(stringr::str_match(
+      sgf, "(?<![A-Z])T(W)((\\[(.*?)\\])+)"))
+
+  id <- which(!is.na(tmp[, 1]))
+  cl <- tmp[id, 2]
+  ps <- tmp[id, 3]
+  tp <- c("setup", "territory")[as.integer((id-1)/(2*n)) + 1]
+  id <- ((id - 1L) %% n) + 1L
+
+  # expand ps: e.g. [ab][cd]...
+  ps <- stringr::str_extract_all(ps, "[^\\[\\]]+")
+  len <- sapply(ps, length)
+
+  # expand color, id, type
+  cl <- Map(rep, cl, len) %>% unlist() %>% unname()
+  id <- Map(rep, id, len) %>% unlist() %>% unname()
+  tp <- Map(rep, tp, len) %>% unlist() %>% unname()
+  ps <- unlist(ps)
+
+  # expand props with colon, e.g. bb:cd
+  withColon <- (substring(ps, 3, 3) == ":")
+  x1 <- substring(ps, 1, 1)
+  y1 <- substring(ps, 2, 2)
+  x2 <- substring(ps, 4, 4)
+  y2 <- substring(ps, 5, 5)
+  # impute the same letter if there is no ':'
+  x2[!withColon] <- x1[!withColon]
+  y2[!withColon] <- y1[!withColon]
+
+  x <- Map(seq,
+           utf8ToInt(paste0(x1, collapse = "")),
+           utf8ToInt(paste0(x2, collapse = ""))) %>%
+    lapply(`-`, 96L)
+  y <- Map(seq,
+           utf8ToInt(paste0(y1, collapse = "")),
+           utf8ToInt(paste0(y2, collapse = ""))) %>%
+    lapply(`-`, 96L)
+  d <- Map(expand.grid, x = x, y = y)
+  # expand color, id, type
+  len <- lapply(d, nrow) %>% unlist()
+  cl <- Map(rep, cl, len) %>% unlist() %>% unname()
+  id <- Map(rep, id, len) %>% unlist() %>% unname()
+  tp <- Map(rep, tp, len) %>% unlist() %>% unname()
+
+  out2 <- data.frame(id = id, color = ifelse(cl == "W", WHITE, BLACK)) %>%
+    dplyr::bind_cols(dplyr::bind_rows(d)) %>%
+    dplyr::mutate(type = tp)
+  ####
+
+  # parse comments
+  tmp <- stringr::str_match(
+    sgf, "(?<![A-Z])(C)\\[([^\\[\\]]*?)\\]")
+  index <- which(!is.na(tmp[, 1]))
+  comments <- data.frame(
+    id = index, comment = tmp[index, 3], stringsAsFactors = FALSE)
+  ####
+
+  # finalizing outputs
+  # moves and setups
+  out <- out2 %>%
+    dplyr::filter_(~type == "setup") %>% dplyr::select_(~ -type) %>%
+    dplyr::mutate(ismove = FALSE) %>%
+    dplyr::bind_rows(out1) %>%
+    dplyr::arrange_(~id, ~dplyr::desc(ismove))
+  out <- lapply(seq(n), function(i)
+    out %>% dplyr::filter_(~id %in% i) %>% dplyr::select_(~-id))
+  # points
+  points <- out2 %>%
+    dplyr::filter_(~type == "territory") %>% dplyr::select_(~ -type)
+  points <- lapply(seq(n), function(i)
+    points %>% dplyr::filter_(~id %in% i) %>% dplyr::select_(~-id))
+  # comments
+  comments <- lapply(seq(n), function(i)
+    comments %>% dplyr::filter_(~id %in% i) %>% `[[`("comment"))
+
+  return(list(moves = out, points = points, comments = comments))
+}
+
+
+
+
 
 #' Obtain setup and plays in sgf
 #'
