@@ -25,7 +25,7 @@ Rcpp::DataFrame get_transitions(
   for (unsigned int i = 0; i < n; i++)
     gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
 
-  return gg.GetTransitions();
+  return GetTransitions(gg);
 }
 
 

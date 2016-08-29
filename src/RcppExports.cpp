@@ -5,15 +5,6 @@
 
 using namespace Rcpp;
 
-// gogame_test
-void gogame_test();
-RcppExport SEXP gogamer_gogame_test() {
-BEGIN_RCPP
-    Rcpp::RNGScope __rngScope;
-    gogame_test();
-    return R_NilValue;
-END_RCPP
-}
 // prune_sgf
 std::string prune_sgf(std::string sgf, bool keepfirst);
 RcppExport SEXP gogamer_prune_sgf(SEXP sgfSEXP, SEXP keepfirstSEXP) {
@@ -60,6 +51,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type y_vec(y_vecSEXP);
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type color_vec(color_vecSEXP);
     __result = Rcpp::wrap(get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec));
+    return __result;
+END_RCPP
+}
+// tree_compressor
+Rcpp::List tree_compressor(std::vector< std::vector<unsigned int> > children, bool onebased);
+RcppExport SEXP gogamer_tree_compressor(SEXP childrenSEXP, SEXP onebasedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector< std::vector<unsigned int> > >::type children(childrenSEXP);
+    Rcpp::traits::input_parameter< bool >::type onebased(onebasedSEXP);
+    __result = Rcpp::wrap(tree_compressor(children, onebased));
     return __result;
 END_RCPP
 }

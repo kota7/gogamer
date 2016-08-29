@@ -27,20 +27,23 @@ read_sgf <- function(path, keepfirst = TRUE, ...) {
 #' @return \code{\link{gogame}} object
 #' @export
 parse_sgf <- function(sgf, keepfirst = TRUE) {
-  ### obtain meta information ###
+  ## obtain meta information
   proplist <- c(PW = "whitename", WR = "whiterank",
                 PB = "blackname", BR = "blackrank",
                 SZ = "boardsize", KM = "komi", HA = "handicap",
                 DT = "date", EV = "event", RO = "round",
                 RE = "result", RU = "rule", PC = "place")
-  # obtain properties and rename
   props <- get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
 
-  ### parse plays and points ###
-  sgf <- prune_sgf(sgf, keepfirst)
-  moves <- get_moves(sgf)
-  points <- get_points(sgf)
+  # test
+  sgf <- "(;GM[1];AB[pd][dp][pp];W[dc];B[cf];W[cd];B[dj]TB[aa]TW[cc:dd])"
+
+  ## parse plays and points
+  tree <- make_sgftree(sgf)
+  parsed <- parse_sgfnode(tree$data)
+
 
   ### make gogame object ###
-  return(gogame(props, moves, points))
+  #return(gogame(props, moves, points))
+  NULL
 }

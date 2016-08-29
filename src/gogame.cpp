@@ -249,9 +249,9 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
 
 
 
-Rcpp::DataFrame Gogame::GetTransitions()
+Rcpp::DataFrame GetTransitions(Gogame g)
 {
-  unsigned int n = transitions.size();
+  unsigned int n = g.transitions.size();
 
   // although move, x, y are all nonnegative,
   // they should be declared as int type, so that
@@ -265,10 +265,10 @@ Rcpp::DataFrame Gogame::GetTransitions()
 
   for (unsigned int i = 0; i < n; i++)
   {
-    movevec[i] = transitions[i].movenumber;
-    xvec[i] = transitions[i].x;
-    yvec[i] = transitions[i].y;
-    vvec[i] = transitions[i].value;
+    movevec[i] = g.transitions[i].movenumber;
+    xvec[i] = g.transitions[i].x;
+    yvec[i] = g.transitions[i].y;
+    vvec[i] = g.transitions[i].value;
   }
   Rcpp::DataFrame out = Rcpp::DataFrame::create(
     Rcpp::Named("move") = movevec,
@@ -281,134 +281,4 @@ Rcpp::DataFrame Gogame::GetTransitions()
 
 
 
-
-// test for gogame class
-// [[Rcpp::export]]
-void gogame_test()
-{
-  Gogame gg(19);
-  gg.Summary();
-
-  gg.BPlay(10, 10, false);
-  gg.Summary();
-
-  gg.BPlay(4, 4, true);
-  gg.Summary();
-  gg.WPlay(4, 5, true);
-  gg.Summary();
-  gg.WPlay(4, 3, true);
-  gg.Summary();
-  gg.WPlay(3, 4, true);
-  gg.Summary();
-  gg.WPlay(5, 4, true);
-  gg.Summary();
-
-  gg.BPlay(15, 13, true);
-  gg.Summary();
-  gg.BPlay(15, 14, true);
-  gg.Summary();
-  gg.WPlay(15, 12, true);
-  gg.Summary();
-  gg.WPlay(15, 15, true);
-  gg.Summary();
-  gg.WPlay(14, 13, true);
-  gg.Summary();
-  gg.WPlay(14, 14, true);
-  gg.Summary();
-  gg.WPlay(16, 13, true);
-  gg.Summary();
-  gg.WPlay(16, 14, true);
-  gg.Summary();
-
-  gg.WPlay(19, 14, true);
-  gg.Summary();
-  gg.BPlay(19, 13, true);
-  gg.Summary();
-  gg.BPlay(19, 15, true);
-  gg.Summary();
-  gg.BPlay(18, 14, true);
-  gg.Summary();
-
-  gg.BPlay(19, 19, true);
-  gg.Summary();
-  gg.WPlay(19, 18, true);
-  gg.Summary();
-  gg.WPlay(18, 19, true);
-  gg.Summary();
-
-
-
-  gg.WPlay(5, 9, true);
-  gg.Summary();
-  gg.WPlay(6, 10, true);
-  gg.Summary();
-  gg.WPlay(7, 8, true);
-  gg.Summary();
-  gg.WPlay(7, 9, true);
-  gg.Summary();
-  gg.BPlay(5, 8, true);
-  gg.Summary();
-  gg.BPlay(6, 7, true);
-  gg.Summary();
-  gg.BPlay(7, 7, true);
-  gg.Summary();
-  gg.BPlay(8, 8, true);
-  gg.Summary();
-  gg.BPlay(8, 9, true);
-  gg.Summary();
-  gg.BPlay(7, 10, true);
-  gg.Summary();
-  gg.BPlay(6, 9, true);
-  gg.Summary();
-  gg.WPlay(6, 8, true);
-  gg.Summary();
-  gg.BPlay(6, 9, true);
-  gg.Summary();
-
-  gg.WPlay(10, 11, true);
-  gg.Summary();
-  gg.WPlay(9, 10, true);
-  gg.Summary();
-  gg.WPlay(10, 9, true);
-  gg.Summary();
-  gg.WPlay(11, 10, true);
-  gg.Summary();
-
-  gg.BPlay(1, 3, true);
-  gg.Summary();
-  gg.BPlay(1, 2, true);
-  gg.Summary();
-  gg.BPlay(1, 4, true);
-  gg.Summary();
-  gg.WPlay(2, 2, true);
-  gg.Summary();
-  gg.WPlay(2, 3, true);
-  gg.Summary();
-  gg.WPlay(2, 4, true);
-  gg.Summary();
-  gg.WPlay(1, 5, true);
-  gg.Summary();
-  gg.WPlay(1, 1, true);
-  gg.Summary();
-
-  gg.WPlay(10, 5, true);
-  gg.Summary();
-  gg.WPlay(11, 6, true);
-  gg.Summary();
-  gg.BPlay(9, 5, true);
-  gg.Summary();
-  gg.BPlay(11, 5, true);
-  gg.Summary();
-  gg.BPlay(10, 4, true);
-  gg.Summary();
-  gg.BPlay(11, 5, true);
-  gg.Summary();
-  gg.BPlay(11, 7, true);
-  gg.Summary();
-  gg.BPlay(12, 6, true);
-  gg.Summary();
-  gg.BPlay(10, 6, true);
-  gg.Summary();
-
-}
 

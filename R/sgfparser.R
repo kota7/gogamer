@@ -40,31 +40,36 @@ get_props <- function(sgf, tags) {
 #' @return A list
 parse_sgfnode <- function(sgf)
 {
+  # test sgf
+  #sgf <- "(;GM[1];AB[pd][dp][pp];W[dc];B[cf];W[cd];B[dj]TB[aa]TW[cc:dd])" %>%
+  #  gogamer:::make_sgftree() %>% `[[`("data")
+
   n <- length(sgf)
 
-  # parse moves. By SGF rule, there must be only one move in each node
+  # parse moves. By SGF rule, there must be at most one move in each node
   tmp <- stringr::str_match(
     sgf, "(?<![A-Z])(B|W)\\[([A-Za-z]{0,2})\\]")
-  # compute coordinates
+  ## initialize coordinates
   x1 <- rep(NA_integer_, n)
   x2 <- rep(NA_integer_, n)
-  # empty = (0, 0)
+  ## empty is imputed to (0, 0)
   x1[which(tmp[, 3] == "")] <- 0
   x2[which(tmp[, 3] == "")] <- 0
-
+  ## convert alphabets to coordinates
   index <- grep("[a-z]+", tmp[, 3])
   x1[index] <- substring(tmp[index, 3], 1, 1) %>%
     paste0(collapse = "") %>% utf8ToInt() %>% `-`(96L)
   x2[index] <- substring(tmp[index, 3], 2, 2) %>%
     paste0(collapse = "") %>% utf8ToInt() %>% `-`(96L)
-  index <- which(!is.na(tmp[, 1]))
+  ## keep only those with non-missing values
+  id <- which(!is.na(tmp[, 1]))
   out1 <- data.frame(
-    id = index, color = ifelse(tmp[index, 2] == "W", WHITE, BLACK),
-    x = x1[index], y = x2[index], ismove = TRUE)
+    id = id, color = ifelse(tmp[id, 2] == "W", WHITE, BLACK),
+    x = x1[id], y = x2[id], ismove = TRUE)
   ####
 
-  # parse 'add black' and 'add white'
-  # and 'points'
+  # parse 'add black', 'add white' and 'points' together
+  ## will use ".*?" to match various kinds of expressions
   tmp <- stringr::str_match(
     sgf, "(?<![A-Z])A(B)((\\[(.*?)\\])+)") %>%
     rbind(stringr::str_match(
@@ -73,30 +78,32 @@ parse_sgfnode <- function(sgf)
       sgf, "(?<![A-Z])T(B)((\\[(.*?)\\])+)")) %>%
     rbind(stringr::str_match(
       sgf, "(?<![A-Z])T(W)((\\[(.*?)\\])+)"))
+  id <- rep(1:n, 4L)
+  tagtype <- c(rep("setup", 2L*n), rep("territory", 2L*n))
+  ## remove missing cases
+  flag <- !is.na(tmp[, 1])
+  tmp <- tmp[flag, ]
+  id <- id[flag]
+  tagtype <- tagtype[flag]
+  position <- tmp[, 3]
+  color <- tmp[, 2]
 
-  id <- which(!is.na(tmp[, 1]))
-  cl <- tmp[id, 2]
-  ps <- tmp[id, 3]
-  tp <- c("setup", "territory")[as.integer((id-1)/(2*n)) + 1]
-  id <- ((id - 1L) %% n) + 1L
-
-  # expand ps: e.g. [ab][cd]...
-  ps <- stringr::str_extract_all(ps, "[^\\[\\]]+")
-  len <- sapply(ps, length)
-
-  # expand color, id, type
-  cl <- Map(rep, cl, len) %>% unlist() %>% unname()
+  ## expand multiple properties: e.g. [ab][cd]... -> aa, cd, ...
+  position <- stringr::str_extract_all(position, "[^\\[\\]]+")
+  len <- sapply(position, length)
+  ### expand color, id, type accordingly
+  color <- Map(rep, color, len) %>% unlist() %>% unname()
   id <- Map(rep, id, len) %>% unlist() %>% unname()
-  tp <- Map(rep, tp, len) %>% unlist() %>% unname()
-  ps <- unlist(ps)
+  tagtype <- Map(rep, tagtype, len) %>% unlist() %>% unname()
+  position <- unlist(position)
 
-  # expand props with colon, e.g. bb:cd
-  withColon <- (substring(ps, 3, 3) == ":")
-  x1 <- substring(ps, 1, 1)
-  y1 <- substring(ps, 2, 2)
-  x2 <- substring(ps, 4, 4)
-  y2 <- substring(ps, 5, 5)
-  # impute the same letter if there is no ':'
+  ## expand colon expression: bb:cd -> bb, bc, bd, cb, cc, cd
+  withColon <- (substring(position, 3, 3) == ":")
+  x1 <- substring(position, 1, 1)
+  y1 <- substring(position, 2, 2)
+  x2 <- substring(position, 4, 4)
+  y2 <- substring(position, 5, 5)
+  ### impute the same letter if there is no ':'
   x2[!withColon] <- x1[!withColon]
   y2[!withColon] <- y1[!withColon]
 
@@ -109,15 +116,15 @@ parse_sgfnode <- function(sgf)
            utf8ToInt(paste0(y2, collapse = ""))) %>%
     lapply(`-`, 96L)
   d <- Map(expand.grid, x = x, y = y)
-  # expand color, id, type
+  ### expand color, id, type accordingly
   len <- lapply(d, nrow) %>% unlist()
-  cl <- Map(rep, cl, len) %>% unlist() %>% unname()
+  color <- Map(rep, color, len) %>% unlist() %>% unname()
   id <- Map(rep, id, len) %>% unlist() %>% unname()
-  tp <- Map(rep, tp, len) %>% unlist() %>% unname()
-
-  out2 <- data.frame(id = id, color = ifelse(cl == "W", WHITE, BLACK)) %>%
+  tagtype <- Map(rep, tagtype, len) %>% unlist() %>% unname()
+  ### put pieces together
+  out2 <- data.frame(id = id, color = ifelse(color == "W", WHITE, BLACK)) %>%
     dplyr::bind_cols(dplyr::bind_rows(d)) %>%
-    dplyr::mutate(type = tp)
+    dplyr::mutate(type = tagtype)
   ####
 
   # parse comments

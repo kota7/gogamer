@@ -59,8 +59,10 @@ public:
   void WPlay(unsigned int x, unsigned int y, bool ismove)
     { Play(WH, x, y, ismove); }
 
-  Rcpp::DataFrame GetTransitions();
+
+  // friend function to interact with R
   // returns a data frame containing the transition of board configuration
+  friend Rcpp::DataFrame GetTransitions(Gogame g);
 
 
   // for debugging
