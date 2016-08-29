@@ -6,5 +6,7 @@ HA[0]
 KM[6.5]
 PB[Black]
 PW[White]
-;B[qd];W[od];B[oc];W[nc];B[pc];W[nd];B[qf];W[jc]
+;B[qd];W[od];B[oc];W[nc];B[pc]
+(;W[nd];B[qf];W[jc])
+(;W[md];B[qf];W[ic])
 )

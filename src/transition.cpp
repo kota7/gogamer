@@ -10,7 +10,7 @@
 //' @param y_vec integer vector of y coordinate (vertical)
 //' @param color_vec integer vector of color vector
 //' @return \code{data.frame}
-//' @export
+//' @keywords internal
 //[[Rcpp::export]]
 Rcpp::DataFrame get_transitions(
   unsigned int boardsize,

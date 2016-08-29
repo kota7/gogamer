@@ -22,7 +22,7 @@ a \code{data.frame} object with four columns:
 Obtain setup and plays in sgf
 }
 \examples{
-get_moves("AB[pd][dp][pp][dd]W[dg]")
+gogamer:::get_moves("AB[pd][dp][pp][dd]W[dg]")
 }
 \keyword{internal}
 

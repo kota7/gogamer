@@ -26,8 +26,8 @@ This function finds the first appearance of each tag
 }
 \examples{
 sgf <- "(;GM[1]PW[Iyama]PB[Yamashita]RO[Final]EV[Kisei])"
-get_props(sgf, "PB")
-get_props(sgf, c("PW", "PB", "EV", "RO"))
+gogamer:::get_props(sgf, "PB")
+gogamer:::get_props(sgf, c("PW", "PB", "EV", "RO"))
 
 }
 \keyword{internal}

@@ -15,8 +15,8 @@
 #'
 #' @examples
 #' sgf <- "(;GM[1]PW[Iyama]PB[Yamashita]RO[Final]EV[Kisei])"
-#' get_props(sgf, "PB")
-#' get_props(sgf, c("PW", "PB", "EV", "RO"))
+#' gogamer:::get_props(sgf, "PB")
+#' gogamer:::get_props(sgf, c("PW", "PB", "EV", "RO"))
 #'
 #' @keywords internal
 get_props <- function(sgf, tags) {
@@ -81,51 +81,58 @@ parse_sgfnode <- function(sgf)
       sgf, "(?<![A-Z])T(W)((\\[(.*?)\\])+)"))
   id <- rep(1:n, 4L)
   tagtype <- c(rep("setup", 2L*n), rep("territory", 2L*n))
-  ## remove missing cases
   flag <- !is.na(tmp[, 1])
-  tmp <- tmp[flag, ]
-  id <- id[flag]
-  tagtype <- tagtype[flag]
-  position <- tmp[, 3]
-  color <- tmp[, 2]
+  if (any(flag)) {
+    ## remove missing cases
+    tmp <- tmp[flag, ]
+    id <- id[flag]
+    tagtype <- tagtype[flag]
+    position <- tmp[, 3]
+    color <- tmp[, 2]
 
-  ## expand multiple properties: e.g. [ab][cd]... -> aa, cd, ...
-  position <- stringr::str_extract_all(position, "[^\\[\\]]+")
-  len <- sapply(position, length)
-  ### expand color, id, type accordingly
-  color <- Map(rep, color, len) %>% unlist() %>% unname()
-  id <- Map(rep, id, len) %>% unlist() %>% unname()
-  tagtype <- Map(rep, tagtype, len) %>% unlist() %>% unname()
-  position <- unlist(position)
+    ## expand multiple properties: e.g. [ab][cd]... -> aa, cd, ...
+    position <- stringr::str_extract_all(position, "[^\\[\\]]+")
+    len <- sapply(position, length)
+    ### expand color, id, type accordingly
+    color <- Map(rep, color, len) %>% unlist() %>% unname()
+    id <- Map(rep, id, len) %>% unlist() %>% unname()
+    tagtype <- Map(rep, tagtype, len) %>% unlist() %>% unname()
+    position <- unlist(position)
 
-  ## expand colon expression: bb:cd -> bb, bc, bd, cb, cc, cd
-  withColon <- (substring(position, 3, 3) == ":")
-  x1 <- substring(position, 1, 1)
-  y1 <- substring(position, 2, 2)
-  x2 <- substring(position, 4, 4)
-  y2 <- substring(position, 5, 5)
-  ### impute the same letter if there is no ':'
-  x2[!withColon] <- x1[!withColon]
-  y2[!withColon] <- y1[!withColon]
+    ## expand colon expression: bb:cd -> bb, bc, bd, cb, cc, cd
+    withColon <- (substring(position, 3, 3) == ":")
+    x1 <- substring(position, 1, 1)
+    y1 <- substring(position, 2, 2)
+    x2 <- substring(position, 4, 4)
+    y2 <- substring(position, 5, 5)
+    ### impute the same letter if there is no ':'
+    x2[!withColon] <- x1[!withColon]
+    y2[!withColon] <- y1[!withColon]
 
-  x <- Map(seq,
-           utf8ToInt(paste0(x1, collapse = "")),
-           utf8ToInt(paste0(x2, collapse = ""))) %>%
-    lapply(`-`, 96L)
-  y <- Map(seq,
-           utf8ToInt(paste0(y1, collapse = "")),
-           utf8ToInt(paste0(y2, collapse = ""))) %>%
-    lapply(`-`, 96L)
-  d <- Map(expand.grid, x = x, y = y)
-  ### expand color, id, type accordingly
-  len <- lapply(d, nrow) %>% unlist()
-  color <- Map(rep, color, len) %>% unlist() %>% unname()
-  id <- Map(rep, id, len) %>% unlist() %>% unname()
-  tagtype <- Map(rep, tagtype, len) %>% unlist() %>% unname()
-  ### put pieces together
-  out2 <- data.frame(id = id, color = ifelse(color == "W", WHITE, BLACK)) %>%
-    dplyr::bind_cols(dplyr::bind_rows(d)) %>%
-    dplyr::mutate(type = tagtype)
+    x <- Map(seq,
+             utf8ToInt(paste0(x1, collapse = "")),
+             utf8ToInt(paste0(x2, collapse = ""))) %>%
+      lapply(`-`, 96L)
+    y <- Map(seq,
+             utf8ToInt(paste0(y1, collapse = "")),
+             utf8ToInt(paste0(y2, collapse = ""))) %>%
+      lapply(`-`, 96L)
+    d <- Map(expand.grid, x = x, y = y)
+    ### expand color, id, type accordingly
+    len <- lapply(d, nrow) %>% unlist()
+    color <- Map(rep, color, len) %>% unlist() %>% unname()
+    id <- Map(rep, id, len) %>% unlist() %>% unname()
+    tagtype <- Map(rep, tagtype, len) %>% unlist() %>% unname()
+    ### put pieces together
+    out2 <- data.frame(id = id, color = ifelse(color == "W", WHITE, BLACK)) %>%
+      dplyr::bind_cols(dplyr::bind_rows(d)) %>%
+      dplyr::mutate(type = tagtype)
+  } else {
+    out2 <- data.frame(
+      id = integer(0), color = integer(0),
+      x = integer(0), y = integer(0), type = character(0),
+      stringsAsFactors = FALSE)
+  }
   ####
 
   # parse comments
@@ -174,7 +181,7 @@ parse_sgfnode <- function(sgf)
 #'   }
 #' @keywords internal
 #' @examples
-#' get_moves("AB[pd][dp][pp][dd]W[dg]")
+#' gogamer:::get_moves("AB[pd][dp][pp][dd]W[dg]")
 get_moves <- function(sgf) {
   tmp <- stringr::str_match_all(
     sgf, "(?<![A-Z])(AB|AW|B|W)((\\[[A-Za-z]{2}(:[A-Za-z]{2}){0,1}\\])+)")[[1]]
@@ -224,7 +231,7 @@ get_moves <- function(sgf) {
 #' Obtains the point markers in sgf
 #' @param sgf Scalar character of sgf text
 #' @return \code{data.frame} with variables \code{x}, \code{y}, and \code{color}
-#' @export
+#' @keywords internal
 get_points <- function(sgf)
 {
   tmp <- stringr::str_match_all(

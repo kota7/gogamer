@@ -15,4 +15,5 @@ get_points(sgf)
 \description{
 Obtains the point markers in sgf
 }
+\keyword{internal}
 

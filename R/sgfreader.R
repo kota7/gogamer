@@ -36,11 +36,26 @@ parse_sgf <- function(sgf, keepfirst = TRUE) {
   props <- get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
 
   # test
-  sgf <- "(;GM[1];AB[pd][dp][pp];W[dc];B[cf];W[cd];B[dj]TB[aa]TW[cc:dd])"
+  sgf <- readLines("tests/sample/joseki.sgf") %>% paste0(collapse = "")
 
   ## parse plays and points
   tree <- make_sgftree(sgf)
   parsed <- parse_sgfnode(tree$data)
+
+  # debug
+  #tree <- gogamer:::make_sgftree(sgf)
+  #parsed <- gogamer:::parse_sgfnode(tree$data)
+  #compressor <- gogamer:::tree_compressor(tree$children)
+
+  ## compress the tree
+  compressor <- tree_compressor(tree$children)
+  moves <- lapply(compressor$indices, function(i) parsed$moves[i]) %>%
+    lapply(dplyr::bind_rows)
+
+
+
+  ## obtain the transitions
+
 
 
   ### make gogame object ###
