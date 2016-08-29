@@ -18,7 +18,7 @@
 #' get_props(sgf, "PB")
 #' get_props(sgf, c("PW", "PB", "EV", "RO"))
 #'
-#' @export
+#' @keywords internal
 get_props <- function(sgf, tags) {
   if (length(sgf) > 1) {
     warning("length(sgf) > 1: only the first element is used")
@@ -38,6 +38,7 @@ get_props <- function(sgf, tags) {
 #' @param sgf A character vector of SGF nodes
 #'
 #' @return A list
+#' @keywords internal
 parse_sgfnode <- function(sgf)
 {
   # test sgf
@@ -171,7 +172,7 @@ parse_sgfnode <- function(sgf)
 #'     \item{y}{y coordinate}
 #'     \item{ismove}{TRUE: move, FALSE: setup}
 #'   }
-#' @export
+#' @keywords internal
 #' @examples
 #' get_moves("AB[pd][dp][pp][dd]W[dg]")
 get_moves <- function(sgf) {

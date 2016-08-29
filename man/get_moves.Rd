@@ -24,4 +24,5 @@ Obtain setup and plays in sgf
 \examples{
 get_moves("AB[pd][dp][pp][dd]W[dg]")
 }
+\keyword{internal}
 

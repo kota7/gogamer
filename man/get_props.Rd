@@ -30,4 +30,5 @@ get_props(sgf, "PB")
 get_props(sgf, c("PW", "PB", "EV", "RO"))
 
 }
+\keyword{internal}
 

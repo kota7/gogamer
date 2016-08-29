@@ -15,4 +15,5 @@ A list
 \description{
 Parse SGF of each node
 }
+\keyword{internal}
 
