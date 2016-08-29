@@ -1,6 +1,6 @@
 #include <vector>
 #include <Rcpp.h>
-
+#include "validate.h"
 
 
 
@@ -8,23 +8,26 @@ Rcpp::List tree_compressor(std::vector< std::vector<unsigned int> > children);
 void AssignNewIndex(unsigned int currentNode, int &currentIndex,
                     const std::vector< std::vector<unsigned int> > &children,
                     std::vector<int> &newIndex);
-bool ValidateChildren(const std::vector< std::vector<unsigned int> > &children);
 
 
-// Returns information to compress tree
-// inputs:
-//   children: a list of integer vectors of children pointers
-//   onebased: bool indicating if the children is given by one-base or zero-base
-//             default is true
-//
-// outputs:
-//   indices : a list of integer vectors that specifies the index of new data
-//   parent  : an integer vector of new parent
-//   children: a list of integer vectors of new children
+
 //[[Rcpp::export]]
 Rcpp::List tree_compressor(std::vector< std::vector<unsigned int> > children,
                            bool onebased = true)
 {
+  // Returns information to compress tree
+  //
+  // Args:
+  //   children: a list of integer vectors of children pointers
+  //   onebased: bool indicating if the children is given by one-base or zero-base
+  //             default is true
+  //
+  // Returns:
+  //   List containing
+  //     indices : a list of integer vectors that specifies the index of new data
+  //     parent  : an integer vector of new parent
+  //     children: a list of integer vectors of new children
+
   std::vector< std::vector<int> > newIndices;
   std::vector<int> newParent;
   std::vector< std::vector<int> > newChildren;
@@ -117,48 +120,6 @@ void AssignNewIndex(unsigned int currentNode, int &currentIndex,
   }
 }
 
-
-
-bool ValidateChildren(const std::vector< std::vector<unsigned int> > &children)
-{
-  // This function checks if children is valide or not
-  // Assumes:
-  //   indices are zero-based
-  //
-  // Check if:
-  //  (a) pointed IDs are within the scope
-  //  (b) no index has two or more parents
-  //
-  // Returns:
-  //   bool
-
-  unsigned int n = children.size();
-  std::vector<bool> parentIdentified(n);
-  for (unsigned int i = 0; i < n; i++) parentIdentified[i] = false;
-
-  unsigned int childId;
-  for (unsigned int i = 0; i < children.size(); i++)
-  {
-    for (unsigned int j = 0; j < children[i].size(); j++)
-    {
-      childId = children[i][j];
-      if (childId >= n) {
-        // id is out of bounds
-        Rcpp::Rcout << "ID " << childId << " is out of bounds";
-        return false;
-      }
-      if (parentIdentified[childId]) {
-        // this children appears twice
-        Rcpp::Rcout << "ID " << childId << " appears more than twice";
-        return false;
-      }
-      parentIdentified[childId] = true;
-    }
-  }
-
-  // no problem found
-  return true;
-}
 
 
 

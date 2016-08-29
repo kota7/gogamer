@@ -5,6 +5,19 @@
 
 using namespace Rcpp;
 
+// get_movenumber
+std::vector<int> get_movenumber(std::vector<bool> hasmove, std::vector< std::vector<unsigned int> > children, bool onebased);
+RcppExport SEXP gogamer_get_movenumber(SEXP hasmoveSEXP, SEXP childrenSEXP, SEXP onebasedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<bool> >::type hasmove(hasmoveSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::vector<unsigned int> > >::type children(childrenSEXP);
+    Rcpp::traits::input_parameter< bool >::type onebased(onebasedSEXP);
+    __result = Rcpp::wrap(get_movenumber(hasmove, children, onebased));
+    return __result;
+END_RCPP
+}
 // prune_sgf
 std::string prune_sgf(std::string sgf, bool keepfirst);
 RcppExport SEXP gogamer_prune_sgf(SEXP sgfSEXP, SEXP keepfirstSEXP) {
@@ -51,6 +64,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type y_vec(y_vecSEXP);
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type color_vec(color_vecSEXP);
     __result = Rcpp::wrap(get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec));
+    return __result;
+END_RCPP
+}
+// get_transitiontree
+Rcpp::List get_transitiontree(Rcpp::ListOf<Rcpp::DataFrame> data, std::vector< std::vector<int> > children, unsigned int boardsize);
+RcppExport SEXP gogamer_get_transitiontree(SEXP dataSEXP, SEXP childrenSEXP, SEXP boardsizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::DataFrame> >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::vector<int> > >::type children(childrenSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type boardsize(boardsizeSEXP);
+    __result = Rcpp::wrap(get_transitiontree(data, children, boardsize));
     return __result;
 END_RCPP
 }

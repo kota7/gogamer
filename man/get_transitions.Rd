@@ -23,4 +23,5 @@ get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec)
 \description{
 Obtains the transition of board configuration
 }
+\keyword{internal}
 

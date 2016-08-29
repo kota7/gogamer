@@ -143,6 +143,7 @@ parse_sgfnode <- function(sgf)
     id = index, comment = tmp[index, 3], stringsAsFactors = FALSE)
   ####
 
+
   # finalizing outputs
   # moves and setups
   out <- out2 %>%

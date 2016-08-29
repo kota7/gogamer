@@ -29,4 +29,32 @@ Rcpp::DataFrame get_transitions(
 }
 
 
+//' Obtains the transition of board configuration
+//' @param data   A list of data.frames, each contains
+//' @keywords internal
+//[[Rcpp::export]]
+Rcpp::List get_transitiontree(
+    Rcpp::ListOf<Rcpp::DataFrame> data,
+    std::vector< std::vector<int> > children, unsigned int boardsize)
+{
+  Gogame gg(boardsize);
 
+
+  Rcpp::List out;
+  out["test"] = data[0]["color"];
+  return out;
+}
+
+
+
+
+/***R
+sgf <- readLines("tests/sample/joseki.sgf") %>% paste0(collapse = "")
+tree <- gogamer:::make_sgftree(sgf)
+parsed <- gogamer:::parse_sgfnode(tree$data)
+compressor <- gogamer:::tree_compressor(tree$children)
+moves <- lapply(compressor$indices, function(i) parsed$moves[i]) %>%
+  lapply(dplyr::bind_rows)
+children <- compressor$children
+gogamer:::get_transitiontree(moves, children, 19)
+*/

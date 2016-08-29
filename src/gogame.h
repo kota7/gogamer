@@ -60,10 +60,10 @@ public:
     { Play(WH, x, y, ismove); }
 
 
+
   // friend function to interact with R
   // returns a data frame containing the transition of board configuration
   friend Rcpp::DataFrame GetTransitions(Gogame g);
-
 
   // for debugging
   void Summary();
