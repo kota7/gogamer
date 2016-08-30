@@ -38,28 +38,36 @@ parse_sgf <- function(sgf, keepfirst = TRUE) {
   # test
   sgf <- readLines("tests/sample/joseki.sgf") %>% paste0(collapse = "")
 
+  ## parse the sgf into node tree
+  tree <- gogamer:::make_sgftree(sgf)
+  if (length(tree$data) == 0L) {
+    # TODO: do somthing
+  }
+
   ## parse plays and points
-  tree <- make_sgftree(sgf)
-  parsed <- parse_sgfnode(tree$data)
+  ### each component is a data.frame, where 'id' indicate the node
+  parsed <- gogamer:::parse_sgfnode(tree$data)
 
   ## obtain move number of each node
-  hasmove <- lapply(parsed$moves, function(m) any(m[["ismove"]])) %>% unlist()
-  movenumber <- get_movenumber(hasmove, tree$children)
-
-  ## give move number to each parsed data
-  ### TODO, need to do this before compression
-
+  ### movenumber maps ID -> moven umber
+  hasmove <- rep(FALSE, length(tree$data))
+  hasmove[dplyr::filter_(parsed$moves, ~ismove) %>% `[[`("id")] <- TRUE
+  movenumber <- gogamer:::get_movenumber(hasmove, tree$children)
 
   ## compress the tree
-  compressor <- tree_compressor(tree$children)
-  moves <- lapply(compressor$indices, function(i) parsed$moves[i]) %>%
-    lapply(dplyr::bind_rows)
+  compressor <- gogamer:::tree_compressor(tree$children)
+  parsed$moves$id2 <- compressor$indexmap[parsed$moves$id]
+  parsed$comments$id2 <- compressor$indexmap[parsed$comments$id]
+  parsed$points$id2 <- compressor$indexmap[parsed$points$id]
 
   ## get boardsize, or guess it if needed
   boardsize <- properties$boardsize %>%
     stringr::str_extract("[0-9]+") %>% as.integer()
-  maxnum <- dplyr::bind_rows(moves) %>% `[`(c("x", "y") ) %>%
-    unlist() %>% max()
+  if (nrow(parsed$moves) > 0) {
+    maxnum <- max(c(parsed$moves$x, parsed$moves$y))
+  } else {
+    maxnum <- 0
+  }
   if (is.na(boardsize)) {
     if (maxnum > 19L)
       stop("Coordinates exceed 19, but the boardsize is not specified")

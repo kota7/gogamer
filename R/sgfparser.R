@@ -36,10 +36,11 @@ get_props <- function(sgf, tags) {
 
 #' Parse SGF of each node
 #' @param sgf A character vector of SGF nodes
+#' @param asList if this is True, each component is list of the node size
 #'
 #' @return A list
 #' @keywords internal
-parse_sgfnode <- function(sgf)
+parse_sgfnode <- function(sgf, asList = FALSE)
 {
   # test sgf
   #sgf <- "(;GM[1];AB[pd][dp][pp];W[dc];B[cf];W[cd];B[dj]TB[aa]TW[cc:dd])" %>%
@@ -151,16 +152,17 @@ parse_sgfnode <- function(sgf)
     dplyr::mutate(ismove = FALSE) %>%
     dplyr::bind_rows(out1) %>%
     dplyr::arrange_(~id, ~dplyr::desc(ismove))
-  out <- lapply(seq(n), function(i)
-    out %>% dplyr::filter_(~id %in% i) %>% dplyr::select_(~-id))
-  # points
   points <- out2 %>%
     dplyr::filter_(~type == "territory") %>% dplyr::select_(~ -type)
-  points <- lapply(seq(n), function(i)
-    points %>% dplyr::filter_(~id %in% i) %>% dplyr::select_(~-id))
-  # comments
-  comments <- lapply(seq(n), function(i)
-    comments %>% dplyr::filter_(~id %in% i) %>% `[[`("comment"))
+
+  if (asList) {
+    out <- lapply(seq(n), function(i)
+      out %>% dplyr::filter_(~id %in% i) %>% dplyr::select_(~-id))
+    points <- lapply(seq(n), function(i)
+      points %>% dplyr::filter_(~id %in% i) %>% dplyr::select_(~-id))
+    comments <- lapply(seq(n), function(i)
+      comments %>% dplyr::filter_(~id %in% i) %>% `[[`("comment"))
+  }
 
   return(list(moves = out, points = points, comments = comments))
 }

@@ -83,10 +83,12 @@ Rcpp::List tree_compressor(std::vector< std::vector<unsigned int> > children,
   for (unsigned int i = 0; i < newN; i++)
     if (newChildren[i].size() == 0) newLeaf.push_back(i + 1);
 
-
+  // compile newIndex
+  for (unsigned int i = 0; i < newIndex.size(); i++) newIndex[i]++;
 
   Rcpp::List out = Rcpp::List::create(
     Rcpp::Named("indices") = newIndices,
+    Rcpp::Named("indexmap") = newIndex,
     Rcpp::Named("parent") = newParent,
     Rcpp::Named("children") = newChildren,
     Rcpp::Named("leaf") = newLeaf
