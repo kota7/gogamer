@@ -4,15 +4,11 @@
 \alias{read_sgf}
 \title{Read and parse a SGF file}
 \usage{
-read_sgf(path, keepfirst = TRUE, ...)
+read_sgf(path, ...)
 }
 \arguments{
 \item{path}{character string of the path to
 a smart go format (SGF) file. Can be local or online}
-
-\item{keepfirst}{logical specifying the branch choice rule.
-If TRUE, keep the first appearing branch.
-Otherwise, keep the last branch.}
 
 \item{...}{arguments passed to \code{\link{readLines}}}
 }

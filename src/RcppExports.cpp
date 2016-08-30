@@ -5,6 +5,19 @@
 
 using namespace Rcpp;
 
+// get_branchpath
+std::vector<int> get_branchpath(std::vector<int> parent, int goal, bool onebased);
+RcppExport SEXP gogamer_get_branchpath(SEXP parentSEXP, SEXP goalSEXP, SEXP onebasedSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<int> >::type parent(parentSEXP);
+    Rcpp::traits::input_parameter< int >::type goal(goalSEXP);
+    Rcpp::traits::input_parameter< bool >::type onebased(onebasedSEXP);
+    __result = Rcpp::wrap(get_branchpath(parent, goal, onebased));
+    return __result;
+END_RCPP
+}
 // gogame_test
 void gogame_test(int m);
 RcppExport SEXP gogamer_gogame_test(SEXP mSEXP) {

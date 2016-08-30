@@ -4,14 +4,10 @@
 \alias{parse_sgf}
 \title{Parse text of the smart go format.}
 \usage{
-parse_sgf(sgf, keepfirst = TRUE)
+parse_sgf(sgf)
 }
 \arguments{
 \item{sgf}{scalar character of sgf text.}
-
-\item{keepfirst}{logical specifying the branch choice rule.
-If TRUE, keep the first appearing branch.
-Otherwise, keep the last branch.}
 }
 \value{
 \code{\link{gogame}} object

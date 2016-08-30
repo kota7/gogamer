@@ -6,97 +6,83 @@
 #' game plays, results and
 #' other information such as player names and game setup.
 #' @param properties  a list of game properties
-#' @param moves  a data frame of game moves
-#' @param points a data frame of point locations
+#' @param gametree    a list
 #' @return \code{gogame} object
 #' @export
-gogame <- function(properties, moves, points = NULL)
+gogame <- function(properties, gametree)
 {
-  ### get/clean/guess board size
-  # first, check boardsize properties
-  # needs a bit of cleaning to deal with
-  # cases like "19x19"
-  # so, extract the first consecutive digit
-  # then, check the maximum number appearing in the move positions -> maxnum
-
-  boardsize <- properties$boardsize %>%
-    stringr::str_extract("[0-9]+") %>% as.integer()
-  maxnum <- max(max(moves$x), max(moves$y))
-
-  guess_flg <- FALSE
-  if (is.na(boardsize)) {
-    # guess the boardsize from 9, 13, 19
-    cat("board size is not specified... will guess\n")
-    guess_flg <- TRUE
-  } else if (boardsize < maxnum) {
-    warning("the maximum position exceeds the specified size... will guess")
-    guess_flg <- TRUE
-  }
-
-  if (guess_flg) {
-    # if the maximum position exceeds 19, error
-    if (maxnum <= 9L) {
-      boardsize <- 9L
-    } else if (maxnum <= 13L) {
-      boardsize <- 13L
-    } else if (maxnum <= 19L) {
-      boardsize <- 19L
-    } else {
-      stop("the maximum position exceeds 19... cannot guess the boardsize")
-    }
-    cat("boardsize is guess to be ", boardsize, "\n")
-  }
-  # update boardsize property
-  properties$boardsize <- boardsize
+  ## input validity check
+  if (!is.list(properties)) stop("properties must be a list")
+  if (!is.list(gametree)) stop("hametree must be a list")
 
 
+  ## clean properties
+  ### impute missing properties with NA
+  prop_names <- c("whitename", "whiterank", "blackname", "blackrank",
+                  "boardsize", "komi", "handicap", "date", "event", "round",
+                  "result", "rule", "place") %>%
+    setdiff(names(properties))
+  properties[prop_names] <- NA_character_
+  ### boardsize
+  properties$boardsize <- guess_boardsize(properties$boardsize, 0L)
   ### clean komi
   # if not specified, assume komi is zero
-  if (is.na(properties$komi)) properties$komi <- 0L
-  # if there komi is interpretable as numeric, then convert to numeric
-  if (regexpr("^[[:space:]]*[\\-\\.0-9]+[[:space:]]*$", properties$komi) > 0)
-    properties$komi <- as.numeric(properties$komi)
-
-
+  if (is.na(properties$komi)) {
+    properties$komi <- 0L
+  } else if (is.character(properties$komi)) {
+    # if there komi is interpretable as numeric, then convert to numeric
+    if (grepl("^[[:space:]]*[\\-\\.0-9]+[[:space:]]*$", properties$komi))
+      properties$komi <- as.numeric(properties$komi)
+  }
   ### clean handicap
   # Decided NOT to
   # - check if the handicap is consistent with the number of setup moves
   # - guess and fill the handicap propperty based on the number of setup moves
-  if (!is.na(properties$handicap)) {
+  if (is.na(properties$handicap)) {
+    properties$handicap <- 0L
+  } else if (!is.na(properties$handicap)) {
     # convert to integer
-    properties$handicap <- gsub("[^0-9]+", "", properties$handicap) %>%
+    properties$handicap <- grep("[0-9]+", properties$handicap, value = TRUE) %>%
       as.integer()
-    # check the handicap property is consitent with the moves
-    #if (properties$handicap != sum(!moves$ismove))
-    #  warning("handicap property does not equal the number of setup stones, ",
-    #          properties$handicap, " vs ", sum(!moves$ismove))
-  } else {
-    #properties$handicap <- sum(!moves$ismove)  # count the number of setups
   }
 
-  ### flip the y axis so that bottom-left corner is the origin
-  # this is consistent with labeling convention in major software
-  # including Quarry and CGoban
-  # this is valid for SGF format, but may not be for other formats
-  moves$y <- boardsize - moves$y + 1L
 
-
-  if (is.null(points)) {
-    points <- data.frame(color = integer(0), x = integer(0), y = integer(0))
-  } else {
-    points$y <- boardsize - points$y + 1L
+  ## check game tree
+  ### if transition is missing and move exists, then
+  ### compute the transition using move children (children may possibly be NULL)
+  if (!("transition" %in% names(gametree)) && ("move" %in% names(gametree)))
+    gametree$transition <- get_transition_wrapper(gametree$move,
+                                                  gametree$children)
+  ### if parent, children, leaf are missing,
+  ### impute as much as possible
+  ### usually, all three should be given, or none of them is given
+  check <- c("parent", "children", "leaf") %in% names(gametree)
+  if (!check[1] && !check[2]) {
+    # both parent and children missing -> assume only one node
+    gametree$parent   <- 0L
+    gametree$children <- list(integer(0))
+  } else if (check[1] && !check[2]) {
+    # impute children from parent
+    gametree$children <- lapply(seq_along(gametree$parent),
+                                function(i) which(i == gametree$parent))
+  } else if (!check[1] && check[2]) {
+    # impute parent from children
+    len <- lapply(gametree$children, length) %>% unlist()
+    index <- Map(rep, seq_along(len), len) %>% unlist()
+    gametree$parent <- rep(NA_integer_, length(gametree$children))
+    gametree$parent[unlist(gametree$children)] <- index
+    gametree$parent[1] <- 0L
+  }
+  if (!check[3]) {
+    # impute leaf from children
+    gametree$leaf <- seq_along(gametree$parent) %>% setdiff(gametree$parent)
   }
 
-  ### obtain board state transition
-  transition <- get_transitions(
-    boardsize, moves$ismove, moves$x, moves$y, moves$color)
-
-  return(structure(
-    .Data = c(properties,
-              list(transition = transition), list(points = points)),
-    class = "gogame"))
+  out <- structure(.Data = c(properties, list(gametree = gametree)),
+                   class = "gogame")
+  out <- set_branch(out, 1L)
+  return(out)
 }
-
 
 
 #' @export
@@ -164,8 +150,6 @@ is.gogame <- function(x)
 
 ### following functions are not registered as generic method for the class,
 ### but assumes the arguments are the gogame class object
-
-
 
 #' Go board status at a move number
 #' @description This function obtains the board state at the move number.
@@ -302,4 +286,28 @@ kifu <- function(x, from = 1L, to = 100L, restart = NA_integer_)
   return(out)
 }
 
+
+
+#' Switch branch of go game
+#' @param x  \code{gogame} object
+#' @param branch integer
+#'
+#' @return \code{gogame} object
+#' @export
+set_branch <- function(x, branch = 1L)
+{
+  if (!(is.gogame(x))) stop("object is not a gogame")
+  if (branch > length(x$gametree$leaf))
+    stop("this game has only ", length(x$gametree$leaf), " branch(es)")
+
+  nodes <- get_branchpath(x$gametree$parent, x$gametree$leaf[branch])
+  x$transition <- dplyr::filter_(x$gametree$transition, ~nodeid %in% nodes) %>%
+    dplyr::arrange_(~move)
+  x$point <- dplyr::filter_(x$gametree$point, ~nodeid %in% nodes) %>%
+    dplyr::arrange_(~move)
+  x$comment <- dplyr::filter_(x$gametree$comment, ~nodeid %in% nodes) %>%
+    dplyr::arrange_(~move)
+
+  return(x)
+}
 

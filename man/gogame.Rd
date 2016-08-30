@@ -5,16 +5,14 @@
 \alias{is.gogame}
 \title{Go game object}
 \usage{
-gogame(properties, moves, points = NULL)
+gogame(properties, gametree)
 
 is.gogame(x)
 }
 \arguments{
 \item{properties}{a list of game properties}
 
-\item{moves}{a data frame of game moves}
-
-\item{points}{a data frame of point locations}
+\item{gametree}{a list}
 
 \item{x}{An R object}
 }

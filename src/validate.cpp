@@ -2,6 +2,9 @@
 #include <Rcpp.h>
 #include "validate.h"
 
+// TODO: add validateParent
+// TODO: add R export
+
 bool ValidateChildren(const std::vector< std::vector<unsigned int> > &children)
 {
   // This function checks if children is valide or not
