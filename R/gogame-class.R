@@ -197,8 +197,9 @@ stateat <- function(x, at)
     lastmove <- NULL
   }
 
-  if (at >= max(x$transition$move)) {
-    points <- x$points
+  # territories is found in a similar manner
+  if (nrow(dat) == 1L) {
+    points <- dplyr::filter_(x$point, ~move == dat$move)
   } else {
     points <- NULL
   }
