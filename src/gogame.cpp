@@ -41,6 +41,8 @@ void Gogame::Clear()
 }
 
 
+
+
 void Gogame::Summary()
 {
   Rcpp::Rcout << "color definition\n";
@@ -48,6 +50,8 @@ void Gogame::Summary()
   Rcpp::Rcout << " Black = "<< BL << "\n";
   Rcpp::Rcout << " White = "<< WH << "\n";
   Rcpp::Rcout << " OB    = "<< OB << "\n";
+
+  Rcpp::Rcout << "\nmove number: " << movenumber << "\n";
 
   Rcpp::Rcout << "\ncaptured\n";
   Rcpp::Rcout << " Black = "<< b_captured << "\n";
@@ -249,8 +253,70 @@ bool Gogame::HasLiberty(unsigned int x, unsigned int y,
 
 
 
+void Gogame::GobackTo(int m)
+{
+  // go back to a certain move number
+  //
+  // This function does:
+  //   turn the board configuration and prisoner counts back to that of
+  //     specified move number
+  //   truncate transitions after the specified move number
+  //   reset the move number
+  //   if m is negative, then board is fully initialized
+  //
+  // Args:
+  //   m : move number to go back to
+  //
+  // Returns:
+  //   nothing
+
+  // initialized to zero, which is used when all elements are to be removed
+  int nToKeep = 0;
+  for (int i = transitions.size() - 1; i >= 0; i--)
+  {
+    if ((int)transitions[i].movenumber <= m) {
+      // you have reached the target move number
+      nToKeep = i + 1;
+      break;
+    } else {
+      // revert board configuration
+      if (transitions[i].x > 0 && transitions[i].x <= boardsize
+            && transitions[i].y > 0 && transitions[i].y <= boardsize) {
+        board[transitions[i].y][transitions[i].x] -= transitions[i].value;
+        // revert prisoner count
+        if (transitions[i].value == -BL) {
+          b_captured--;
+        } else if (transitions[i].value == -WH) {
+          w_captured--;
+        }
+      }
+    }
+  }
+
+  // truncate the transitions (keep up to i-th element)
+  transitions.resize(nToKeep);
+  // set the movenumber
+  // but do not change if m is greater than the original move number
+  if (m < 0) {
+    movenumber = 0;
+  } else if (m < (int)movenumber) {
+    movenumber = m;
+  }
+}
+
+
+
+
 Rcpp::DataFrame GetTransitions(Gogame g)
 {
+  // return the game transition as data.frame object
+  //
+  // Args:
+  //   g : Gogame object
+  //
+  // Return:
+  //   data.frame
+
   unsigned int n = g.transitions.size();
 
   // although move, x, y are all nonnegative,
@@ -282,3 +348,34 @@ Rcpp::DataFrame GetTransitions(Gogame g)
 
 
 
+// test for gogame class
+// [[Rcpp::export]]
+void gogame_test(int m = 0)
+{
+  Gogame gg(19);
+  gg.Summary();
+
+  gg.BPlay(10, 10, false);
+  gg.Summary();
+
+  gg.BPlay(4, 4, true);
+  gg.Summary();
+  gg.WPlay(4, 5, true);
+  gg.Summary();
+  gg.WPlay(4, 3, true);
+  gg.Summary();
+  gg.WPlay(3, 4, true);
+  gg.Summary();
+  gg.WPlay(5, 4, true);
+  gg.Summary();
+
+  gg.GobackTo(m);
+  gg.Summary();
+}
+
+/***R
+gogamer:::gogame_test()
+gogamer:::gogame_test(-1)
+gogamer:::gogame_test(10)
+gogamer:::gogame_test(4)
+*/

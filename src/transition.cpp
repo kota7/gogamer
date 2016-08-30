@@ -3,14 +3,6 @@
 #include "gogame.h"
 
 
-//' Obtains the transition of board configuration
-//' @param boardsize integer of the board size
-//' @param ismove_vec logical vector indicating moves, as opposed to setup
-//' @param x_vec integer vector of x coordinate (horizontal)
-//' @param y_vec integer vector of y coordinate (vertical)
-//' @param color_vec integer vector of color vector
-//' @return \code{data.frame}
-//' @keywords internal
 //[[Rcpp::export]]
 Rcpp::DataFrame get_transitions(
   unsigned int boardsize,
@@ -18,6 +10,18 @@ Rcpp::DataFrame get_transitions(
   std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec,
   std::vector<unsigned int> color_vec)
 {
+  // Obtains the transition of board configuration
+  //
+  // Args:
+  //   boardsize  : integer of the board size
+  //   ismove_vec : logical vector indicating moves, as opposed to setup
+  //   x_vec      : integer vector of x coordinate (horizontal)
+  //   y_vec      : integer vector of y coordinate (vertical)
+  //   color_vec  : integer vector of color vector
+  //
+  // Returns:
+  //   data.frame
+
   Gogame gg(boardsize);
 
   // isMoves, locations, colors must have the same size
@@ -29,16 +33,25 @@ Rcpp::DataFrame get_transitions(
 }
 
 
-//' Obtains the transition of board configuration
-//' @param data   A list of data.frames, each contains
-//' @keywords internal
 //[[Rcpp::export]]
 Rcpp::List get_transitiontree(
     Rcpp::ListOf<Rcpp::DataFrame> data,
     std::vector< std::vector<int> > children, unsigned int boardsize)
 {
+  // Obtains the transition of board configuration
+  //
+  // Args:
+  //   data     : a list of data.frames. Each dataframe has columns named as
+  //              'color', 'x', 'y', 'ismove'
+  //   children : a vecrot of int vectors of children pointers
+  //   boardsize: integer of boardsize
+  //
+  // Returns:
+  //   a list, same size as data.
+
   Gogame gg(boardsize);
 
+  // TODO: deploy this
 
   Rcpp::List out;
   out["test"] = data[0]["color"];

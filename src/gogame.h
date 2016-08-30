@@ -1,3 +1,7 @@
+#include <Rcpp.h>
+#include <vector>
+
+
 struct Transition
 {
   // this structure stores the transition in the board configuration
@@ -50,7 +54,7 @@ class Gogame
 
 public:
   Gogame(unsigned int s);  // no default constractor. requires board size
-  void Clear();   // initialize board and prisoners
+  void Clear();      // clear stones and prisoner counts
 
   void Play(unsigned int color, unsigned int x, unsigned int y, bool ismove);
   // wrapper for Play
@@ -59,7 +63,8 @@ public:
   void WPlay(unsigned int x, unsigned int y, bool ismove)
     { Play(WH, x, y, ismove); }
 
-
+  // go back to a certain move number
+  void GobackTo(int m);
 
   // friend function to interact with R
   // returns a data frame containing the transition of board configuration

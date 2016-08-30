@@ -1,7 +1,7 @@
 #include <Rcpp.h>
 #include <string>
 
-std::string PruneSgf(std::string x, bool keepfirst);
+std::string prince_sgf(std::string x, bool keepfirst);
 void PruneRecursive(std::string &x, bool &keep_first);
 void FindBranch(std::string &x, int &start, int &end);
 

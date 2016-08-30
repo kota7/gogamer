@@ -62,5 +62,4 @@ void GetMoveNumberRecursive(
   for (int i = 0; i < children[currentNode].size(); i++)
     GetMoveNumberRecursive(
       children[currentNode][i], parentNumber, out, hasmove, children);
-
 }

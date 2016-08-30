@@ -5,6 +5,16 @@
 
 using namespace Rcpp;
 
+// gogame_test
+void gogame_test(int m);
+RcppExport SEXP gogamer_gogame_test(SEXP mSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    gogame_test(m);
+    return R_NilValue;
+END_RCPP
+}
 // get_movenumber
 std::vector<int> get_movenumber(std::vector<bool> hasmove, std::vector< std::vector<unsigned int> > children, bool onebased);
 RcppExport SEXP gogamer_get_movenumber(SEXP hasmoveSEXP, SEXP childrenSEXP, SEXP onebasedSEXP) {
