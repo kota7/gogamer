@@ -4,10 +4,12 @@
 \alias{parse_sgfnode}
 \title{Parse SGF of each node}
 \usage{
-parse_sgfnode(sgf)
+parse_sgfnode(sgf, asList = FALSE)
 }
 \arguments{
 \item{sgf}{A character vector of SGF nodes}
+
+\item{asList}{if this is True, each component is list of the node size}
 }
 \value{
 A list

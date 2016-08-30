@@ -62,7 +62,7 @@ void Gogame::Summary()
   for (unsigned int i = 0; i < board.size(); i++)
   {
     for (unsigned int j = 0; j < board[i].size(); j++)
-      Rcpp::Rcout << board[j][i] << " ";
+      Rcpp::Rcout << board[i][j] << " ";
     Rcpp::Rcout << "\n";
   }
 
@@ -307,7 +307,7 @@ void Gogame::GobackTo(int m)
 
 
 
-Rcpp::DataFrame GetTransitions(Gogame g)
+Rcpp::DataFrame GetTransitionsAsDF(Gogame g)
 {
   // return the game transition as data.frame object
   //

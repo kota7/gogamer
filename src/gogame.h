@@ -66,9 +66,13 @@ public:
   // go back to a certain move number
   void GobackTo(int m);
 
+  // accessing elements
+  unsigned int GetMoveNumber() const { return movenumber; }
+  std::vector<Transition> GetTransitions() const { return transitions; }
+
   // friend function to interact with R
   // returns a data frame containing the transition of board configuration
-  friend Rcpp::DataFrame GetTransitions(Gogame g);
+  friend Rcpp::DataFrame GetTransitionsAsDF(Gogame g);
 
   // for debugging
   void Summary();
