@@ -43,3 +43,11 @@ tree_compressor <- function(children, onebased = TRUE) {
     .Call('gogamer_tree_compressor', PACKAGE = 'gogamer', children, onebased)
 }
 
+validate_children <- function(children) {
+    .Call('gogamer_validate_children', PACKAGE = 'gogamer', children)
+}
+
+validate_parent <- function(parent) {
+    .Call('gogamer_validate_parent', PACKAGE = 'gogamer', parent)
+}
+

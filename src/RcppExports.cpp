@@ -116,3 +116,25 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// validate_children
+bool validate_children(std::vector< std::vector<int> > children);
+RcppExport SEXP gogamer_validate_children(SEXP childrenSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector< std::vector<int> > >::type children(childrenSEXP);
+    __result = Rcpp::wrap(validate_children(children));
+    return __result;
+END_RCPP
+}
+// validate_parent
+bool validate_parent(std::vector<int> parent);
+RcppExport SEXP gogamer_validate_parent(SEXP parentSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<int> >::type parent(parentSEXP);
+    __result = Rcpp::wrap(validate_parent(parent));
+    return __result;
+END_RCPP
+}

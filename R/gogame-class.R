@@ -53,34 +53,24 @@ gogame <- function(properties, gametree)
   if (!("transition" %in% names(gametree)) && ("move" %in% names(gametree)))
     gametree$transition <- get_transition_wrapper(gametree$move,
                                                   gametree$children)
-  ### if parent, children, leaf are missing,
-  ### impute as much as possible
-  ### usually, all three should be given, or none of them is given
-  check <- c("parent", "children", "leaf") %in% names(gametree)
-  if (!check[1] && !check[2]) {
-    # both parent and children missing -> assume only one node
-    gametree$parent   <- 0L
-    gametree$children <- list(integer(0))
-  } else if (check[1] && !check[2]) {
-    # impute children from parent
-    gametree$children <- lapply(seq_along(gametree$parent),
-                                function(i) which(i == gametree$parent))
-  } else if (!check[1] && check[2]) {
-    # impute parent from children
-    len <- lapply(gametree$children, length) %>% unlist()
-    index <- Map(rep, seq_along(len), len) %>% unlist()
-    gametree$parent <- rep(NA_integer_, length(gametree$children))
-    gametree$parent[unlist(gametree$children)] <- index
-    gametree$parent[1] <- 0L
-  }
-  if (!check[3]) {
-    # impute leaf from children
-    gametree$leaf <- seq_along(gametree$parent) %>% setdiff(gametree$parent)
-  }
 
-  out <- structure(.Data = c(properties, list(gametree = gametree)),
-                   class = "gogame")
+  ## tree structure (parent, children, leaf)
+  ### recover tree structure, if any is missing (NULL)
+  gametree[c("parent", "children", "leaf")] <- do.call(
+    fill_tree_structure, gametree[c("parent", "children", "leaf")])
+  ### check consistency of tree structure
+  check <- do.call(
+    check_tree_structure,  gametree[c("parent", "children", "leaf")])
+  if (!check) stop("invalid tree strucure")
+
+  ### compile output
+  out <- structure(
+    .Data = c(properties, list(gametree = gametree)), class = "gogame")
   out <- set_branch(out, 1L)
+
+  ## store the move count of main branch (branch = 1)
+  out$mainbranchmoves <- max(c(0L, out$transition$move))
+
   return(out)
 }
 
@@ -106,8 +96,8 @@ print.gogame <- function(x, ...)
   } else {
     cat("Unknown")
   }
-  maxnum <- max(x$transition$move)
-  if (is.integer(maxnum)) cat(sprintf(" (%d moves)", maxnum))
+  if (is.integer(x$mainbranchmoves))
+    cat(sprintf(" (%d moves)", x$mainbranchmoves))
   cat("\n")
 
   cat("\n")
@@ -126,6 +116,11 @@ print.gogame <- function(x, ...)
     cat(sprintf(" %-12s: %s\n", "event", as.character(x$event), "\n"))
   if (!is.na(x$round))
     cat(sprintf(" %-12s: %s\n", "round", as.character(x$round), "\n"))
+
+  if (length(x$gametree$leaf) > 1L) {
+    cat(sprintf(
+      "\n* currently at branch %d / %d\n", x$branch, length(x$gametree$leaf)))
+  }
 }
 
 
@@ -308,6 +303,9 @@ set_branch <- function(x, branch = 1L)
     dplyr::arrange_(~move)
   x$comment <- dplyr::filter_(x$gametree$comment, ~nodeid %in% nodes) %>%
     dplyr::arrange_(~move)
+
+  ## store the current branch id
+  x$branch <- as.integer(branch)
 
   return(x)
 }
