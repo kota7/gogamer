@@ -15,7 +15,7 @@
 #' gostate(data.frame(x = 4, y = 4, color = 1), 19, 0, 0)
 #' @export
 gostate <- function(board, boardsize, b_captured, w_captured,
-                    lastmove = NULL, points = NULL)
+                    lastmove = NULL, points = NULL, comment = NULL)
 {
   # argument check
   if (!is.data.frame(board))
@@ -26,7 +26,7 @@ gostate <- function(board, boardsize, b_captured, w_captured,
   out <- structure(
     .Data = list(board = board, boardsize = boardsize,
                  b_captured = b_captured, w_captured = w_captured,
-                 lastmove = lastmove, points = points),
+                 lastmove = lastmove, points = points, comment = comment),
     class = "gostate")
   return(out)
 }
@@ -75,15 +75,19 @@ print.gostate <- function(x, ...)
   cat(y)
 
   cat("\n\n")
-  cat("  black captured:", x$b_captured,
-      "  white captured:", x$w_captured, "\n")
+  cat(" black captured:", x$b_captured,
+      " white captured:", x$w_captured, "\n")
   if (!is.null(x$lastmove)) {
     color <- ifelse(x$lastmove[3] == BLACK, "black", "white")
     xpos <- graphic_param$xlabels[x$lastmove[1]]
     ypos <- graphic_param$ylabels[x$lastmove[2]]
-    cat(sprintf("  last move: %s %s%s\n", color, xpos, ypos))
+    cat(sprintf(" last move: %s %s%s\n", color, xpos, ypos))
   }
-  NULL
+
+  if (!is.null(x$comment)) {
+    cat("\n", x$comment, "\n")
+  }
+
 }
 
 

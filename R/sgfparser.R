@@ -137,11 +137,24 @@ parse_sgfnode <- function(sgf, asList = FALSE)
   ####
 
   # parse comments
-  tmp <- stringr::str_match(
-    sgf, "(?<![A-Z])(C)\\[([^\\[\\]]*?)\\]")
+  ## pick a temporary replacement
+  i <- 1L
+  tmp_rep <- intToUtf8(i)
+  while (any(grepl(tmp_rep, sgf))) {
+    i <- i + 1
+    tmp_rep <- paste(tmp_rep, intToUtf8(i), sep = "")
+    if (i >= 100) stop("the text has too many weird characters")
+  }
+  tmp <- stringr::str_replace_all(sgf, "\\\\]", tmp_rep) %>%
+    stringr::str_match("(?<![A-Z])(C)\\[([^\\]]*?)\\]")
   index <- which(!is.na(tmp[, 1]))
   comments <- data.frame(
     id = index, comment = tmp[index, 3], stringsAsFactors = FALSE)
+  ## revert the replaced character
+  ## and remove escaper characters
+  comments$comment <- stringr::str_replace_all(
+    comments$comment, tmp_rep, "\\\\]") %>%
+    stringr::str_replace_all("\\\\", "")
   ####
 
 

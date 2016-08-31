@@ -192,16 +192,19 @@ stateat <- function(x, at)
     lastmove <- NULL
   }
 
-  # territories is found in a similar manner
+  # territories and comment are found in a similar manner
   if (nrow(dat) == 1L) {
     points <- dplyr::filter_(x$point, ~move == dat$move)
+    comment <- dplyr::filter_(x$comment, ~move == dat$move) %>%
+      dplyr::select_(~comment) %>% as.character() %>% paste0(collapse = "\n")
   } else {
     points <- NULL
+    comment <- NULL
   }
 
   out <- gostate(board, boardsize = x$boardsize,
                  b_captured = b_captured, w_captured = w_captured,
-                 lastmove = lastmove, points = points)
+                 lastmove = lastmove, points = points, comment = comment)
   return(out)
 }
 
