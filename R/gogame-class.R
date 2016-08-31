@@ -164,7 +164,7 @@ gogame <- function(properties, gametree)
       color = integer(0), x = integer(0), y = integer(0),
       move = integer(0), nodeid = integer(0))
   } else {
-    varnames <- c("x", "y", "value", "move", "nodeid")
+    varnames <- c("x", "y", "color", "move", "nodeid")
     check <- varnames %in% names(gametree$point)
     if (any(!check))
       stop("point data must contain ", paste0(varnames, collapse = ", "))

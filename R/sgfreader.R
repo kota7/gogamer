@@ -68,9 +68,12 @@ parse_sgf <- function(sgf) {
   ## revert the y-coordinate
   ### In SGF, top-left is the origin
   ### convert so the bottom-left is the origin since
-  parsed$moves$y <- boardsize + 1L - parsed$moves$y
-  parsed$points$y <- boardsize + 1L - parsed$points$y
-
+  ### note: coordinate zero must be kept since they represent pass
+  flg <- (parsed$moves$y > 0L)
+  parsed$moves$y[flg] <- boardsize + 1L - parsed$moves$y[flg]
+  flg <- (parsed$points$y > 0L)
+  parsed$points$y[flg] <- boardsize + 1L - parsed$points$y[flg]
+  rm(flg)
 
   ## sort the moves dataframe so that setup plays come after actual moves
   ### by doing so the moves within the same SGF node (i.e. id) gets the same

@@ -91,6 +91,7 @@ void GetTransitionTreeRecursive(
     const Rcpp::ListOf<Rcpp::DataFrame> &data,
     const std::vector< std::vector<unsigned int> > &children)
 {
+  Rcpp::Rcout << "nodeid " << currentNode << "\n";
   Rcpp::IntegerVector color = data[currentNode]["color"];
   Rcpp::IntegerVector x = data[currentNode]["x"];
   Rcpp::IntegerVector y = data[currentNode]["y"];
