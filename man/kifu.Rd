@@ -2,9 +2,12 @@
 % Please edit documentation in R/gogame-class.R
 \name{kifu}
 \alias{kifu}
+\alias{kifuplot}
 \title{Kifu for certain move range}
 \usage{
 kifu(x, from = 1L, to = 100L, restart = NA_integer_)
+
+kifuplot(x, from = 1L, to = 100L, restart = NA_integer_, ...)
 }
 \arguments{
 \item{x}{\code{gogame} object}
@@ -14,14 +17,19 @@ kifu(x, from = 1L, to = 100L, restart = NA_integer_)
 \item{restart}{Positive integer. If supplied, this number is used as the
 smallest move number in the range. If not supplied, original move numbers
 are used as they are.}
+
+\item{...}{graphic parameters}
 }
 \value{
-\code{\link{gokifu}} object
+\code{kifu} returns a \code{\link{gokifu}} object
+
+\code{kifuplot} returns a \code{\link{ggkifu}} object
 }
 \description{
 Kifu for certain move range
 }
 \examples{
 kifu(saikoyo)
+kifuplot(mimiaka, 127, 150)
 }
 

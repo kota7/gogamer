@@ -1,6 +1,6 @@
 
 
-#' Kifu (go game record) for a range of move
+#' Kifu (go game record) for a range of moves
 #' @param init     initial board state (\code{data.frame})
 #' @param numbered moves to be numberd on the board (\code{data.frame})
 #' @param noted    moves to be listed ontside the board (\code{data.frame})
@@ -27,9 +27,6 @@ gokifu <- function(init, numbered, noted, boardsize)
 }
 
 
-#' Print kifu on console
-#' @param x \code{gokifu} object
-#' @param ... graphical parameters
 #' @export
 print.gokifu <- function(x, ...)
 {
@@ -187,6 +184,7 @@ plot.gokifu <- function(x, y, ...)
 #' @param x \code{kifu} object
 #' @param ... graphic parameter
 #' @return \code{ggplot} object
+#' @export
 kifunote <- function(x, ...)
 {
   graphic_param <- set_graphic_param(boardsize = x$boardsize, ...)

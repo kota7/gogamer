@@ -2,18 +2,89 @@
 
 
 #' Go game object
-#' @description  \code{gogame} stores go game record including
-#' game plays, results and
-#' other information such as player names and game setup.
+#' @description  \code{gogame} class object capusulizes a go game record.
+#' It keeps stores such game plays, outcomes as well as
+#' other information such as player names and date.
+#' The object supports various methods for creating board images and
+#' Kifu documents.
 #' @param properties  a list of game properties
 #' @param gametree    a list
 #' @return \code{gogame} object
 #' @export
+#' @seealso \code{\link{read_sgf}}, \code{\link{parse_sgf}},
+#' \code{\link{plotat}}, \code{\link{stateat}}, \code{\link{kifu}}, \code{\link{kifuplot}}
+#' @details This is a constructor of \code{gogame} class object.
+#' It is mainly designed to be called from \code{\link{parse_sgf}} function,
+#' which interprets text of sgf format and creates the corresponding
+#' \code{gogame} object.
+#'
+#' The object can produce two kinds of game images.
+#' The first is a board snapshot at an arbitrary timing.
+#' \code{\link{stateat}} is for computing the board configuration and
+#' \code{\link{plotat}} is for drawing the board image.
+#' The second kind of images is the kifu document that summarize a range of
+#' moves in a page.
+#' \code{\link{kifu}} is prepared for computing the move sequence and
+#' \code{\link{kifuplot}} is for drawing the image.
+#'
+#' The constructor takes two mandatory arguments: \code{properties} and \code{gametree}.
+#' \code{properties} is a named list of game meta information.
+#' Currently, following names are recognized (variable type in parentheses).
+#' One may provide additional information so long as it does not contradict
+#' names of other information. Check \code{str(mimiaka)} to see a list of
+#' variable names already in use.
+#' \describe{
+#' \item{\code{boardsize}}{board size (\code{integer}}
+#' \item{\code{whitename}, \code{whiterank}, \code{blackname}, \code{blackrank}}{player
+#' names and ranks (\code{character})}
+#' \item{\code{komi}}{Komi (\code{numeric})}
+#' \item{\code{handicap}}{number of handicap stones (\code{integer})}
+#' \item{\code{result}}{game outcome (\code{character})}
+#' \item{\code{date}, \code{place}}{game date and location (\code{character})}
+#' \item{\code{event}, \code{round}}{competition or event name and round (\code{character})}
+#' \item{\code{rule}}{rule (\code{character})}
+#' }
+#'
+#' \code{gametree} stores game plays, setups, comments, and territory counts.
+#' To accomodate the cases of games with branches, the object employs a tree
+#' data structure.
+#' \code{gametree} should contain potentially four data sets.
+#' Parentheses list the variable names to be contained.
+#' \describe{
+#' \item{\code{transition}}{Transition of board configuration.
+#' a positive value means a stone is added, negative means removed.
+#' Absolute values of value indicate the stone color (1: black, 2: white)
+#' (\code{x}, \code{y}, \code{value}, \code{move}, \code{nodeid})}
+#' \item{\code{move}}{Moves and setups. \code{ismove} indicates whether it is a
+#' move or setup (\code{x}, \code{y}, \code{color}, \code{ismove}, \code{move}, \code{nodeid})}
+#' \item{\code{point}}{Territories.
+#' (\code{x}, \code{y}, \code{color}, \code{move}, \code{nodeid})}
+#' \item{\code{comment}}{Comments made during the game.
+#' (\code{comment}, \code{move}, \code{nodeid})}
+#' }
+#' \code{nodeid} variable in each data indicates the tree node to which the row belongs to.
+#'
+#' \code{gametree} also include three variables that describe tree structure.
+#' \describe{
+#' \item{\code{parent}}{integer vector that points parent of each node. The first node is always
+#' assumed to be the root node and its parent is zero}
+#' \item{\code{children}}{list of integer vector that points children of each node}
+#' \item{\code{leaf}}{integer vector of leaf nodes (i.e. no children)}
+#' }
+#' For example, when there is only one node, \code{nodeid} variable of all data should be 1,
+#' and \code{parent} is 0 (there is only the root node), \code{children} has unique entry
+#' and it is integer vector of length zero, and \code{leaf} is 1.
+#' When some of the three components are missing, then the function tries the best to
+#' recover from the supplied information
+#'
+#' When \code{transition} is missing, then the function tries to compute it using
+#' \code{move} and tree structure information.
+#'
 gogame <- function(properties, gametree)
 {
   ## input validity check
   if (!is.list(properties)) stop("properties must be a list")
-  if (!is.list(gametree)) stop("hametree must be a list")
+  if (!is.list(gametree)) stop("gametree must be a list")
 
 
   ## clean properties
@@ -23,7 +94,7 @@ gogame <- function(properties, gametree)
                   "result", "rule", "place") %>%
     setdiff(names(properties))
   properties[prop_names] <- NA_character_
-  ### boardsize
+  ### clean boardsize
   properties$boardsize <- guess_boardsize(properties$boardsize, 0L)
   ### clean komi
   # if not specified, assume komi is zero
@@ -47,21 +118,68 @@ gogame <- function(properties, gametree)
   }
 
 
-  ## check game tree
-  ### if transition is missing and move exists, then
-  ### compute the transition using move children (children may possibly be NULL)
-  if (!("transition" %in% names(gametree)) && ("move" %in% names(gametree)))
-    gametree$transition <- get_transition_wrapper(gametree$move,
-                                                  gametree$children)
-
-  ## tree structure (parent, children, leaf)
-  ### recover tree structure, if any is missing (NULL)
+  ## impute tree structure (parent, children, leaf), if any is missing
+  ### In principle, one should supply
+  ### wither all components or none of them
+  ### If none of them is supplied, assumes there is only one node, which is 1
+  ### If partial information is supplied, then the following function
+  ### tries to impute the missing components
   gametree[c("parent", "children", "leaf")] <- do.call(
     fill_tree_structure, gametree[c("parent", "children", "leaf")])
   ### check consistency of tree structure
   check <- do.call(
     check_tree_structure,  gametree[c("parent", "children", "leaf")])
   if (!check) stop("invalid tree strucure")
+
+
+  ## check game tree
+  ### gametree includes the following data.frames:
+  ###   transition: x, y, value, move, nodeid
+  ###   move      : x, y, color, ismove, move, nodeid
+  ###   point     : x, y, color, move, nodeid
+  ###   comment   : comment, move, nodeid
+  ### and following tree structure information:
+  ###   parent  : integer vector
+  ###   children: list of integer vector
+  ###   leaf    : integer vector
+  ###
+  ### If transiion is missing, then we need to make one using the move
+  if (!("transition" %in% names(gametree)) && !("move" %in% names(gametree)))
+    stop("transition or move must be supplied in game tree")
+  ### if transition is missing and move exists, then
+  ### compute the transition using move children (children may possibly be NULL)
+  if (!("transition" %in% names(gametree)) && ("move" %in% names(gametree)))
+    gametree$transition <- get_transition_wrapper(
+      gametree$move, gametree$children)
+  ### valiable name check
+  if (is.null(gametree$transition)) stop("game transition is missing")
+  varnames <- c("x", "y", "value", "move", "nodeid")
+  check <- varnames %in% names(gametree$transition)
+  if (any(!check))
+    stop("transition data must contain ", paste0(varnames, collapse = ", "))
+  ### if point or comment is missing, then impute empty data.frame
+  ### otherwise check variable names
+  if (is.null(gametree$point)) {
+    gametree$point <- data.frame(
+      color = integer(0), x = integer(0), y = integer(0),
+      move = integer(0), nodeid = integer(0))
+  } else {
+    varnames <- c("x", "y", "value", "move", "nodeid")
+    check <- varnames %in% names(gametree$point)
+    if (any(!check))
+      stop("point data must contain ", paste0(varnames, collapse = ", "))
+  }
+  if (is.null(gametree$comment)) {
+    gametree$comment <- data.frame(
+      comment = character(0), move = integer(0), nodeid = integer(0),
+      stringsAsFactors = FALSE)
+  } else {
+    varnames <- c("comment", "move", "nodeid")
+    check <- varnames %in% names(gametree$comment)
+    if (any(!check))
+      stop("comment data must contain ", paste0(varnames, collapse = ", "))
+  }
+
 
   ### compile output
   out <- structure(
@@ -131,10 +249,10 @@ as.list.gogame <- function(x, ...)
 }
 
 
-#' @param x An R object
-#' @return Logical.
+#' Check if the object is gogame class
+#' @param x R object
+#' @return logical
 #' @export
-#' @rdname gogame
 is.gogame <- function(x)
 {
   return(inherits(x, "gogame"))
@@ -151,7 +269,7 @@ is.gogame <- function(x)
 #' The result is stored in a \code{\link{gostate}} object.
 #' @param x \code{gogame} object
 #' @param at integer of the move number
-#' @return \code{\link{gostate}} object
+#' @return \code{stateat} returns a \code{\link{gostate}} object
 #' @export
 #' @examples
 #' stateat(saikoyo, 116)
@@ -211,22 +329,17 @@ stateat <- function(x, at)
 }
 
 
-#' Plot the go board state by ggplot
-#' @param x \code{gogame} object
-#' @param at Move number (integer)
 #' @param ... arguments passed to \code{\link{plot.gostate}}
-#' @return \code{ggplot} object
+#' @return \code{plotat} returns a \code{ggplot} object
 #' @export
+#' @rdname stateat
 #' @examples
 #' plotat(mimiaka, 127)
 plotat <- function(x, at, ...)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 
-  out <- stateat(x, at) %>%
-    graphics::plot(...)
-
-  return(out)
+  stateat(x, at) %>% graphics::plot(...)
 }
 
 
@@ -237,7 +350,7 @@ plotat <- function(x, at, ...)
 #' @param restart  Positive integer. If supplied, this number is used as the
 #' smallest move number in the range. If not supplied, original move numbers
 #' are used as they are.
-#' @return \code{\link{gokifu}} object
+#' @return \code{kifu} returns a \code{\link{gokifu}} object
 #' @export
 #' @examples
 #' kifu(saikoyo)
@@ -287,6 +400,20 @@ kifu <- function(x, from = 1L, to = 100L, restart = NA_integer_)
   return(out)
 }
 
+
+#' @param ... graphic parameters
+#' @return \code{kifuplot} returns a \code{\link{ggkifu}} object
+#' @export
+#' @rdname kifu
+#' @examples
+#' kifuplot(mimiaka, 127, 150)
+kifuplot <- function(x, from = 1L, to = 100L, restart = NA_integer_, ...)
+{
+  # one line wrapper for kifu -> plot
+  if (!(is.gogame(x))) stop("object is not a gogame")
+
+  kifu(x, from = from, to = to, restart = restart) %>% graphics::plot(...)
+}
 
 
 #' Switch branch of go game

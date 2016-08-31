@@ -23,7 +23,7 @@ location and color in the order of (x, y, color)}
 \item{comment}{character vectror of comments}
 }
 \value{
-\code{gostate} returns an object of class "gostate"
+\code{gostate} object
 }
 \description{
 \code{gostate} object stores a go game state including

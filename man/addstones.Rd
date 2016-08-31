@@ -18,7 +18,7 @@ addstones(gg, x, y, color, number = NULL, ...)
 \item{...}{graphic parameters}
 }
 \value{
-Updated \code{ggplot} object
+\code{\link{ggoban}} object
 }
 \description{
 Add stones to go board

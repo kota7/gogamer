@@ -84,16 +84,22 @@
 NULL
 
 
-#' Set graphic parameters for go board
-#' @details this function set the graphic parameters of goban image
-#' uses default (.default_graph_param) in principle
-#' replace the value specified in '...'
-#' default values are not modified
-#' returns a list of graphic parameters
-#' @param ... Graphic paramters
-#' @return list of graphic parameters
 set_graphic_param <- function(...)
 {
+  # Set graphic parameters for go board
+  # for internal use
+  #
+  # we use .default_graphic_param as a default, and
+  # update parameters specified by ...
+  #
+  # Args:
+  #   ...  graphic paramters
+  #
+  # Returns:
+  #   a list of graphic paramters
+  #
+
+
   out <- as.list(.default_graphic_param)
   args <- list(...)
 
@@ -173,19 +179,22 @@ set_graphic_param <- function(...)
   for (v in sizevars)
     out$endogenous[[v]] <- out$endogenous[[v]] * ratio
 
-
-
   return(out)
 }
 
 
-#' Update graphic parameters
-#' @param params A list of graphic parameters
-#' @param ... Graphic parameters
-#' @return An updated list of graphic parameters
-#' @seealso \code{\link{graphic_parameters}}
 update_graphic_param <- function(params, ...)
 {
+  # Update graphic paramters
+  # for internal use.
+  #
+  # Args:
+  #   params  a list of graphic paramters
+  #   ...     graphic parameters to update
+  #
+  # Returns:
+  #   a list of graphic parameters
+
   newparams <- list(...)
   toappend <- setdiff(names(params), names(newparams))
   args <- c(newparams, params[toappend])

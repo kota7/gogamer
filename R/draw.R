@@ -6,7 +6,7 @@
 #' @param color integer vector of stone colors
 #' @param number integer vector of numbers on stones
 #' @param ... graphic parameters
-#' @return Updated \code{ggplot} object
+#' @return \code{\link{ggoban}} object
 #' @export
 #' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @examples
@@ -78,7 +78,7 @@ addstones <- function(gg, x, y, color, number = NULL, ...)
 #' @param label character vector of labels
 #' @param color integer vector of stone colors
 #' @param ... graphic parameters
-#' @return Updated \code{ggplot} object
+#' @return \code{\link{ggoban}} object
 #' @export
 #' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @examples
@@ -143,7 +143,7 @@ addlabels <- function(gg, x, y, label, color = NULL, ...)
 #' @param x,y integer vectors of stone locations
 #' @param color integer vector of stone colors
 #' @param ... graphic paramters
-#' @return Updated \code{ggplot} object
+#' @return \code{\link{ggoban}} object
 #' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @export
 addterritory <- function(gg, x, y, color, ...)
@@ -199,7 +199,7 @@ addterritory <- function(gg, x, y, color, ...)
 #' @param color integer vector of stone colors
 #' @param marker scalar integer indicating the shape of marker
 #' @param ... graphic parameters
-#' @return Updated \code{ggplot} object
+#' @return \code{\link{ggoban}} object
 #' @seealso \code{\link{ggoban}}, \code{\link{graphic_parameters}}
 #' @export
 #' @examples

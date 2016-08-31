@@ -2,7 +2,7 @@
 
 #' gogamer: R package for go game data
 #'
-#' @description Read and parse go game data and create images with flexibility.
+#' @description Reads go game data and produce board images with flexibility.
 #'
 #' @docType package
 #' @name gogamer

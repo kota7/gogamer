@@ -18,7 +18,7 @@ addmarkers(gg, x, y, color, marker = 17, ...)
 \item{...}{graphic parameters}
 }
 \value{
-Updated \code{ggplot} object
+\code{\link{ggoban}} object
 }
 \description{
 Add markers

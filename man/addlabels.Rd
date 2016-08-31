@@ -18,7 +18,7 @@ addlabels(gg, x, y, label, color = NULL, ...)
 \item{...}{graphic parameters}
 }
 \value{
-Updated \code{ggplot} object
+\code{\link{ggoban}} object
 }
 \description{
 Add text label on board

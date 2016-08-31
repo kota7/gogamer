@@ -9,7 +9,7 @@
 #' appropriate pair of width and height when saving
 #' @return \code{ggkifu} object
 ggkifu <- function(board, note, boardsize,
-                   heights = c(7, 1), savesize = c(5, 6))
+                   heights = NULL, savesize = NULL)
 {
   if (is.null(note)) {
     x <- board
@@ -26,23 +26,36 @@ ggkifu <- function(board, note, boardsize,
   return(x)
 }
 
+
+
+
 #' @export
 print.ggkifu <- function(x, ...)
 {
-  NextMethod()  # print as ggplot or gtable
+  # by calling plot instead of print, no message is shown
+  # currently plot method is not overloaded, hence what is called is
+  # plot method for ggplot or gg
+
+  # if you use print, suggested size is printed
+  # if you use plot, no message is shown
+  graphics::plot(x, ...)
   wd <- attr(x, "savesize")[1]
   ht <- attr(x, "savesize")[2]
-  cat("\nsuggested size for saving:\n",
+  cat("suggested size for saving:\n",
       sprintf("  width = %.2f, height = %.2f\n", wd, ht))
 }
 
 
-#' Check if object is ggkifu class
-#' @param x An R object
-#' @return Logical
+#' Check if the object is ggkifu class
+#' @param x R object
+#' @return logical
 #' @export
 is.ggkifu <- function(x)
 {
+  # Check if object is ggkifu class
+  #
+  # Returns:
+  #   logical
   return(inherits(x, "ggkifu"))
 }
 

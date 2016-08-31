@@ -2,17 +2,17 @@
 % Please edit documentation in R/ggkifu-class.R
 \name{is.ggkifu}
 \alias{is.ggkifu}
-\title{Check if object is ggkifu class}
+\title{Check if the object is ggkifu class}
 \usage{
 is.ggkifu(x)
 }
 \arguments{
-\item{x}{An R object}
+\item{x}{R object}
 }
 \value{
-Logical
+logical
 }
 \description{
-Check if object is ggkifu class
+Check if the object is ggkifu class
 }
 

@@ -2,28 +2,95 @@
 % Please edit documentation in R/gogame-class.R
 \name{gogame}
 \alias{gogame}
-\alias{is.gogame}
 \title{Go game object}
 \usage{
 gogame(properties, gametree)
-
-is.gogame(x)
 }
 \arguments{
 \item{properties}{a list of game properties}
 
 \item{gametree}{a list}
-
-\item{x}{An R object}
 }
 \value{
 \code{gogame} object
-
-Logical.
 }
 \description{
-\code{gogame} stores go game record including
-game plays, results and
-other information such as player names and game setup.
+\code{gogame} class object capusulizes a go game record.
+It keeps stores such game plays, outcomes as well as
+other information such as player names and date.
+The object supports various methods for creating board images and
+Kifu documents.
+}
+\details{
+This is a constructor of \code{gogame} class object.
+It is mainly designed to be called from \code{\link{parse_sgf}} function,
+which interprets text of sgf format and creates the corresponding
+\code{gogame} object.
+
+The object can produce two kinds of game images.
+The first is a board snapshot at an arbitrary timing.
+\code{\link{stateat}} is for computing the board configuration and
+\code{\link{plotat}} is for drawing the board image.
+The second kind of images is the kifu document that summarize a range of
+moves in a page.
+\code{\link{kifu}} is prepared for computing the move sequence and
+\code{\link{kifuplot}} is for drawing the image.
+
+The constructor takes two mandatory arguments: \code{properties} and \code{gametree}.
+\code{properties} is a named list of game meta information.
+Currently, following names are recognized (variable type in parentheses).
+One may provide additional information so long as it does not contradict
+names of other information. Check \code{str(mimiaka)} to see a list of
+variable names already in use.
+\describe{
+\item{\code{boardsize}}{board size (\code{integer}}
+\item{\code{whitename}, \code{whiterank}, \code{blackname}, \code{blackrank}}{player
+names and ranks (\code{character})}
+\item{\code{komi}}{Komi (\code{numeric})}
+\item{\code{handicap}}{number of handicap stones (\code{integer})}
+\item{\code{result}}{game outcome (\code{character})}
+\item{\code{date}, \code{place}}{game date and location (\code{character})}
+\item{\code{event}, \code{round}}{competition or event name and round (\code{character})}
+\item{\code{rule}}{rule (\code{character})}
+}
+
+\code{gametree} stores game plays, setups, comments, and territory counts.
+To accomodate the cases of games with branches, the object employs a tree
+data structure.
+\code{gametree} should contain potentially four data sets.
+Parentheses list the variable names to be contained.
+\describe{
+\item{\code{transition}}{Transition of board configuration.
+a positive value means a stone is added, negative means removed.
+Absolute values of value indicate the stone color (1: black, 2: white)
+(\code{x}, \code{y}, \code{value}, \code{move}, \code{nodeid})}
+\item{\code{move}}{Moves and setups. \code{ismove} indicates whether it is a
+move or setup (\code{x}, \code{y}, \code{color}, \code{ismove}, \code{move}, \code{nodeid})}
+\item{\code{point}}{Territories.
+(\code{x}, \code{y}, \code{color}, \code{move}, \code{nodeid})}
+\item{\code{comment}}{Comments made during the game.
+(\code{comment}, \code{move}, \code{nodeid})}
+}
+\code{nodeid} variable in each data indicates the tree node to which the row belongs to.
+
+\code{gametree} also include three variables that describe tree structure.
+\describe{
+\item{\code{parent}}{integer vector that points parent of each node. The first node is always
+assumed to be the root node and its parent is zero}
+\item{\code{children}}{list of integer vector that points children of each node}
+\item{\code{leaf}}{integer vector of leaf nodes (i.e. no children)}
+}
+For example, when there is only one node, \code{nodeid} variable of all data should be 1,
+and \code{parent} is 0 (there is only the root node), \code{children} has unique entry
+and it is integer vector of length zero, and \code{leaf} is 1.
+When some of the three components are missing, then the function tries the best to
+recover from the supplied information
+
+When \code{transition} is missing, then the function tries to compute it using
+\code{move} and tree structure information.
+}
+\seealso{
+\code{\link{read_sgf}}, \code{\link{parse_sgf}},
+\code{\link{plotat}}, \code{\link{stateat}}, \code{\link{kifu}}, \code{\link{kifuplot}}
 }
 

@@ -3,6 +3,7 @@
 #' @param boardsize integer of boardsize
 #' @param ... graphic parameters
 #' @return Object of class \code{ggoban}, which inherits \code{ggplot}
+#' @seealso \code{\link{graphic_parameters}}
 #' @examples
 #' ggoban(19)
 #' @export
@@ -117,8 +118,9 @@ ggoban <- function(boardsize, ...)
   attr(out, "graphic_param") <- graphic_param
 
   # store suggested size for saving methods
+  # note that + 1.8 is magic number from experience
   wd <- graphic_param$targetwidth
-  ht <- wd / diff(boardxlim) * diff(boardylim)
+  ht <- wd / (diff(boardxlim) + 1.8) * (diff(boardylim) + 1.8)
   attr(out, "savesize") <- c(wd, ht)
 
   return(out)

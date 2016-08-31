@@ -2,7 +2,7 @@
 % Please edit documentation in R/gokifu-class.R
 \name{gokifu}
 \alias{gokifu}
-\title{Kifu (go game record) for a range of move}
+\title{Kifu (go game record) for a range of moves}
 \usage{
 gokifu(init, numbered, noted, boardsize)
 }
@@ -19,6 +19,6 @@ gokifu(init, numbered, noted, boardsize)
 \code{gokifu} object
 }
 \description{
-Kifu (go game record) for a range of move
+Kifu (go game record) for a range of moves
 }
 

@@ -170,7 +170,7 @@ a <- read_sgf("../tests/sample/tsumego1.sgf")
 b <- read_sgf("../tests/sample/tsumego2.sgf")
 d <- read_sgf("../tests/sample/joseki.sgf")
 ```
-```{r, fig.width=3, fig.height=4.15}
+```{r, fig.width=3, fig.height=3.9}
 plotat(a, 0, xlim = c(1, 7), ylim = c(1, 10), targetwidth = 3, quiet = FALSE) 
 ```
 ```{r, fig.width=5, fig.height=4.54}

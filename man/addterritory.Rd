@@ -16,7 +16,7 @@ addterritory(gg, x, y, color, ...)
 \item{...}{graphic paramters}
 }
 \value{
-Updated \code{ggplot} object
+\code{\link{ggoban}} object
 }
 \description{
 Add territory markers

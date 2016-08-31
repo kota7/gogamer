@@ -10,7 +10,7 @@
 #' location and color in the order of (x, y, color)
 #' @param points \code{data.frame} of territory locations
 #' @param comment character vectror of comments
-#' @return \code{gostate} returns an object of class "gostate"
+#' @return \code{gostate} object
 #'
 #' @examples
 #' gostate(data.frame(x = 4, y = 4, color = 1), 19, 0, 0)
@@ -33,16 +33,7 @@ gostate <- function(board, boardsize, b_captured, w_captured,
 }
 
 
-#' Draw board state on console
-#'
-#' @param x \code{gostate} object
-#' @param ... graphic parameters
-#'
 #' @export
-#' @method print gostate
-#'
-#' @examples
-#' stateat(mimiaka, 127)
 print.gostate <- function(x, ...)
 {
   ### print board state on console

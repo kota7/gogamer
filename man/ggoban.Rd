@@ -20,4 +20,7 @@ Draw go board
 \examples{
 ggoban(19)
 }
+\seealso{
+\code{\link{graphic_parameters}}
+}
 

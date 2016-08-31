@@ -28,7 +28,7 @@ get_transition_wrapper <- function(moves, boardsize, children = NULL)
       stop("children must be a list of integers")
   }
 
-  ## if moves contains nothing, return empty transition
+  ## if moves contain nothing, return empty transition
   if (nrow(moves) == 0L) {
     return(
       data.frame(x = integer(0), y = integer(0), value = integer(0),

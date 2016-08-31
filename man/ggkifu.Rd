@@ -4,7 +4,7 @@
 \alias{ggkifu}
 \title{One-page kifu image}
 \usage{
-ggkifu(board, note, boardsize, heights = c(7, 1), savesize = c(5, 6))
+ggkifu(board, note, boardsize, heights = NULL, savesize = NULL)
 }
 \arguments{
 \item{board}{\code{ggplot} object of board}
