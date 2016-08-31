@@ -83,13 +83,12 @@ parse_sgfnode <- function(sgf, asList = FALSE)
   id <- rep(1:n, 4L)
   tagtype <- c(rep("setup", 2L*n), rep("territory", 2L*n))
   flag <- !is.na(tmp[, 1])
-  if (any(flag)) {
+  if (any(flag)) { # match at least one
     ## remove missing cases
-    tmp <- tmp[flag, ]
     id <- id[flag]
     tagtype <- tagtype[flag]
-    position <- tmp[, 3]
-    color <- tmp[, 2]
+    position <- tmp[flag, 3]
+    color <- tmp[flag, 2]
 
     ## expand multiple properties: e.g. [ab][cd]... -> aa, cd, ...
     position <- stringr::str_extract_all(position, "[^\\[\\]]+")
@@ -137,6 +136,11 @@ parse_sgfnode <- function(sgf, asList = FALSE)
   ####
 
   # parse comments
+  ### I found it a bit hard to write an regex for skipping "\]" until the
+  ### next "]", so decided to replace "\]" by some rarely used letters first,
+  ### extract comments, then revert "\]" finally
+  ### Note that "(?<![A-Z])(C)\\[(.*?)\\]" does not catch line breaks
+  ### within comments, leading to using "(?<![A-Z])(C)\\[([^\\]]*?)\\]" instead
   ## pick a temporary replacement
   i <- 1L
   tmp_rep <- intToUtf8(i)
