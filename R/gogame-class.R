@@ -192,15 +192,17 @@ stateat <- function(x, at)
     lastmove <- NULL
   }
 
-  # territories and comment are found in a similar manner
-  if (nrow(dat) == 1L) {
-    points <- dplyr::filter_(x$point, ~move == dat$move)
-    comment <- dplyr::filter_(x$comment, ~move == dat$move) %>%
-      dplyr::select_(~comment) %>% as.character() %>% paste0(collapse = "\n")
+  # find the territories and comment,
+  ## we look for the same move number as the last move above,
+  ## except for the case with at is 0,
+  ## where find the comment and point with move = 0
+  if (at == 0L) {
+    tgt_move <- 0L
   } else {
-    points <- NULL
-    comment <- NULL
+    tgt_move <- dat$move
   }
+  points <- dplyr::filter_(x$point, ~move == tgt_move)
+  comment <- x$comment$comment[x$comment$move == tgt_move]
 
   out <- gostate(board, boardsize = x$boardsize,
                  b_captured = b_captured, w_captured = w_captured,
@@ -296,9 +298,11 @@ kifu <- function(x, from = 1L, to = 100L, restart = NA_integer_)
 set_branch <- function(x, branch = 1L)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
-  if (branch > length(x$gametree$leaf))
-    stop("this game has only ", length(x$gametree$leaf), " branch(es)")
-
+  if (branch > length(x$gametree$leaf)) {
+    mess <- c("this game has only ", length(x$gametree$leaf), " branch")
+    if (length(x$gametree$leaf) > 1) mess[3] <- " branches"
+    stop(paste0(mess, collapse = ""))
+  }
   nodes <- get_branchpath(x$gametree$parent, x$gametree$leaf[branch])
   x$transition <- dplyr::filter_(x$gametree$transition, ~nodeid %in% nodes) %>%
     dplyr::arrange_(~move)
