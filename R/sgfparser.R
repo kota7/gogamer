@@ -42,10 +42,6 @@ get_props <- function(sgf, tags) {
 #' @keywords internal
 parse_sgfnode <- function(sgf, asList = FALSE)
 {
-  # test sgf
-  #sgf <- "(;GM[1];AB[pd][dp][pp];W[dc];B[cf];W[cd];B[dj]TB[aa]TW[cc:dd])" %>%
-  #  gogamer:::make_sgftree() %>% `[[`("data")
-
   n <- length(sgf)
 
   # parse moves. By SGF rule, there must be at most one move in each node
