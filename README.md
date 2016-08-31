@@ -103,12 +103,6 @@ plotat(x, at = 127,
 
 ![](readme-fig/README-unnamed-chunk-9-1.png)
 
-``` r
-plotat(x, at = 127, colortheme = "crystal")
-```
-
-![](readme-fig/README-unnamed-chunk-9-2.png)
-
 You can also draw kifu (game record) image as below. Again, the object supports `ggsave` function.
 
 ``` r

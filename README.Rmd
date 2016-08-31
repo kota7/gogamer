@@ -77,8 +77,6 @@ plotat(x, at = 127,
        boardcolor = "gray15", gridcolor = "gray85", starcolor = "gray85",
        blackcolor = "black", whitecolor = "white", stonelinecolor = "gray50",
        axislabels = FALSE, lastmovemarker = 2)
-plotat(x, at = 127, colortheme = "crystal")
-
 ```
 
 
