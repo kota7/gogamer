@@ -5,7 +5,7 @@
 \title{Go game state}
 \usage{
 gostate(board, boardsize, b_captured, w_captured, lastmove = NULL,
-  points = NULL)
+  points = NULL, comment = NULL)
 }
 \arguments{
 \item{board}{a \code{data.frame} representing stone allocation.
@@ -19,6 +19,8 @@ It must have variables (\code{x}, \code{y}, \code{color})}
 location and color in the order of (x, y, color)}
 
 \item{points}{\code{data.frame} of territory locations}
+
+\item{comment}{character vectror of comments}
 }
 \value{
 \code{gostate} returns an object of class "gostate"

@@ -71,8 +71,10 @@ stateat(x, at = 127)
 #>  2|  + + + + + + @ O + O O + O @ @ + @ O +
 #>  1|  + + + + + + + + O + + O + @ + @ + @ +
 #> 
-#>   black captured: 5   white captured: 4 
-#>   last move: black K11
+#> black captured: 5 white captured: 4 
+#> last move: black K11
+#> 
+#> 
 ```
 
 or draw as an image.
@@ -100,6 +102,12 @@ plotat(x, at = 127,
 ```
 
 ![](readme-fig/README-unnamed-chunk-9-1.png)
+
+``` r
+plotat(x, at = 127, colortheme = "crystal")
+```
+
+![](readme-fig/README-unnamed-chunk-9-2.png)
 
 You can also draw kifu (game record) image as below. Again, the object supports `ggsave` function.
 

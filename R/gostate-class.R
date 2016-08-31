@@ -9,6 +9,7 @@
 #' @param lastmove integer vector of length three that indicates the last move
 #' location and color in the order of (x, y, color)
 #' @param points \code{data.frame} of territory locations
+#' @param comment character vectror of comments
 #' @return \code{gostate} returns an object of class "gostate"
 #'
 #' @examples
