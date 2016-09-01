@@ -13,15 +13,20 @@ struct Transition
   unsigned int x;
   unsigned int y;
   int value;
-
+  bool ismove;
+  int nodeid;
   Transition() {}
-  Transition(unsigned int mn, unsigned int a, unsigned int b, int v)
+  Transition(unsigned int mn, unsigned int xx, unsigned int yy, int val,
+             int nid, bool move)
   {
     movenumber = mn;
-    x = a;
-    y = b;
-    value = v;
+    x = xx;
+    y = yy;
+    value = val;
+    ismove = move;
+    nodeid = nid;
   }
+
 };
 
 
@@ -44,33 +49,44 @@ class Gogame
   int w_captured;
 
   unsigned int movenumber; // current move number
+  int currentnode;         // current node id
   std::vector<Transition> transitions;
 
+  // function to check liberty
+  // the one with visited argument is a recursive function
+  // the one without visited argument is a wrapper function for the other,
+  // where visited vector is prepared and calls the recursive function
+  bool HasLiberty(unsigned int x, unsigned int y);
   bool HasLiberty(unsigned int x, unsigned int y,
                   std::vector< std::vector<bool> > &visited);
+
   void RemoveChain(unsigned int x, unsigned int y);
   void CheckAndRemove(unsigned int x, unsigned int y);
 
+  // check if you can put stone
+  bool IsLegal(unsigned int x, unsigned int y, unsigned int color, bool ismove);
 
 public:
   Gogame(unsigned int s);  // no default constractor. requires board size
   void Clear();      // clear stones and prisoner counts
 
-  void Play(unsigned int color, unsigned int x,
-            unsigned int y, bool ismove);
+  void AddStone(unsigned int color, unsigned int x,
+            unsigned int y, bool ismove, int nodeid);
   // wrapper for Play
-  void BPlay(unsigned int x, unsigned int y, bool ismove)
-    { Play(BL, x, y, ismove); }
-  void WPlay(unsigned int x, unsigned int y, bool ismove)
-    { Play(WH, x, y, ismove); }
+  void AddBlackStone(unsigned int x, unsigned int y, bool ismove, int nodeid)
+    { AddStone(BL, x, y, ismove, nodeid); }
+  void AddWhiteStone(unsigned int x, unsigned int y, bool ismove, int nodeid)
+    { AddStone(WH, x, y, ismove, nodeid); }
 
   // go back to a certain move number
-  void GobackTo(int m);
+  void GobackToMove(int m);
+  void GobackToNode(int nid);
 
   // access to elements from outside
   // for returning a big object, return a reference with const modifier
-  // so it is read-only from outside
+  // so it is read-only access from outside
   unsigned int GetMoveNumber() const { return movenumber; }
+  int GetCurrentNode() const { return currentnode; }
   const std::vector<Transition> &GetTransitions() const { return transitions; }
 
   // friend function to interact with R

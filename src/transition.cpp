@@ -17,7 +17,7 @@ Rcpp::DataFrame get_transitiontree(
 
 void GetTransitionTreeRecursive(
     int currentNode, int parentPositionn, Gogame &gg,
-    std::vector<Transition> &transitionStack, std::vector<int> &nodeidNew,
+    std::vector<Transition> &transitionStack,
     const std::vector<bool> &ismove_vec,
     const std::vector<unsigned int> &x_vec,
     const std::vector<unsigned int> &y_vec,
@@ -32,7 +32,7 @@ Rcpp::DataFrame get_transitions(
     unsigned int boardsize,
     std::vector<bool> ismove_vec,
     std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec,
-    std::vector<unsigned int> color_vec)
+    std::vector<unsigned int> color_vec, int nodeid = 1)
 {
   // Obtains the transition of board configuration
   //
@@ -55,7 +55,7 @@ Rcpp::DataFrame get_transitions(
   unsigned int n = ismove_vec.size();
   for (unsigned int i = 0; i < n; i++)
   {
-    gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
+    gg.AddStone(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i], nodeid);
   }
   // compile data frame to return
   std::vector<Transition> tt = gg.GetTransitions();
@@ -69,19 +69,23 @@ Rcpp::DataFrame get_transitions(
   std::vector<int> xvec(n);
   std::vector<int> yvec(n);
   std::vector<int> vvec(n);
-
+  std::vector<bool> ismovevec(n);
+  std::vector<int> nidvec(n, nodeid);
   for (unsigned int i = 0; i < n; i++)
   {
     movevec[i] = tt[i].movenumber;
     xvec[i] = tt[i].x;
     yvec[i] = tt[i].y;
     vvec[i] = tt[i].value;
+    ismovevec[i] = tt[i].ismove;
   }
   Rcpp::DataFrame out = Rcpp::DataFrame::create(
     Rcpp::Named("move") = movevec,
     Rcpp::Named("x") = xvec,
     Rcpp::Named("y") = yvec,
-    Rcpp::Named("value") = vvec
+    Rcpp::Named("value") = vvec,
+    Rcpp::Named("ismove") = ismovevec,
+    Rcpp::Named("nodeid") = nidvec
   );
   return out;
 }
@@ -163,9 +167,8 @@ Rcpp::DataFrame get_transitiontree(
   // keep the results in these two objects
   // later compile into DataFrame
   std::vector<Transition> transitionStack;
-  std::vector<int> nodeidNew;
   GetTransitionTreeRecursive(
-    0, -1, gg, transitionStack, nodeidNew,
+    0, -1, gg, transitionStack,
     ismove_vec, x_vec, y_vec, color_vec, nodeid_vec, children, nodeStart);
 
   // compile output
@@ -174,13 +177,16 @@ Rcpp::DataFrame get_transitiontree(
   std::vector<int> y(n);
   std::vector<int> move(n);
   std::vector<int> value(n);
+  std::vector<int> nid(n);
+  std::vector<bool> ismove(n);
   for (unsigned int i = 0; i < n; i++)
   {
     x[i]     = transitionStack[i].x;
     y[i]     = transitionStack[i].y;
     move[i]  = transitionStack[i].movenumber;
     value[i] = transitionStack[i].value;
-    nodeidNew[i]++; // make it one-based
+    nid[i]   = transitionStack[i].nodeid + 1;  // '+1' to make it to one-based
+    ismove[i] = transitionStack[i].ismove;
     //Rcpp::Rcout << x[i] << "," << y[i] << "," << move[i] << "," <<
     //  value[i] << "," << nodeidNew[i] << "\n";
   }
@@ -190,7 +196,8 @@ Rcpp::DataFrame get_transitiontree(
     Rcpp::Named("x") = x,
     Rcpp::Named("y") = y,
     Rcpp::Named("value") = value,
-    Rcpp::Named("nodeid") = nodeidNew
+    Rcpp::Named("ismove") = ismove,
+    Rcpp::Named("nodeid") = nid
   );
   return out;
 }
@@ -198,7 +205,7 @@ Rcpp::DataFrame get_transitiontree(
 
 void GetTransitionTreeRecursive(
     int currentNode, int parentPosition, Gogame &gg,
-    std::vector<Transition> &transitionStack, std::vector<int> &nodeidNew,
+    std::vector<Transition> &transitionStack,
     const std::vector<bool> &ismove_vec,
     const std::vector<unsigned int> &x_vec,
     const std::vector<unsigned int> &y_vec,
@@ -207,20 +214,22 @@ void GetTransitionTreeRecursive(
     const std::vector< std::vector<unsigned int> > &children,
     const std::vector<int> &nodeStart)
 {
-  // store the move number before playing
+  // store the current node id
   // then get back to the position after going through all children
-  int previous_movenumber = gg.GetMoveNumber();
+  int previous_nodeid = gg.GetCurrentNode();
 
 
   // find the position where current node starts
   unsigned int i = nodeStart[currentNode];
-  //Rcpp::Rcout << "\nnode " << currentNode << " start at " << i << "\n";
+  // Rcpp::Rcout << "\nnode " << currentNode << " start at " << i << "\n";
+  // Rcpp::Rcout << "parent position " << parentPosition << "\n";
+  // Rcpp::Rcout << "movenumber " << gg.GetMoveNumber() << "\n";
   // apply moves until the nodeid switches
   while (i < nodeid_vec.size())
   {
-    //Rcpp::Rcout << "(" << color_vec[i] << "," << x_vec[i] << "," <<
-    //  y_vec[i] << "," << ismove_vec[i] << "," << nodeid_vec[i] << ") ";
-    gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
+    // Rcpp::Rcout << "(" << color_vec[i] << "," << x_vec[i] << "," <<
+    //   y_vec[i] << "," << ismove_vec[i] << "," << nodeid_vec[i] << ") ";
+    gg.AddStone(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i], nodeid_vec[i]);
     // this node ends when next node does not exist, or nodeid switches
     if (i + 1 == nodeid_vec.size()) break;
     if (nodeid_vec[i+1] != nodeid_vec[i]) break;
@@ -235,8 +244,6 @@ void GetTransitionTreeRecursive(
   transitionStack.reserve(transitionStack.size() + n);
   transitionStack.insert(transitionStack.end(),
                          tt.begin() + parentPosition + 1, tt.end());
-  // also update the nodeidNew vector
-  nodeidNew.resize(nodeidNew.size() + n, currentNode);
   parentPosition = tt.size() - 1;
 
 
@@ -246,11 +253,11 @@ void GetTransitionTreeRecursive(
   for (unsigned int i = 0; i < children[currentNode].size(); i++)
   {
     GetTransitionTreeRecursive(
-      children[currentNode][i], parentPosition, gg, transitionStack, nodeidNew,
+      children[currentNode][i], parentPosition, gg, transitionStack,
       ismove_vec, x_vec, y_vec, color_vec, nodeid_vec, children, nodeStart);
   }
   // revert the gogame position
-  gg.GobackTo(previous_movenumber);
+  gg.GobackToNode(previous_nodeid);
 }
 
 

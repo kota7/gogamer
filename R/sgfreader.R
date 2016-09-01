@@ -81,7 +81,8 @@ parse_sgf <- function(sgf) {
   ### certin game point properly
   ### this consideration would be unnecessary if AB and AW tags appear only
   ### at the beginning of the game, though
-  parsed$moves <- dplyr::arrange_(parsed$moves, ~id, ~dplyr::desc(ismove))
+  #parsed$moves <- dplyr::arrange_(parsed$moves, ~id, ~dplyr::desc(ismove))
+  ### no need for this
 
   ## obtain the transitions
   transitions <- get_transition_wrapper(

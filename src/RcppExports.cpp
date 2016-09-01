@@ -76,8 +76,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_transitions
-Rcpp::DataFrame get_transitions(unsigned int boardsize, std::vector<bool> ismove_vec, std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec, std::vector<unsigned int> color_vec);
-RcppExport SEXP gogamer_get_transitions(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP) {
+Rcpp::DataFrame get_transitions(unsigned int boardsize, std::vector<bool> ismove_vec, std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec, std::vector<unsigned int> color_vec, int nodeid);
+RcppExport SEXP gogamer_get_transitions(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP, SEXP nodeidSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -86,7 +86,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type x_vec(x_vecSEXP);
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type y_vec(y_vecSEXP);
     Rcpp::traits::input_parameter< std::vector<unsigned int> >::type color_vec(color_vecSEXP);
-    __result = Rcpp::wrap(get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec));
+    Rcpp::traits::input_parameter< int >::type nodeid(nodeidSEXP);
+    __result = Rcpp::wrap(get_transitions(boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid));
     return __result;
 END_RCPP
 }

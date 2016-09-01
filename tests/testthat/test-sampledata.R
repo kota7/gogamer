@@ -82,6 +82,14 @@ test_that("points", {
 })
 
 
+test_that("tsumego", {
+  x <- read_sgf(system.file("testdata/tsumego1.sgf", package = "gogamer"))
+  expect_true(all(x$transition$ismove[x$transition$move == 0L] == FALSE))
+
+  x <- read_sgf(system.file("testdata/tsumego2.sgf", package = "gogamer"))
+  expect_true(all(x$transition$ismove[x$transition$move == 0L] == FALSE))
+})
+
 
 test_that("kgs", {
   x <- read_sgf(system.file("testdata/kgs1.sgf", package = "gogamer"))

@@ -31,8 +31,8 @@ make_sgftree <- function(sgf, bynode = TRUE) {
     .Call('gogamer_make_sgftree', PACKAGE = 'gogamer', sgf, bynode)
 }
 
-get_transitions <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec) {
-    .Call('gogamer_get_transitions', PACKAGE = 'gogamer', boardsize, ismove_vec, x_vec, y_vec, color_vec)
+get_transitions <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid = 1L) {
+    .Call('gogamer_get_transitions', PACKAGE = 'gogamer', boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid)
 }
 
 get_transitiontree <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid_vec, children, onebased) {
