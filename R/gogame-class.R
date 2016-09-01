@@ -184,7 +184,7 @@ gogame <- function(properties, gametree)
   ### compile output
   out <- structure(
     .Data = c(properties, list(gametree = gametree)), class = "gogame")
-  out <- set_branch(out, 1L)
+  out <- set_gamepath(out, 1L)
 
   ## store the move count of main branch (branch = 1)
   out$mainbranchmoves <- max(c(0L, out$transition$move))
@@ -237,7 +237,8 @@ print.gogame <- function(x, ...)
 
   if (length(x$gametree$leaf) > 1L) {
     cat(sprintf(
-      "\n* currently at branch %d / %d\n", x$branch, length(x$gametree$leaf)))
+      "\n* currently at path %d / %d (%d moves)\n",
+      x$pathid, length(x$gametree$leaf), max(c(0L, x$transition$move))))
   }
 }
 
@@ -416,21 +417,24 @@ kifuplot <- function(x, from = 1L, to = 100L, restart = NA_integer_, ...)
 }
 
 
-#' Switch branch of go game
+#' Switch path of go game
+#' @description Switch path of a go game. Paths are indexed by integers starting
+#' at one. If pathid exceeds the number of paths stored in the game, the function
+#' throws an error.
 #' @param x  \code{gogame} object
-#' @param branch integer
+#' @param pathid integer
 #'
 #' @return \code{gogame} object
 #' @export
-set_branch <- function(x, branch = 1L)
+set_gamepath <- function(x, pathid = 1L)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
-  if (branch > length(x$gametree$leaf)) {
-    mess <- c("this game has only ", length(x$gametree$leaf), " branch")
-    if (length(x$gametree$leaf) > 1) mess[3] <- " branches"
+  if (pathid > length(x$gametree$leaf)) {
+    mess <- c("this game has only ", length(x$gametree$leaf), " game path")
+    if (length(x$gametree$leaf) > 1) mess[3] <- " paths"
     stop(paste0(mess, collapse = ""))
   }
-  nodes <- get_branchpath(x$gametree$parent, x$gametree$leaf[branch])
+  nodes <- get_branchpath(x$gametree$parent, x$gametree$leaf[pathid])
   x$transition <- dplyr::filter_(x$gametree$transition, ~nodeid %in% nodes) %>%
     dplyr::arrange_(~move)
   x$point <- dplyr::filter_(x$gametree$point, ~nodeid %in% nodes) %>%
@@ -439,7 +443,7 @@ set_branch <- function(x, branch = 1L)
     dplyr::arrange_(~move)
 
   ## store the current branch id
-  x$branch <- as.integer(branch)
+  x$pathid <- as.integer(pathid)
 
   return(x)
 }
