@@ -67,9 +67,11 @@ public:
   // go back to a certain move number
   void GobackTo(int m);
 
-  // accessing elements
+  // access to elements from outside
+  // for returning a big object, return a reference with const modifier
+  // so it is read-only from outside
   unsigned int GetMoveNumber() const { return movenumber; }
-  std::vector<Transition> GetTransitions() const { return transitions; }
+  const std::vector<Transition> &GetTransitions() const { return transitions; }
 
   // friend function to interact with R
   // returns a data frame containing the transition of board configuration

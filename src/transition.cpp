@@ -213,9 +213,12 @@ void GetTransitionTreeRecursive(
 
   // find the position where current node starts
   unsigned int i = nodeStart[currentNode];
+  //Rcpp::Rcout << "\nnode " << currentNode << " start at " << i << "\n";
   // apply moves until the nodeid switches
   while (i < nodeid_vec.size())
   {
+    //Rcpp::Rcout << "(" << color_vec[i] << "," << x_vec[i] << "," <<
+    //  y_vec[i] << "," << ismove_vec[i] << "," << nodeid_vec[i] << ") ";
     gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
     // this node ends when next node does not exist, or nodeid switches
     if (i + 1 == nodeid_vec.size()) break;
@@ -233,9 +236,9 @@ void GetTransitionTreeRecursive(
                          tt.begin() + parentPosition + 1, tt.end());
   // also update the nodeidNew vector
   nodeidNew.resize(nodeidNew.size() + n, currentNode);
+  parentPosition = tt.size() - 1;
 
 
-  parentPosition = -1;
   // go to children node
   // children node should receive updated parentPosition,
   // which equals the size of tt
