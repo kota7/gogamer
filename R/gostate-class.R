@@ -26,6 +26,12 @@ gostate <- function(board, boardsize, b_captured, w_captured,
   if (!all(c("x", "y", "color") %in% names(board)))
     stop("board must have variables 'x' 'y' and 'color'")
 
+  # remove points with out-of-bound rows
+  if (!is.null(points)) {
+    points <- dplyr::filter_(points,
+                             ~x >= 1L, ~y >= 1L,
+                             ~x <= boardsize, ~y <= boardsize)
+  }
   out <- structure(
     .Data = list(board = board, boardsize = boardsize, movenumber = movenumber,
                  b_captured = b_captured, w_captured = w_captured,
@@ -74,9 +80,15 @@ print.gostate <- function(x, ...)
       "  white captured:", x$w_captured, "\n")
   if (!is.null(x$lastmove)) {
     color <- ifelse(x$lastmove[3] == BLACK, "black", "white")
-    xpos <- graphic_param$xlabels[x$lastmove[1]]
-    ypos <- graphic_param$ylabels[x$lastmove[2]]
-    cat(sprintf("  last move: %s %s%s\n", color, xpos, ypos))
+    if (x$lastmove[1] < 1L || x$lastmove[2] < 1L ||
+        x$lastmove[1] > x$boardsize || x$lastmove[2] > x$boardsize) {
+      # out-of-bounds, means pass
+      cat(sprintf("  last move: %s pass\n", color))
+    } else {
+      xpos <- graphic_param$xlabels[x$lastmove[1]]
+      ypos <- graphic_param$ylabels[x$lastmove[2]]
+      cat(sprintf("  last move: %s %s%s\n", color, xpos, ypos))
+    }
   }
 
   if (!is.null(x$comment)) {
@@ -105,16 +117,24 @@ print.gostate <- function(x, ...)
 plot.gostate <- function(x, y, marklast = TRUE, markpoints = FALSE, ...)
 {
   # draw stone allocation
+  # remove pass moves
+  notPass <- (x$board$x >= 1L && x$board$x <= x$boardsize &&
+                x$board$y >= 1L && x$board$y <= x$boardsize)
   out <- ggoban(x$boardsize, ...) %>%
-    addstones(x = x$board$x, y = x$board$y, color = x$board$color)
+    addstones(x = x$board$x[notPass], y = x$board$y[notPass],
+              color = x$board$color[notPass])
 
   # add marker to the last move
   if (marklast && !is.null(x$lastmove)) {
-    lastmovemarker <- attr(out, "graphic_param")$lastmovemarker
-    graphic_param <- set_graphic_param(...)
-    out <- out %>%
-      addmarkers(x = x$lastmove[1], y = x$lastmove[2], color = x$lastmove[3],
-                 marker = lastmovemarker)
+    # plot marker only when last move is not pass
+    if (x$lastmove[1] >= 1L && x$lastmove[2] >= 1L &&
+        x$lastmove[1] <= x$boardsize && x$lastmove[2] <= x$boardsize) {
+      lastmovemarker <- attr(out, "graphic_param")$lastmovemarker
+      graphic_param <- set_graphic_param(...)
+      out <- out %>%
+        addmarkers(x = x$lastmove[1], y = x$lastmove[2], color = x$lastmove[3],
+                   marker = lastmovemarker)
+    }
   }
 
   if (markpoints && !is.null(x$points)) {

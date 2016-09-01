@@ -85,12 +85,25 @@ test_that("points", {
 
 test_that("kgs", {
   x <- read_sgf(system.file("testdata/kgs1.sgf", package = "gogamer"))
-  #expect_equal(x$blackrank, "1k")
-  #expect_equal(x$whiterank, "1d")
-  #expect_equal(nrow(x$comment), 3L)
-  #expect_equal(nrow(x$point), 0L)  # finishes with resign
+  expect_equal(x$blackrank, "1k")
+  expect_equal(x$whiterank, "1d")
+  expect_equal(nrow(x$comment), 3L)
+  expect_equal(nrow(x$point), 0L)  # finishes with resign
 
-  #x <- read_sgf("tests/sample/kgs2.sgf")
+  x <- read_sgf(system.file("testdata/kgs2.sgf", package = "gogamer"))
+  y <- stateat(x, Inf)
+  expect_equal(nrow(y$points), 113L)
+  plot(y, markpoints = TRUE)
+})
+
+
+test_that("big file", {
+  x <- read_sgf(system.file("testdata/move1e5.sgf.gz", package = "gogamer"))
+  expect_equal(x$mainbranchmoves, 125899L)
+  y <- stateat(x, Inf)
+  expect_equal(y$b_captured, 62934L)
+  expect_equal(y$w_captured, 62936L)
+
 
 })
 

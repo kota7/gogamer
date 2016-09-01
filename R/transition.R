@@ -18,6 +18,7 @@ get_transition_wrapper <- function(moves, boardsize, children = NULL)
   #     x, y, value, move, nodeid: integer
   #
 
+
   ## input type
   if (!is.data.frame(moves)) stop("moves must be data.frame")
   if (!is.integer(boardsize)) stop("boardsize must be an integer")

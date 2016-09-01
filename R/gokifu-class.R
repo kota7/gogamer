@@ -83,7 +83,7 @@ print.gokifu <- function(x, ...)
   # add vertical label
   y <- paste(sprintf("%3s| ", graphic_param$ylabels), y, sep = "")
 
-  # flip y-axis so that the  origin is at the left bottom
+  # flip y-axis so that the origin is at the left bottom
   y <- rev(y)
 
   # add horizontal label
@@ -96,11 +96,17 @@ print.gokifu <- function(x, ...)
   cat(y, "\n")
 
   # outside note
+  ## if coordinates are out-of-bounds, show "pass"
+  ## velow, v1 and v2 are x, y coordinates to print
+  v1 <- rep("pass", nrow(x$noted)) # x coordinate
+  v2 <- rep("", nrow(x$noted))     # y coordinate
+  notPass <- (x$noted$x >= 1L & x$noted$y >= 1L &
+                x$noted$x <= x$boardsize & x$noted$y <= x$boardsize)
+  v1[notPass] <- graphic_param$xlabels[x$noted$x[notPass]]
+  v2[notPass] <- graphic_param$ylabels[x$noted$y[notPass]]
   z <- sprintf("%s%d=%s%s",
                ifelse(x$noted$color == BLACK, "B", "W"),
-               x$noted$move - origin,
-               graphic_param$xlabels[x$noted$x],
-               graphic_param$ylabels[x$noted$y])
+               x$noted$move - origin, v1, v2)
   maxlen <- x$boardsize * 3L  # nchar per line
   cumlen <- cumsum(nchar(z) + 2)
   linenum <- floor(cumlen/maxlen)
@@ -228,9 +234,17 @@ kifunote <- function(x, ...)
                    adjustsizeonboard = FALSE, ...)
 
   # add text
-  ll <- paste("    ",
-              graphic_param$xlabels[x$noted$x],
-              graphic_param$ylabels[x$noted$y], sep = "")
+  ## coordinate to show
+  ## v1, v2 correspond to x and y.
+  ## if pass, then show 'pass'
+  v1 <- rep("pass", nrow(x$noted)) # x coordinate
+  v2 <- rep("", nrow(x$noted))     # y coordinate
+  notPass <- (x$noted$x >= 1L & x$noted$y >= 1L &
+                x$noted$x <= x$boardsize & x$noted$y <= x$boardsize)
+  v1[notPass] <- graphic_param$xlabels[x$noted$x[notPass]]
+  v2[notPass] <- graphic_param$ylabels[x$noted$y[notPass]]
+
+  ll <- paste("    ", v1, v2, sep = "")
   dat <- data.frame(xx, yy, ll)
   out <- out +
     ggplot2::geom_text(data = dat,

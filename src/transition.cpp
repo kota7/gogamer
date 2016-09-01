@@ -54,8 +54,9 @@ Rcpp::DataFrame get_transitions(
 
   unsigned int n = ismove_vec.size();
   for (unsigned int i = 0; i < n; i++)
+  {
     gg.Play(color_vec[i], x_vec[i], y_vec[i], ismove_vec[i]);
-
+  }
   // compile data frame to return
   std::vector<Transition> tt = gg.GetTransitions();
   n = tt.size();

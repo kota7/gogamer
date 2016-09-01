@@ -80,6 +80,10 @@ void Gogame::Play(unsigned int color, unsigned int x,
                   unsigned int y, bool ismove)
 {
   // play a move by color at (x, y)
+  // if x or y is out-of-bounds, this is regarded as 'pass' move
+  //
+  // ismove indicates whether this is a move or setup
+  // if setup, the movenumber does not increase
 
   // TODO:
   //   check if legal move
@@ -89,10 +93,15 @@ void Gogame::Play(unsigned int color, unsigned int x,
   //     ko
   // for now, assume moves are valid
 
-
   // ismove flag indicates if this play is a move or setup
   if (ismove) movenumber++;
 
+  // coordinates out of bounds are regarded as pass,
+  // append transition, but do nothing afterwards
+  if (x < 1 || y < 1 || x > boardsize || y > boardsize) {
+    transitions.push_back(Transition(movenumber, 0, 0, color));
+    return;
+  }
 
   // put the stone temporarily
   board[y][x] = color;

@@ -8,7 +8,7 @@
 #' @export
 read_sgf <- function(path, ...) {
   readLines(path, ...) %>%
-    paste0(collapse = "\n") %>%
+    paste0(collapse = " ") %>%
     parse_sgf() %>%
     return()
 }

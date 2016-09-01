@@ -181,6 +181,13 @@ gogame <- function(properties, gametree)
   }
 
 
+  ### remove points with out-of-bounds coordinates
+  ### do not do the same for transition or move since OB represents pass
+  gametree$point <- dplyr::filter_(gametree$point,
+                                   ~x >= 1L, ~x <= properties$boardsize,
+                                   ~y >= 1L, ~y <= properties$boardsize)
+
+
   ### compile output
   out <- structure(
     .Data = c(properties, list(gametree = gametree)), class = "gogame")
@@ -278,10 +285,13 @@ stateat <- function(x, at)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 
+
+  boardsize <- x$boardsize
   # the following data frame represent the board state in
   # dense matrix format
   board <- x$transition %>%
-    dplyr::filter_(~move <= at) %>%
+    dplyr::filter_(~move <= at, ~x >= 1L, ~y >= 1L,
+                   ~x <= boardsize, ~y <= boardsize) %>%
     dplyr::group_by_(~x, ~y) %>%
     dplyr::summarize_(value = ~sum(value)) %>%
     dplyr::filter_(~value > 0L) %>%
@@ -376,7 +386,10 @@ kifu <- function(x, from = 1L, to = 100L, restart = NA_integer_)
   # finally, for each (x, y), the first entry (smallest move number)
   # is the ones to be marked in the kifu
   # the other moves are listed outside
-  flg <- !duplicated(dplyr::select_(out, ~x, ~y))
+  # also, if (x, y) is out of bounds then this is regarded as pass and
+  # to be listed outside
+  flg <- !duplicated(dplyr::select_(out, ~x, ~y)) &
+    (out$x >= 1L & out$y >= 1L & out$x <= x$boardsize & out$y <= x$boardsize)
 
   # define three separate data frames
   # init      ... initial board state (shown on the board, no number)
