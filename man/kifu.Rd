@@ -5,7 +5,7 @@
 \alias{kifuplot}
 \title{Kifu for certain move range}
 \usage{
-kifu(x, from = 1L, to = 100L, restart = NA_integer_)
+kifu(x, from = 1L, to = 99L, restart = NA_integer_)
 
 kifuplot(x, from = 1L, to = 100L, restart = NA_integer_, ...)
 }

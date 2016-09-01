@@ -8,8 +8,10 @@
 #'
 #' @details The game played between Sai and Toya Koyo on internet in the comic
 #' "Hikaru no Go", Episode 112-115.
-#' The game is identical to a Japanese professional game between
+#' The game is originally played by Japanese professionals
 #' Yoda Notimoto and Rin Kaiho on May 1st, 1997.
+#' In the comic, Toya Koyo resigns when he realizes that
+#' the game would eventually end with his loss by 0.5 point.
 #'
 #' @format \code{gogame} object
 #'
