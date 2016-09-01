@@ -54,7 +54,7 @@ ggoban(9, axislabels = FALSE) %>% addstones(c(5, 6, 1), c(5, 5, 1), c(1, 2, 1))
 
 ## Territory plot
 ```{r, fig.width=5, fig.height=5}
-x <- read_sgf("../tests/sample/points.sgf")
+x <- read_sgf(system.file("testdata/multiend.sgf", package = "gogamer"))
 plotat(x, 100, markpoints = TRUE)
 plotat(x, 100, markpoints = TRUE, marklast = FALSE, territoryshape = 22)
 plotat(x, 100, markpoints = TRUE, blackcolor = "blue", whitecolor = "red")
@@ -107,7 +107,7 @@ kifu(mimiaka) %>% plot(axislabels = FALSE)
 ```
 
 ```{r, fig.width=5, fig.height=6.32}
-y <- read_sgf("../tests/sample/ko.sgf")
+y <- read_sgf(system.file("testdata/ko.sgf", package = "gogamer"))
 kifu(y, 1, 108) %>% plot()
 ```
 
@@ -121,7 +121,7 @@ kifu(y, 101, 108) %>% plot(axislabels = FALSE)
 ### For smaller board
 ```{r, fig.width=5, fig.height=5.96}
 # fig.width=5, fig.height=5.96
-z <- read_sgf("../tests/sample/ko9.sgf")
+z <- read_sgf(system.file("testdata/ko9.sgf", package = "gogamer"))
 kifu(z) %>% plot()
 ```
 
@@ -156,7 +156,7 @@ kifu(z, 3, 40) %>% plot(adjustsizeonnote = TRUE, moveperrow = 4)
 
 
 ### with color themes
-```{r, fig.width=5, fig.height=5.6}
+```{r, echo=TRUE, fig.height=5.6, fig.width=5}
 kifu(mimiaka) %>% plot(colortheme = "dark")
 kifu(mimiaka) %>% plot(colortheme = "bw")
 kifu(mimiaka) %>% plot(colortheme = "pastel")
@@ -166,24 +166,27 @@ kifu(mimiaka) %>% plot(colortheme = "crystal")
 
 ## Partial board
 ```{r, fig.width=5, fig.height=5}
-a <- read_sgf("../tests/sample/tsumego1.sgf")
-b <- read_sgf("../tests/sample/tsumego2.sgf")
-d <- read_sgf("../tests/sample/joseki.sgf")
+a <- read_sgf(system.file("testdata/tsumego1.sgf", package = "gogamer"))
+b <- read_sgf(system.file("testdata/tsumego2.sgf", package = "gogamer"))
+d <- read_sgf(system.file("testdata/joseki.sgf", package = "gogamer"))
 ```
 ```{r, fig.width=3, fig.height=3.9}
-plotat(a, 0, xlim = c(1, 7), ylim = c(1, 10), targetwidth = 3, quiet = FALSE) 
+plotat(a, 0, xlim = c(1, 7), ylim = c(1, 10), targetwidth = 3) 
 ```
 ```{r, fig.width=5, fig.height=4.54}
 kifu(a, 1, 5) %>% plot(xlim = c(1, 10), ylim = c(1, 9))
 ```
-```{r, fig.width=5, fig.height=6.11}
-plotat(b, 0, xlim = c(1, 9), ylim = c(1, 10), quiet = FALSE)
+```{r, fig.width=5, fig.height=5.43}
+plotat(b, 0, xlim = c(1, 9), ylim = c(1, 10))
 ```
-```{r, fig.width=5, fig.height=6.11}
+
+```{r, fig.width=5, fig.height=6.1}
 kifu(b, 1, 9) %>% plot(xlim = c(1, 9), ylim = c(1, 10))
 kifu(b, 1, 9) %>% plot(xlim = c(1, 9), ylim = c(1, 10), axislabels = FALSE)
 ```
+
+
 ```{r, fig.width=3, fig.height=3}
-plotat(d, 10, xlim = c(9, 19), ylim = c(9, 19), targetwidth = 3, quiet = FALSE) 
+plotat(d, 10, xlim = c(9, 19), ylim = c(9, 19), targetwidth = 3) 
 ```
 

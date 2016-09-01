@@ -365,7 +365,7 @@ plotat <- function(x, at, ...)
 #' @export
 #' @examples
 #' kifu(saikoyo)
-kifu <- function(x, from = 1L, to = 100L, restart = NA_integer_)
+kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 

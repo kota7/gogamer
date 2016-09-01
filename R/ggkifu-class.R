@@ -14,13 +14,14 @@ ggkifu <- function(board, note, boardsize,
   if (is.null(note)) {
     x <- board
   } else {
-    x <- gridExtra::grid.arrange(board, note, heights = heights)
-    # TODO: this height should be altered
+    x <- gridExtra::arrangeGrob(board, note, heights = heights)
   }
 
+  # keep components separately
+  x$board <- board
+  x$note <- note
+
   attr(x, "boardsize") <- boardsize
-  attr(x, "board") <- board
-  attr(x, "note") <- note
   attr(x, "savesize") <- savesize
   class(x) <- c("ggkifu", class(x))
   return(x)

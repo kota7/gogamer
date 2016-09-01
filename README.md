@@ -71,8 +71,9 @@ stateat(x, at = 127)
 #>  2|  + + + + + + @ O + O O + O @ @ + @ O +
 #>  1|  + + + + + + + + O + + O + @ + @ + @ +
 #> 
-#> black captured: 5 white captured: 4 
-#> last move: black K11
+#>   move 127 
+#>   black captured: 5   white captured: 4 
+#>   last move: black K11
 #> 
 #> 
 ```
