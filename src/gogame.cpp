@@ -76,7 +76,8 @@ void Gogame::Summary()
 }
 
 
-void Gogame::Play(unsigned int color, unsigned int x, unsigned int y, bool ismove)
+void Gogame::Play(unsigned int color, unsigned int x,
+                  unsigned int y, bool ismove)
 {
   // play a move by color at (x, y)
 
@@ -305,45 +306,6 @@ void Gogame::GobackTo(int m)
 }
 
 
-
-
-Rcpp::DataFrame GetTransitionsAsDF(Gogame g)
-{
-  // return the game transition as data.frame object
-  //
-  // Args:
-  //   g : Gogame object
-  //
-  // Return:
-  //   data.frame
-
-  unsigned int n = g.transitions.size();
-
-  // although move, x, y are all nonnegative,
-  // they should be declared as int type, so that
-  // they can be passed to R properly
-  // R does not recognize unsigned int type, and
-  // regard it as double
-  std::vector<int> movevec(n);
-  std::vector<int> xvec(n);
-  std::vector<int> yvec(n);
-  std::vector<int> vvec(n);
-
-  for (unsigned int i = 0; i < n; i++)
-  {
-    movevec[i] = g.transitions[i].movenumber;
-    xvec[i] = g.transitions[i].x;
-    yvec[i] = g.transitions[i].y;
-    vvec[i] = g.transitions[i].value;
-  }
-  Rcpp::DataFrame out = Rcpp::DataFrame::create(
-    Rcpp::Named("move") = movevec,
-    Rcpp::Named("x") = xvec,
-    Rcpp::Named("y") = yvec,
-    Rcpp::Named("value") = vvec
-  );
-  return out;
-}
 
 
 

@@ -56,7 +56,8 @@ public:
   Gogame(unsigned int s);  // no default constractor. requires board size
   void Clear();      // clear stones and prisoner counts
 
-  void Play(unsigned int color, unsigned int x, unsigned int y, bool ismove);
+  void Play(unsigned int color, unsigned int x,
+            unsigned int y, bool ismove);
   // wrapper for Play
   void BPlay(unsigned int x, unsigned int y, bool ismove)
     { Play(BL, x, y, ismove); }
@@ -72,7 +73,8 @@ public:
 
   // friend function to interact with R
   // returns a data frame containing the transition of board configuration
-  friend Rcpp::DataFrame GetTransitionsAsDF(Gogame g);
+  //friend Rcpp::DataFrame GetTransitionsAsDF(Gogame g);
+  // This function has been removed.
 
   // for debugging
   void Summary();

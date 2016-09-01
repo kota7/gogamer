@@ -35,8 +35,8 @@ get_transitions <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec) {
     .Call('gogamer_get_transitions', PACKAGE = 'gogamer', boardsize, ismove_vec, x_vec, y_vec, color_vec)
 }
 
-get_transitiontree <- function(data, children, boardsize, onebased = TRUE) {
-    .Call('gogamer_get_transitiontree', PACKAGE = 'gogamer', data, children, boardsize, onebased)
+get_transitiontree <- function(boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid_vec, children, onebased) {
+    .Call('gogamer_get_transitiontree', PACKAGE = 'gogamer', boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid_vec, children, onebased)
 }
 
 tree_compressor <- function(children, onebased = TRUE) {

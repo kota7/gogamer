@@ -91,16 +91,20 @@ BEGIN_RCPP
 END_RCPP
 }
 // get_transitiontree
-Rcpp::ListOf<Rcpp::DataFrame> get_transitiontree(Rcpp::ListOf<Rcpp::DataFrame> data, std::vector< std::vector<unsigned int> > children, unsigned int boardsize, bool onebased);
-RcppExport SEXP gogamer_get_transitiontree(SEXP dataSEXP, SEXP childrenSEXP, SEXP boardsizeSEXP, SEXP onebasedSEXP) {
+Rcpp::DataFrame get_transitiontree(unsigned int boardsize, std::vector<bool> ismove_vec, std::vector<unsigned int> x_vec, std::vector<unsigned int> y_vec, std::vector<unsigned int> color_vec, std::vector<int> nodeid_vec, std::vector< std::vector<unsigned int> > children, bool onebased);
+RcppExport SEXP gogamer_get_transitiontree(SEXP boardsizeSEXP, SEXP ismove_vecSEXP, SEXP x_vecSEXP, SEXP y_vecSEXP, SEXP color_vecSEXP, SEXP nodeid_vecSEXP, SEXP childrenSEXP, SEXP onebasedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::DataFrame> >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< std::vector< std::vector<unsigned int> > >::type children(childrenSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type boardsize(boardsizeSEXP);
+    Rcpp::traits::input_parameter< std::vector<bool> >::type ismove_vec(ismove_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<unsigned int> >::type x_vec(x_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<unsigned int> >::type y_vec(y_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<unsigned int> >::type color_vec(color_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type nodeid_vec(nodeid_vecSEXP);
+    Rcpp::traits::input_parameter< std::vector< std::vector<unsigned int> > >::type children(childrenSEXP);
     Rcpp::traits::input_parameter< bool >::type onebased(onebasedSEXP);
-    __result = Rcpp::wrap(get_transitiontree(data, children, boardsize, onebased));
+    __result = Rcpp::wrap(get_transitiontree(boardsize, ismove_vec, x_vec, y_vec, color_vec, nodeid_vec, children, onebased));
     return __result;
 END_RCPP
 }

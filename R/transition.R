@@ -65,11 +65,9 @@ get_transition_wrapper <- function(moves, boardsize, children = NULL)
 
   ## if children has more than one entries, then there are multiple nodes
   ### convert moves into a list of dataframes before using the tree parser
-  moves <- lapply(seq(length(children)), function(i) dplyr::filter_(moves, ~nodeid == i))
-  out <- get_transitiontree(moves, children, boardsize)
-  ### then parse the result into a data.frame
-  nodeid <- Map(rep, seq(length(out)), lapply(out, nrow)) %>% unlist()
-  out <- dplyr::bind_rows(out) %>% dplyr::mutate(nodeid = nodeid)
+  out <- get_transitiontree(
+    boardsize, moves$ismove, moves$x, moves$y, moves$color, moves$nodeid,
+    children, TRUE)
   return(out)
 }
 
