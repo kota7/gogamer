@@ -2,19 +2,21 @@
 % Please edit documentation in R/gogame-class.R
 \name{set_gamepath}
 \alias{set_gamepath}
-\title{Switch game path of go game}
+\title{Switch path of go game}
 \usage{
 set_gamepath(x, pathid = 1L)
 }
 \arguments{
 \item{x}{\code{gogame} object}
 
-\item{branch}{integer}
+\item{pathid}{integer}
 }
 \value{
 \code{gogame} object
 }
 \description{
-Switch game path of go game
+Switch path of a go game. Paths are indexed by integers starting
+at one. If pathid exceeds the number of paths stored in the game, the function
+throws an error.
 }
 

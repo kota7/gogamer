@@ -323,7 +323,7 @@ stateat <- function(x, at)
   points <- dplyr::filter_(x$point, ~move == tgt_move)
   comment <- x$comment$comment[x$comment$move == tgt_move]
 
-  out <- gostate(board, boardsize = x$boardsize,
+  out <- gostate(board, boardsize = x$boardsize, movenumber = tgt_move,
                  b_captured = b_captured, w_captured = w_captured,
                  lastmove = lastmove, points = points, comment = comment)
   return(out)
@@ -437,6 +437,8 @@ set_gamepath <- function(x, pathid = 1L)
   nodes <- get_branchpath(x$gametree$parent, x$gametree$leaf[pathid])
   x$transition <- dplyr::filter_(x$gametree$transition, ~nodeid %in% nodes) %>%
     dplyr::arrange_(~move)
+  #x$move <- dplyr::filter_(x$gametree$move, ~nodeid %in% nodes) %>%
+  #  dplyr::arrange_(~move)
   x$point <- dplyr::filter_(x$gametree$point, ~nodeid %in% nodes) %>%
     dplyr::arrange_(~move)
   x$comment <- dplyr::filter_(x$gametree$comment, ~nodeid %in% nodes) %>%

@@ -6,6 +6,7 @@
 #' It must have variables (\code{x}, \code{y}, \code{color})
 #' @param boardsize baord size (integer)
 #' @param b_captured,w_captured  numbers of captured stone (integer)
+#' @param movenumber integer of move number
 #' @param lastmove integer vector of length three that indicates the last move
 #' location and color in the order of (x, y, color)
 #' @param points \code{data.frame} of territory locations
@@ -16,7 +17,8 @@
 #' gostate(data.frame(x = 4, y = 4, color = 1), 19, 0, 0)
 #' @export
 gostate <- function(board, boardsize, b_captured, w_captured,
-                    lastmove = NULL, points = NULL, comment = NULL)
+                    movenumber = NULL, lastmove = NULL,
+                    points = NULL, comment = NULL)
 {
   # argument check
   if (!is.data.frame(board))
@@ -25,7 +27,7 @@ gostate <- function(board, boardsize, b_captured, w_captured,
     stop("board must have variables 'x' 'y' and 'color'")
 
   out <- structure(
-    .Data = list(board = board, boardsize = boardsize,
+    .Data = list(board = board, boardsize = boardsize, movenumber = movenumber,
                  b_captured = b_captured, w_captured = w_captured,
                  lastmove = lastmove, points = points, comment = comment),
     class = "gostate")
@@ -67,13 +69,14 @@ print.gostate <- function(x, ...)
   cat(y)
 
   cat("\n\n")
-  cat("black captured:", x$b_captured,
-      "white captured:", x$w_captured, "\n")
+  cat("  move", x$movenumber, "\n")
+  cat("  black captured:", x$b_captured,
+      "  white captured:", x$w_captured, "\n")
   if (!is.null(x$lastmove)) {
     color <- ifelse(x$lastmove[3] == BLACK, "black", "white")
     xpos <- graphic_param$xlabels[x$lastmove[1]]
     ypos <- graphic_param$ylabels[x$lastmove[2]]
-    cat(sprintf("last move: %s %s%s\n", color, xpos, ypos))
+    cat(sprintf("  last move: %s %s%s\n", color, xpos, ypos))
   }
 
   if (!is.null(x$comment)) {
