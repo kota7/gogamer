@@ -113,3 +113,8 @@ test_that("big file", {
   expect_equal(y$w_captured, 62936L)
 })
 
+
+## TODO
+## add test for escape
+## add test for add and delete stone
+
