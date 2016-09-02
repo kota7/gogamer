@@ -73,7 +73,8 @@ check_tree_structure <- function(parent, children, leaf)
 
 
 
-children_to_parent <- function(children)
+
+children_to_parentR <- function(children)
 {
   # create parent from children
   #
@@ -91,7 +92,10 @@ children_to_parent <- function(children)
   return(parent)
 }
 
-parent_to_children <- function(parent)
+
+
+
+parent_to_childrenR <- function(parent)
 {
   # create children from parent
   #
@@ -101,8 +105,7 @@ parent_to_children <- function(parent)
   # Returns:
   #   list of integer vectors of children pointers
 
-  children <- lapply(seq_along(parent), function(i) which(i == parent))
-  return(children)
+  return(lapply(seq_along(parent), function(i) which(i == parent)))
 }
 
 parent_to_leaf <- function(parent)
@@ -115,6 +118,12 @@ parent_to_leaf <- function(parent)
   # Returns:
   #   integer vectors of leaf pointers
 
-  leaf <- seq_along(parent) %>% setdiff(parent)
-  return(leaf)
+  return(seq_along(parent) %>% setdiff(parent))
 }
+
+
+# lazy switch between R and C++ code
+#children_to_parent <- children_to_parentR
+#parent_to_children <- parent_to_childrenR
+children_to_parent <- children_to_parentC
+parent_to_children <- parent_to_childrenC

@@ -78,7 +78,7 @@ test_that("points", {
   expect_equal(xlead, c(3.5, 6.5, -0.5))
 
   # note. In all variation there is no dead stone on the board
-  # so the xlead matches to the game outcome
+  # so the xlead coincides the game outcome
 })
 
 
@@ -111,7 +111,5 @@ test_that("big file", {
   y <- stateat(x, Inf)
   expect_equal(y$b_captured, 62934L)
   expect_equal(y$w_captured, 62936L)
-
-
 })
 

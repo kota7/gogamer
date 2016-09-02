@@ -1,38 +1,22 @@
 
-#' Read and parse a SGF file
-#'
-#' @param path   character string of the path to
-#' a smart go format (SGF) file. Can be local or online
-#' @param ... arguments passed to \code{\link{readLines}}
-#' @return \code{\link{gogame}} object
-#' @export
-read_sgf <- function(path, ...) {
-  readLines(path, ...) %>%
-    paste0(collapse = "\n") %>%
-    parse_sgf() %>%
-    return()
-}
 
+reader_prof <- function(sgf)
+{
 
+  ## copy of reader function
 
-#' Parse text of the smart go format.
-#'
-#' @param sgf scalar character of sgf text.
-#' @return \code{\link{gogame}} object
-#' @export
-parse_sgf <- function(sgf) {
   ## obtain meta information
   proplist <- c(PW = "whitename", WR = "whiterank",
                 PB = "blackname", BR = "blackrank",
                 SZ = "boardsize", KM = "komi", HA = "handicap",
                 DT = "date", EV = "event", RO = "round",
                 RE = "result", RU = "rule", PC = "place")
-  properties <- get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
+  properties <- gogamer:::get_props(sgf, names(proplist)) %>% stats::setNames(proplist)
 
 
   ## parse the sgf into node tree
   ### create tree of nodes
-  tree <- make_sgftree(sgf)
+  tree <- gogamer:::make_sgftree(sgf)
 
   ## edge case where SGF has no node
   if (length(tree$data) == 0L) {
@@ -41,13 +25,13 @@ parse_sgf <- function(sgf) {
 
   ## parse plays and points
   ### each component is a data.frame, where 'id' indicate the node
-  parsed <- parse_sgfnode(tree$data)
+  parsed <- gogamer:::parse_sgfnode(tree$data)
 
   ## obtain move number of each node
   ### movenumber maps ID -> moven umber
   hasmove <- rep(FALSE, length(tree$data))
   hasmove[dplyr::filter_(parsed$moves, ~ismove) %>% `[[`("id")] <- TRUE
-  movenumber <- get_movenumber(hasmove, tree$children)
+  movenumber <- gogamer:::get_movenumber(hasmove, tree$children)
 
   ### add move numbers
   parsed$moves$move    <- movenumber[parsed$moves$id]
@@ -55,14 +39,14 @@ parse_sgf <- function(sgf) {
   parsed$comments$move <- movenumber[parsed$comments$id]
 
   ## compress the tree
-  compressor <- tree_compressor(tree$children)
+  compressor <- gogamer:::tree_compressor(tree$children)
   parsed$moves$nodeid    <- compressor$indexmap[parsed$moves$id]
   parsed$comments$nodeid <- compressor$indexmap[parsed$comments$id]
   parsed$points$nodeid   <- compressor$indexmap[parsed$points$id]
 
   ## get boardsize, or guess it if needed
   maxcoord <- max(c(0L, parsed$moves$x, parsed$moves$y))
-  boardsize <- guess_boardsize(properties$boardsize, maxcoord)
+  boardsize <- gogamer:::guess_boardsize(properties$boardsize, maxcoord)
   properties$boardsize <- boardsize
 
   ## revert the y-coordinate
@@ -85,7 +69,7 @@ parse_sgf <- function(sgf) {
   ### no need for this
 
   ## obtain the transitions
-  transitions <- get_transition_wrapper(
+  transitions <- gogamer:::get_transition_wrapper(
     parsed$moves, boardsize, compressor$children)
 
   ## A check for move numebr consistency
@@ -115,3 +99,5 @@ parse_sgf <- function(sgf) {
       children = compressor$children, leaf = compressor$leaf)
   ))
 }
+
+

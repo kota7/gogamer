@@ -18,6 +18,28 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// children_to_parentC
+std::vector<int> children_to_parentC(std::vector< std::vector<int> > children);
+RcppExport SEXP gogamer_children_to_parentC(SEXP childrenSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector< std::vector<int> > >::type children(childrenSEXP);
+    __result = Rcpp::wrap(children_to_parentC(children));
+    return __result;
+END_RCPP
+}
+// parent_to_childrenC
+std::vector< std::vector<int> > parent_to_childrenC(std::vector<int> parent);
+RcppExport SEXP gogamer_parent_to_childrenC(SEXP parentSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<int> >::type parent(parentSEXP);
+    __result = Rcpp::wrap(parent_to_childrenC(parent));
+    return __result;
+END_RCPP
+}
 // gogame_test
 void gogame_test(int m);
 RcppExport SEXP gogamer_gogame_test(SEXP mSEXP) {

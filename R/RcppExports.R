@@ -5,6 +5,14 @@ get_branchpath <- function(parent, goal, onebased = TRUE) {
     .Call('gogamer_get_branchpath', PACKAGE = 'gogamer', parent, goal, onebased)
 }
 
+children_to_parentC <- function(children) {
+    .Call('gogamer_children_to_parentC', PACKAGE = 'gogamer', children)
+}
+
+parent_to_childrenC <- function(parent) {
+    .Call('gogamer_parent_to_childrenC', PACKAGE = 'gogamer', parent)
+}
+
 gogame_test <- function(m = 0L) {
     invisible(.Call('gogamer_gogame_test', PACKAGE = 'gogamer', m))
 }
