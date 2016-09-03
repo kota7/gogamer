@@ -4,16 +4,20 @@
 \alias{gokifu}
 \title{Kifu (go game record) for a range of moves}
 \usage{
-gokifu(init, numbered, noted, boardsize)
+gokifu(unnumbered, numbered, noted, comment, boardsize)
 }
 \arguments{
-\item{init}{initial board state (\code{data.frame})}
+\item{unnumbered}{stones to be shown with no number on the board.
+These typically are stones put before the move range of the kifu.
+It also includes setup stones in the range (\code{data.frame})}
 
 \item{numbered}{moves to be numberd on the board (\code{data.frame})}
 
 \item{noted}{moves to be listed ontside the board (\code{data.frame})}
 
-\item{boardsize}{integer of board size}
+\item{comment}{comments during the move range of the game (\code{data.frame})}
+
+\item{boardsize}{board size (\code{integer})}
 }
 \value{
 \code{gokifu} object

@@ -45,20 +45,22 @@ library(gogamer)
 
 ## What you can do
 
-You can read go game record file in SGF.
+The package features a `read_sgf` that reads text files written in sgf format.
 ```{r}
 x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
 class(x)
 print(x)
 ```
 
-You can print the board configuration on console,
+### Game snapshot
+
+`stateat` function shows the board configuration at an arbitrary move number,
 ```{r}
 # argument 'at' specifies the move number
 stateat(x, at = 127)
 ```
 
-or draw as an image.
+or `plotat` function draws the image.
 ```{r, fig.height=5, fig.width=5, results='hide', message=FALSE}
 plotat(x, at = 127)
 ```
@@ -70,8 +72,7 @@ library(ggplot2)
 ggsave("goimage.pdf", width = 5, height = 5)
 ```
 
-
-Images can be edited flexibly.
+Images are fully customizable.
 ```{r, fig.height=5, fig.width=5, results='hide', message=FALSE}
 plotat(x, at = 127, 
        boardcolor = "gray15", gridcolor = "gray85", starcolor = "gray85",
@@ -80,16 +81,17 @@ plotat(x, at = 127,
 ```
 
 
-You can also draw kifu (game record) image as below.
-Again, the object supports `ggsave` function.
-```{r, fig.height=5.6, fig.width=5, results='hide', message=FALSE}
-plot(kifu(x, from = 1, to = 127))
+### Kifu document
+
+`kifu` function creates an one-page kifu object, which prints on the console as below.
+```{r}
+kifu(x, from = 1, to = 50)
 ```
 
-
-Or you may also print kifu on console.
-```{r}
-kifu(x, from = 1, to = 127)
+`kifuplot` function draws the image.
+Again, the object supports `ggsave` function.
+```{r, fig.height=5.6, fig.width=5, results='hide', message=FALSE}
+kifuplot(x, from = 1, to = 50)
 ```
 
 

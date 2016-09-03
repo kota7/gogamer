@@ -25,7 +25,7 @@ library(gogamer)
 What you can do
 ---------------
 
-You can read go game record file in SGF.
+The package features a `read_sgf` that reads text files written in sgf format.
 
 ``` r
 x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
@@ -44,7 +44,9 @@ print(x)
 #>  date        : 1846-07-21
 ```
 
-You can print the board configuration on console,
+### Game snapshot
+
+`stateat` function shows the board configuration at an arbitrary move number,
 
 ``` r
 # argument 'at' specifies the move number
@@ -78,7 +80,7 @@ stateat(x, at = 127)
 #> 
 ```
 
-or draw as an image.
+or `plotat` function draws the image.
 
 ``` r
 plotat(x, at = 127)
@@ -93,7 +95,7 @@ library(ggplot2)
 ggsave("goimage.pdf", width = 5, height = 5)
 ```
 
-Images can be edited flexibly.
+Images are fully customizable.
 
 ``` r
 plotat(x, at = 127, 
@@ -104,41 +106,43 @@ plotat(x, at = 127,
 
 ![](readme-fig/README-unnamed-chunk-9-1.png)
 
-You can also draw kifu (game record) image as below. Again, the object supports `ggsave` function.
+### Kifu document
+
+`kifu` function creates an one-page kifu object, which prints on the console as below.
 
 ``` r
-plot(kifu(x, from = 1, to = 127))
-```
-
-![](readme-fig/README-unnamed-chunk-10-1.png)
-
-Or you may also print kifu on console.
-
-``` r
-kifu(x, from = 1, to = 127)
-#> Black 1 - Black 127 
+kifu(x, from = 1, to = 50)
+#> Black 1 - White 50 
 #> 
 #>        A  B  C  D  E  F  G  H  J  K  L  M  N  O  P  Q  R  S  T
 #>      ---------------------------------------------------------
-#>  19|   +  +  +  +  +  +  +  +  +117118114  +  +  +  +  +  +  +
-#>  18|   +  +  +119  +  +  +  +  +113112 93 94  +116 74 75  +  +
-#>  17|   +  +120  2  + 89  +  + 68115 67 90 92  +  4 69  +  +  +
-#>  16|   +  +  +  +  +  +  +  +  +  +  + 91 95 79  +  +  1  +  +
-#>  15|   +  +  +  +  +121  +  +  +  + 71  +  +  +  +  9111  +  +
-#>  14|   +  +  6  +  +  +  +  +  +  +  +  +  +  +  + 97 96102  +
-#>  13|   +  +  +  +  +  +  +  +  +  +  +  +  + 76 72 82 81 99103
-#>  12|   +  +  +  +  +  +  +  +  +  +  +  +  +  + 73 80 98100101
-#>  11|   +  +  +  +  +  +  +  +  +127  +  + 77108106105 59 55  +
-#>  10|   +  +  +  +  +  +  +  +  +  +  +  + 78 70107104 53 54  +
-#>   9|   +  + 66  +  +  +  +  +  +  +  +  +  +  +110 27109 56  +
-#>   8|   +  +  +  +  +  +  +  +  +  +  +  +  +  + 26 25 52 45  +
-#>   7|   +  +  +  +  +  +  +  +  +  +  +  + 58  + 24 21 50 44  +
-#>   6|   +  +122  +  +  +  +  +  + 61  + 57 48  + 20 17  +  +  +
-#>   5|   +  +  +  +  +  + 65  +126  +  + 47 42 41 16 11  8  +  +
-#>   4|   +  +  5  +  7  +  + 87  +  +  + 31 22 10 13 12 14  +  +
-#>   3|   +  +  +  +  +125 64 83 86  + 32 28 23 19 15  3 18 60  +
-#>   2|   +  +  +  +  +  +123 84 85 88 30 29 36 37 51 38 33 34  +
-#>   1|   +  +  +  +  +  +  +  +124  +  + 62  + 63  + 39 40 35  + 
+#>  19|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>  18|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>  17|   +  +  +  2  +  +  +  +  +  +  +  +  +  +  4  +  +  +  +
+#>  16|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  1  +  +
+#>  15|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  9  +  +  +
+#>  14|   +  +  6  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>  13|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>  12|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>  11|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>  10|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +  +
+#>   9|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  + 27  +  +  +
+#>   8|   +  +  +  +  +  +  +  +  +  +  +  +  +  + 26 25  + 45  +
+#>   7|   +  +  +  +  +  +  +  +  +  +  +  +  +  + 24 21 50 44  +
+#>   6|   +  +  +  +  +  +  +  +  +  +  +  + 48  + 20 17  +  +  +
+#>   5|   +  +  +  +  +  +  +  +  +  +  + 47 42 41 16 11  8  +  +
+#>   4|   +  +  5  +  7  +  +  +  +  +  + 31 22 10 13 12 14  +  +
+#>   3|   +  +  +  +  +  +  +  +  +  + 32 28 23 19 15  3 18  +  +
+#>   2|   +  +  +  +  +  +  +  +  +  + 30 29 36 37  + 38 33 34  +
+#>   1|   +  +  +  +  +  +  +  +  +  +  +  +  +  +  + 39 40 35  + 
 #> 
 #>   B43=R2; W46=R1; B49=R2
 ```
+
+`kifuplot` function draws the image. Again, the object supports `ggsave` function.
+
+``` r
+kifuplot(x, from = 1, to = 50)
+```
+
+![](readme-fig/README-unnamed-chunk-11-1.png)
