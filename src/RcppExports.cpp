@@ -18,6 +18,28 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// char_to_coord
+std::vector<int> char_to_coord(std::vector<std::string> charvec);
+RcppExport SEXP gogamer_char_to_coord(SEXP charvecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type charvec(charvecSEXP);
+    __result = Rcpp::wrap(char_to_coord(charvec));
+    return __result;
+END_RCPP
+}
+// expand_rectangle
+Rcpp::DataFrame expand_rectangle(std::vector<std::string> text);
+RcppExport SEXP gogamer_expand_rectangle(SEXP textSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<std::string> >::type text(textSEXP);
+    __result = Rcpp::wrap(expand_rectangle(text));
+    return __result;
+END_RCPP
+}
 // children_to_parentC
 std::vector<int> children_to_parentC(std::vector< std::vector<int> > children);
 RcppExport SEXP gogamer_children_to_parentC(SEXP childrenSEXP) {

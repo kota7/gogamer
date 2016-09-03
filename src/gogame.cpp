@@ -219,10 +219,23 @@ void Gogame::AddStone(unsigned int color, unsigned int x, unsigned int y,
   currentnode = nodeid;
   if (!ismove) {
     // if this is a setup move, then add stone at the point and do nothing else
-    // but do nothing if the x or y is out of bounds
+    // but do nothing if the x or y is out of bounds because
+    // you cannot add stone there!
     if (x >= 1 && y >= 1 && x <= boardsize && y <= boardsize) {
-      board[y][x] = color;
-      transitions.push_back(Transition(movenumber, x, y, color, currentnode, false));
+      if (color == BL || color == WH) {
+        board[y][x] = color;
+        transitions.push_back(Transition(movenumber, x, y,
+                                         color, currentnode, false));
+      } else {
+        // if color is empty, this means you remove the stone.
+        // transition to remove the stone there
+        if (board[y][x] == BL || board[y][x] == WH) {
+          transitions.push_back(Transition(movenumber, x, y,
+                                           -board[y][x], currentnode, false));
+        }
+      }
+
+
     }
     return;
   }

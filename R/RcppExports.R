@@ -5,6 +5,14 @@ get_branchpath <- function(parent, goal, onebased = TRUE) {
     .Call('gogamer_get_branchpath', PACKAGE = 'gogamer', parent, goal, onebased)
 }
 
+char_to_coord <- function(charvec) {
+    .Call('gogamer_char_to_coord', PACKAGE = 'gogamer', charvec)
+}
+
+expand_rectangle <- function(text) {
+    .Call('gogamer_expand_rectangle', PACKAGE = 'gogamer', text)
+}
+
 children_to_parentC <- function(children) {
     .Call('gogamer_children_to_parentC', PACKAGE = 'gogamer', children)
 }

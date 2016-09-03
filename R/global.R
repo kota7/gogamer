@@ -6,7 +6,7 @@
 # they are unlikely to change, though
 BLACK <- 1L
 WHITE <- 2L
-
+EMPTY <- 0L
 
 
 # default graphic setting

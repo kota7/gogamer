@@ -389,16 +389,18 @@ kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
   ## 'coord_id' is an index that maps one-to-one with (x, y) combination
   coord_id <- a$x + a$y*(x$boardsize+1)
   dup <- duplicated(coord_id)
+  oob <- a$x < 1L | a$y < 1L | a$x > x$boardsize | a$y > x$boardsize
 
   ## for (x, y) such that duplicated and ismove,
   ## there should be a stone already there, hence show in the note
-  noted <- a[dup & a$ismove, ]
+  ## coordincates out-of-bounds are also in the note
+  noted <- a[(dup & a$ismove) | oob, ]
   ## among the non-duplicated, those not ismove are either
   ## stone before 'from' or setup moves between 'from' and 'to'
   ## they should show up with no number
-  unnumbered <- a[!dup & !a$ismove, ]
+  unnumbered <- a[(!dup & !a$ismove) & !oob, ]
   ## the others are to show up with numbers
-  numbered <- a[!dup & a$ismove, ]
+  numbered <- a[(!dup & a$ismove) & !oob, ]
   ## remaining is 'dup and !ismove' these do not show up in the kifu
   ## such case should not occur for valid kifu
 
@@ -409,7 +411,7 @@ kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
 
 
   ## replace the move numbers by the specified first number
-  ## this is probably useful to show
+  ## this is probably useful to show off-path variation
   if (!is.na(restart)) {
     moves <- c(numbered$move, noted$move)
     if (length(moves) > 0L) {
@@ -418,8 +420,6 @@ kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
       noted$move <- noted$move - deviation
     }
   }
-
-
 
 
   out <- gokifu(unnumbered = unnumbered, numbered = numbered, noted = noted,

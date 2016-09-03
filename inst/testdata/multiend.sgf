@@ -6,16 +6,15 @@ HA[0]
 KM[6.5]
 PB[Black]
 PW[White]
-RE[W+3.5]
+RE[B+3.5]
 ;B[fd];W[df];B[ff];W[dc];B[dg];W[cg];B[eg]
 (;W[ce];B[ec]
 (;W[db];B[eb];W[dh];B[eh];W[ch];B[da];W[ca];B[ea];W[cc];B[di]
-;W[ci];B[ei];W[ee];B[fe];W[ed];B[ef]C[White: 23 territory + 0 captures \
-+ 6.5 komi = 29.5
+;W[ci];B[ei];W[ee];B[fe];W[ed];B[ef]
+;W[]C[White: 23 territory + 0 captures + 6.5 komi = 29.5
 Black: 33 territory + 0 captures = 33.0
 
-Black wins by 3.5]
-TB[fa:ic][gd:if][fg:ii]
+Black wins by 3.5]TB[fa:ic][gd:if][fg:ii]
 TW[cb][cd:dd][de][cf][aa:bi]
 )
 (;W[eb];B[fb];W[ed];B[fc];W[dd];B[db];W[cb];B[ea];W[dh];B[eh]
