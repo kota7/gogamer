@@ -1,13 +1,16 @@
 
 
 #' Kifu (go game record) for a range of moves
-#' @param init     initial board state (\code{data.frame})
+#' @param unnumbered stones to be shown with no number on the board.
+#' These typically are stones put before the move range of the kifu.
+#' It also includes setup stones in the range (\code{data.frame})
 #' @param numbered moves to be numberd on the board (\code{data.frame})
 #' @param noted    moves to be listed ontside the board (\code{data.frame})
-#' @param boardsize integer of board size
+#' @param comment  comments during the move range of the game (\code{data.frame})
+#' @param boardsize board size (\code{integer})
 #' @return \code{gokifu} object
 #' @export
-gokifu <- function(init, numbered, noted, boardsize)
+gokifu <- function(unnumbered, numbered, noted, comment, boardsize)
 {
   # obetain the move numbers
   if (nrow(numbered) == 0L) {
@@ -20,8 +23,9 @@ gokifu <- function(init, numbered, noted, boardsize)
 
   return(
     structure(
-      .Data = list(init = init, numbered = numbered, noted = noted,
-                   boardsize = boardsize, from = from, to = to),
+      .Data = list(unnumbered = unnumbered, numbered = numbered, noted = noted,
+                   boardsize = boardsize, from = from, to = to,
+                   comment = comment),
       class = "gokifu")
   )
 }
@@ -68,11 +72,11 @@ print.gokifu <- function(x, ...)
   cat(w, "\n\n")
 
 
-  # initial board state
+  # unnumbered stones on the board state
   y <- matrix(graphic_param$emptymark, nrow = x$boardsize, ncol = x$boardsize)
-  mark <- ifelse(x$init$color == BLACK,
+  mark <- ifelse(x$unnumbered$color == BLACK,
                  graphic_param$blackmark, graphic_param$whitemark)
-  y[cbind(x$init$y, x$init$x)] <- mark
+  y[cbind(x$unnumbered$y, x$unnumbered$x)] <- mark
 
   # insert numbers
   y[cbind(x$numbered$y, x$numbered$x)] <- as.character(x$numbered$move - origin)
@@ -146,8 +150,8 @@ plot.gokifu <- function(x, y, ...)
   # board plot
   out1 <- ggoban(x$boardsize, ...) %>%
     # add initial stones
-    # it is okay to have data with no rows
-    addstones(x = x$init$x, y = x$init$y, color = x$init$color,
+    # no error even if the data have data with no rows
+    addstones(x = x$unnumbered$x, y = x$unnumbered$y, color = x$unnumbered$color,
               boardsize = x$boardsize, ...) %>%
     # add numbered stones
     addstones(x = x$numbered$x, y = x$numbered$y, color = x$numbered$color,

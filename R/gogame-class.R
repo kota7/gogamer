@@ -295,7 +295,8 @@ stateat <- function(x, at)
     dplyr::group_by_(~x, ~y) %>%
     dplyr::summarize_(value = ~sum(value)) %>%
     dplyr::filter_(~value > 0L) %>%
-    dplyr::rename_(color = ~value)
+    dplyr::rename_(color = ~value) %>%
+    dplyr::ungroup()
 
   # compute the number of prisoners
   capt <- x$transition %>%
@@ -369,37 +370,44 @@ kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
 {
   if (!(is.gogame(x))) stop("object is not a gogame")
 
-  out <- x %>%
-    # obtain the board state just before 'from'
-    # and define the move number as 0
-    # this part is regarded as the 'initial' state of the kifu
-    stateat(from - 1L) %>% `[[`("board") %>%
-    dplyr::mutate(move = 0L) %>%
-    # then append the moves between 'from' to 'to'
-    # note that moves are the ones with positive values
-    # these are candidate move numbers to be shown in the kifu
-    dplyr::bind_rows(dplyr::filter_(
-      x[["transition"]], ~move >= from, ~move <= to, ~value > 0L) %>%
-        dplyr::rename_(color = ~value)) %>%
-    dplyr::arrange_(~move)
+  ## 'a' is the board state before move number 'from'
+  ## 'a' is given ismove = FALSE elsewhere, to treat as if they are
+  ## setup moves for this kifu
+  ## 'b' is the addition of stones between move from to to
+  a <- stateat(x, from-1L) %>% `[[`("board") %>%
+    dplyr::mutate(move = 0L, ismove = FALSE)
+  b <- dplyr::filter_(x$transition, ~move >= from, ~move <= to, ~value > 0L) %>%
+    dplyr::rename_(color = ~value)
+  ## 'b' must have all variables in 'a'
+  if (!all(names(a) %in% names(b))) stop("name mismatch")
+  b <- b[names(a)]
+  a <- dplyr::bind_rows(a, b)
+  rm(b)
 
-  # finally, for each (x, y), the first entry (smallest move number)
-  # is the ones to be marked in the kifu
-  # the other moves are listed outside
-  # also, if (x, y) is out of bounds then this is regarded as pass and
-  # to be listed outside
-  flg <- !duplicated(dplyr::select_(out, ~x, ~y)) &
-    (out$x >= 1L & out$y >= 1L & out$x <= x$boardsize & out$y <= x$boardsize)
+  ## 'coord_id' is an index that maps one-to-one with (x, y) combination
+  coord_id <- a$x + a$y*(x$boardsize+1)
+  dup <- duplicated(coord_id)
 
-  # define three separate data frames
-  # init      ... initial board state (shown on the board, no number)
-  # numbered  ... moves to be shown on the board with number
-  # noted     ... moves to be listed outside
-  init     <- dplyr::filter_(out, ~move == 0L)
-  numbered <- dplyr::filter_(out[flg,], ~move != 0L)
-  noted    <- dplyr::filter_(out[!flg,], ~move != 0L)
+  ## for (x, y) such that duplicated and ismove,
+  ## there should be a stone already there, hence show in the note
+  noted <- a[dup & a$ismove, ]
+  ## among the non-duplicated, those not ismove are either
+  ## stone before 'from' or setup moves between 'from' and 'to'
+  ## they should show up with no number
+  unnumbered <- a[!dup & !a$ismove, ]
+  ## the others are to show up with numbers
+  numbered <- a[!dup & a$ismove, ]
+  ## remaining is 'dup and !ismove' these do not show up in the kifu
+  ## such case should not occur for valid kifu
 
-  # replace the move numbers by the specified first number
+
+  ## extract other useful information
+  ## extract comment for the specified move range in the kifu
+  comment <- dplyr::filter_(x$comment, ~move >= from, ~move <= to)
+
+
+  ## replace the move numbers by the specified first number
+  ## this is probably useful to show
   if (!is.na(restart)) {
     moves <- c(numbered$move, noted$move)
     if (length(moves) > 0L) {
@@ -409,8 +417,11 @@ kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
     }
   }
 
-  out <- gokifu(init = init, numbered = numbered, noted = noted,
-                boardsize = x$boardsize)
+
+
+
+  out <- gokifu(unnumbered = unnumbered, numbered = numbered, noted = noted,
+                boardsize = x$boardsize, comment = comment)
   return(out)
 }
 
