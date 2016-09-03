@@ -6,7 +6,7 @@ context("Read sample data")
 
 test_that("mimiaka (installed data)", {
   x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
-  expect_equal(x$mainbranchmoves, 325L)
+  expect_equal(x$mainpathmoves, 325L)
   expect_equal(x$boardsize, 19L)
 
   y <- stateat(x, 127)
@@ -15,7 +15,7 @@ test_that("mimiaka (installed data)", {
   expect_equal(y$lastmove, c(10L, 11L, 1L))
 
   y <- stateat(x, +Inf)
-  expect_equal(y$movenumber, x$mainbranchmoves)
+  expect_equal(y$movenumber, x$mainpathmoves)
 
   expect_error(set_gamepath(x, 2))
 
@@ -27,7 +27,7 @@ test_that("mimiaka (installed data)", {
 
 test_that("saikoyo (installed data)", {
   x <- read_sgf(system.file("extdata/saikoyo.sgf", package = "gogamer"))
-  expect_equal(x$mainbranchmoves, 224L)
+  expect_equal(x$mainpathmoves, 224L)
   expect_equal(x$boardsize, 19L)
 
   y <- stateat(x, 116)
@@ -36,7 +36,7 @@ test_that("saikoyo (installed data)", {
   expect_equal(y$lastmove, c(8L, 9L, 2L))
 
   y <- stateat(x, +Inf)
-  expect_equal(y$movenumber, x$mainbranchmoves)
+  expect_equal(y$movenumber, x$mainpathmoves)
 
   expect_error(set_gamepath(x, 2))
 
@@ -107,7 +107,7 @@ test_that("kgs", {
 
 test_that("big file", {
   x <- read_sgf(system.file("testdata/move1e5.sgf.gz", package = "gogamer"))
-  expect_equal(x$mainbranchmoves, 125899L)
+  expect_equal(x$mainpathmoves, 125899L)
   y <- stateat(x, Inf)
   expect_equal(y$b_captured, 62934L)
   expect_equal(y$w_captured, 62936L)

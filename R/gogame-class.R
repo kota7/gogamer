@@ -188,13 +188,15 @@ gogame <- function(properties, gametree)
                                    ~y >= 1L, ~y <= properties$boardsize)
 
 
-  ### compile output
+  ## compile output
+  ### we don't need 'move' in the game tree any longer
+  gametree <- gametree[names(gametree) != "move"]
   out <- structure(
     .Data = c(properties, list(gametree = gametree)), class = "gogame")
   out <- set_gamepath(out, 1L)
 
   ## store the move count of main branch (branch = 1)
-  out$mainbranchmoves <- max(c(0L, out$transition$move))
+  out$mainpathmoves <- max(c(0L, out$transition$move))
 
   return(out)
 }
@@ -221,8 +223,8 @@ print.gogame <- function(x, ...)
   } else {
     cat("Unknown")
   }
-  if (is.integer(x$mainbranchmoves))
-    cat(sprintf(" (%d moves)", x$mainbranchmoves))
+  if (is.integer(x$mainpathmoves))
+    cat(sprintf(" (%d moves)", x$mainpathmoves))
   cat("\n")
 
   cat("\n")
