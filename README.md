@@ -7,8 +7,8 @@ gogamer: R package for go game data
 
 ![](readme-fig/README-unnamed-chunk-2-1.png)
 
-How to use
-----------
+Installation and import
+-----------------------
 
 Install by
 
@@ -22,10 +22,12 @@ Use by
 library(gogamer)
 ```
 
-What you can do
+Functionalities
 ---------------
 
-The package features a `read_sgf` that reads text files written in sgf format.
+### Read sgf files
+
+`read_sgf` reads text files written in sgf format, and compiles as a `gogame` class object.
 
 ``` r
 x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
