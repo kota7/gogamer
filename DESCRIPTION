@@ -1,6 +1,6 @@
 Package: gogamer
 Type: Package
-Title: R Package for Go Game Data
+Title: Go Game Data Reader and Image Generator
 Version: 0.4.3
 Authors@R: c(
   person("Kota", "Mori", email = "kmori05@gmail.com", role = c("aut", "cre"))
