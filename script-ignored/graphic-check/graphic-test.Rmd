@@ -54,7 +54,7 @@ ggoban(9, axislabels = FALSE) %>% addstones(c(5, 6, 1), c(5, 5, 1), c(1, 2, 1))
 
 ## Territory plot
 ```{r, fig.width=5, fig.height=5}
-x <- read_sgf(system.file("testdata/multiend.sgf", package = "gogamer"))
+x <- read_sgf("../../tests/testthat/multiend.sgf")
 plotat(x, 100, markpoints = TRUE)
 plotat(x, 100, markpoints = TRUE, marklast = FALSE, territoryshape = 22)
 plotat(x, 100, markpoints = TRUE, blackcolor = "blue", whitecolor = "red")
@@ -107,7 +107,7 @@ kifu(mimiaka) %>% plot(axislabels = FALSE)
 ```
 
 ```{r, fig.width=5, fig.height=6.32}
-y <- read_sgf(system.file("testdata/ko.sgf", package = "gogamer"))
+y <- read_sgf("../../tests/testthat/ko.sgf")
 kifu(y, 1, 108) %>% plot()
 ```
 
@@ -121,7 +121,7 @@ kifu(y, 101, 108) %>% plot(axislabels = FALSE)
 ### For smaller board
 ```{r, fig.width=5, fig.height=5.96}
 # fig.width=5, fig.height=5.96
-z <- read_sgf(system.file("testdata/ko9.sgf", package = "gogamer"))
+z <- read_sgf("../../tests/testthat/ko9.sgf")
 kifu(z) %>% plot()
 ```
 
@@ -166,9 +166,9 @@ kifu(mimiaka) %>% plot(colortheme = "crystal")
 
 ## Partial board
 ```{r, fig.width=5, fig.height=5}
-a <- read_sgf(system.file("testdata/tsumego1.sgf", package = "gogamer"))
-b <- read_sgf(system.file("testdata/tsumego2.sgf", package = "gogamer"))
-d <- read_sgf(system.file("testdata/joseki.sgf", package = "gogamer"))
+a <- read_sgf("../../tests/testthat/tsumego1.sgf")
+b <- read_sgf("../../tests/testthat/tsumego2.sgf")
+d <- read_sgf("../../tests/testthat/joseki.sgf")
 ```
 ```{r, fig.width=3, fig.height=3.9}
 plotat(a, 0, xlim = c(1, 7), ylim = c(1, 10), targetwidth = 3) 

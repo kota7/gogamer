@@ -2,7 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 [![Build Status](https://travis-ci.org/kota7/gogamer.svg?branch=master)](https://travis-ci.org/kota7/gogamer)
 
-gogamer: R package for go game data
+gogamer: R Package for Go Game Data
 ===================================
 
 ![](readme-fig/README-unnamed-chunk-2-1.png)
@@ -25,9 +25,9 @@ library(gogamer)
 Functionalities
 ---------------
 
-### Read sgf files
+### Read sgf file
 
-`read_sgf` reads text files written in sgf format, and compiles as a `gogame` class object.
+`read_sgf` reads a text file written in sgf format, and creates a `gogame` class object.
 
 ``` r
 x <- read_sgf(system.file("extdata/mimiaka.sgf", package = "gogamer"))
@@ -82,7 +82,7 @@ stateat(x, at = 127)
 #> 
 ```
 
-or `plotat` function draws the image.
+and `plotat` function draws the image.
 
 ``` r
 plotat(x, at = 127)
