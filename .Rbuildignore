@@ -6,4 +6,6 @@ script-ignored
 ^README-.*\.png$
 readme-fig
 
+testdata
+
 .travis.yml

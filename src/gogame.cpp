@@ -92,15 +92,22 @@ bool Gogame::IsLegal(unsigned int x, unsigned int y, unsigned int color, bool is
   // an immediate ko take back, but this part is not checked
 
   // debug mode
-  return true;
+  //return true;
 
   // move must be colored
   if (ismove && color != BL && color != WH) {
     return false;
   }
 
-  // can't put a stone on non-empty point
-  if ((color == BL || color == WH)
+  // x and y must be a valid index for board
+  // x and y are unsigned int, so no need to check >= 0
+  if (x > boardsize + 1 || y > boardsize + 1) {
+    return false;
+  }
+
+  // can't put a stone on non-empty point if it is a move
+  // if it is a set up, then it is okay.
+  if ((color == BL || color == WH) && ismove
         && (board[y][x] == BL || board[y][x] == WH)) {
       return false;
   }
@@ -202,40 +209,34 @@ void Gogame::AddStone(unsigned int color, unsigned int x, unsigned int y,
   // check if the stone can be put there
   if (!IsLegal(x, y, color, ismove)) {
     Summary();
-    if (ismove) {
-      Rcpp::Rcout << "at nodeid " << nodeid <<
-        ", tries to play: (x, y, color) = (" <<
-        x << ", " << y << ", " << color << ")\n";
-    } else {
-      Rcpp::Rcout << "at nodeid " << nodeid <<
-        ", tries to setup: (x, y, color) = (" <<
-        x << ", " << y << ", " << color << ")\n";
-    }
+    Rcpp::Rcout << "at nodeid " << nodeid <<
+      ", tries to play: (x, y, color, ismove) = (" <<
+      x << ", " << y << ", " << color << ", " << (int)ismove << ")\n";
     Rcpp::stop("illegal move");
   }
 
 
   // update current node member field
   currentnode = nodeid;
+  // case for setup move
   if (!ismove) {
-    // if this is a setup move, then add stone at the point and do nothing else
+    // if this is a setup move, then add stone at the point and
+    // no need to check the liberty.
     // but do nothing if the x or y is out of bounds because
     // you cannot add stone there!
     if (x >= 1 && y >= 1 && x <= boardsize && y <= boardsize) {
+      // if a stone is already there, then you need to first remove the stone
+      if (board[y][x] == BL || board[y][x] == WH) {
+        transitions.push_back(Transition(movenumber, x, y,
+                                         -board[y][x], currentnode, false));
+        board[y][x] = EM;
+      }
+      // if this new stone is colored, add that stone
       if (color == BL || color == WH) {
         board[y][x] = color;
         transitions.push_back(Transition(movenumber, x, y,
                                          color, currentnode, false));
-      } else {
-        // if color is empty, this means you remove the stone.
-        // transition to remove the stone there
-        if (board[y][x] == BL || board[y][x] == WH) {
-          transitions.push_back(Transition(movenumber, x, y,
-                                           -board[y][x], currentnode, false));
-        }
       }
-
-
     }
     return;
   }

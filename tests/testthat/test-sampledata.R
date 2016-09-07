@@ -47,7 +47,9 @@ test_that("saikoyo (installed data)", {
 
 
 test_that("branch", {
-  x <- read_sgf(system.file("testdata/joseki.sgf", package = "gogamer"))
+  #x <- read_sgf(system.file("testdata/joseki.sgf", package = "gogamer"))
+  #x <- read_sgf("testdata/joseki.sgf")
+  x <- read_sgf("joseki.sgf")
   expect_equal(length(x$gametree$leaf), 5L)
 
   y <- stateat(x, 1)
@@ -65,7 +67,8 @@ test_that("branch", {
 
 
 test_that("points", {
-  x <- read_sgf(system.file("testdata/multiend.sgf", package = "gogamer"))
+  #x <- read_sgf(system.file("testdata/multiend.sgf", package = "gogamer"))
+  x <- read_sgf("multiend.sgf")
   expect_equal(length(x$gametree$leaf), 3L)
 
   xlead <- numeric(3L)
@@ -83,22 +86,26 @@ test_that("points", {
 
 
 test_that("tsumego", {
-  x <- read_sgf(system.file("testdata/tsumego1.sgf", package = "gogamer"))
+  #x <- read_sgf(system.file("testdata/tsumego1.sgf", package = "gogamer"))
+  x <- read_sgf("tsumego1.sgf")
   expect_true(all(x$transition$ismove[x$transition$move == 0L] == FALSE))
 
-  x <- read_sgf(system.file("testdata/tsumego2.sgf", package = "gogamer"))
+  #x <- read_sgf(system.file("testdata/tsumego2.sgf", package = "gogamer"))
+  x <- read_sgf("tsumego2.sgf")
   expect_true(all(x$transition$ismove[x$transition$move == 0L] == FALSE))
 })
 
 
 test_that("kgs", {
-  x <- read_sgf(system.file("testdata/kgs1.sgf", package = "gogamer"))
+  #x <- read_sgf(system.file("testdata/kgs1.sgf", package = "gogamer"))
+  x <- read_sgf("kgs1.sgf")
   expect_equal(x$blackrank, "1k")
   expect_equal(x$whiterank, "1d")
   expect_equal(nrow(x$comment), 3L)
   expect_equal(nrow(x$point), 0L)  # finishes with resign
 
-  x <- read_sgf(system.file("testdata/kgs2.sgf", package = "gogamer"))
+  #x <- read_sgf(system.file("testdata/kgs2.sgf", package = "gogamer"))
+  x <- read_sgf("kgs2.sgf")
   y <- stateat(x, Inf)
   expect_equal(nrow(y$points), 113L)
   plot(y, markpoints = TRUE)
@@ -106,7 +113,7 @@ test_that("kgs", {
 
 
 test_that("big file", {
-  x <- read_sgf(system.file("testdata/move1e5.sgf.gz", package = "gogamer"))
+  x <- read_sgf("move1e5.sgf.gz")
   expect_equal(x$mainpathmoves, 125899L)
   y <- stateat(x, Inf)
   expect_equal(y$b_captured, 62934L)
@@ -114,7 +121,19 @@ test_that("big file", {
 })
 
 
-## TODO
-## add test for escape
-## add test for add and delete stone
+test_that("escape", {
+  x <- read_sgf("escape.sgf")
+  expect_equal(nrow(x$comment), 1L)
+  expect_true(grepl("\\]", x$comment$comment))
+})
+
+
+test_that("add/delete stone", {
+  x <- read_sgf("deletestone.sgf")
+  plotat(x, 4L)
+  expect_equal(nrow(stateat(x, 3)$board), 3L)
+  expect_equal(nrow(stateat(x, 4)$board), 2L)
+  expect_equal(nrow(stateat(x, 5)$board), 3L)
+  expect_equal(nrow(stateat(x, +Inf)$board), 7L)
+})
 
