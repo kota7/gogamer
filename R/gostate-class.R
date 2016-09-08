@@ -154,3 +154,4 @@ is.gostate <- function(x)
 {
   return(inherits(x, "gostate"))
 }
+
