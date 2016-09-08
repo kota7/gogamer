@@ -1,5 +1,5 @@
 # gogamer 0.4.4
-- In `kifuplot` function The default value of argument `to` is now `99L`,
+- In `kifuplot` function, the default value of argument `to` is now `99L`,
 instead of `100L`.
 - New data `tsumego` has been added.
 - `gogame` class object now has an variable `npath`, which gives the number of
