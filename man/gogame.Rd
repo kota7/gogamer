@@ -16,10 +16,10 @@ gogame(properties, gametree)
 }
 \description{
 \code{gogame} class object capusulizes a go game record.
-It keeps stores such game plays, outcomes as well as
-other information such as player names and date.
+It stores player names, game plays, outcomes and other information such
+as location and date.
 The object supports various methods for creating board images and
-Kifu documents.
+kifu documents.
 }
 \details{
 This is a constructor of \code{gogame} class object.
@@ -30,11 +30,11 @@ which interprets text of sgf format and creates the corresponding
 The object can produce two kinds of game images.
 The first is a board snapshot at an arbitrary timing.
 \code{\link{stateat}} is for computing the board configuration and
-\code{\link{plotat}} is for drawing the board image.
-The second kind of images is the kifu document that summarize a range of
+\code{\link{plotat}} for drawing the board image.
+The second is the kifu document that summarize a range of
 moves in a page.
-\code{\link{kifu}} is prepared for computing the move sequence and
-\code{\link{kifuplot}} is for drawing the image.
+\code{\link{kifu}} computes the contant of a kifu document and
+\code{\link{kifuplot}} draws the document image.
 
 The constructor takes two mandatory arguments: \code{properties} and \code{gametree}.
 \code{properties} is a named list of game meta information.
