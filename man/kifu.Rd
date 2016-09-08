@@ -7,7 +7,7 @@
 \usage{
 kifu(x, from = 1L, to = 99L, restart = NA_integer_)
 
-kifuplot(x, from = 1L, to = 100L, restart = NA_integer_, ...)
+kifuplot(x, from = 1L, to = 99L, restart = NA_integer_, ...)
 }
 \arguments{
 \item{x}{\code{gogame} object}

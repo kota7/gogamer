@@ -1,0 +1,18 @@
+(;GM[1]FF[4]
+CA[UTF-8]
+AP[Quarry:0.2.0]
+SZ[19]
+HA[0]
+KM[6.5]
+PB[Black]
+PW[White]
+AB[mb][ob:od][pd:qd][re][qf]
+AW[oa][pb:pc][qc:rc][rd]
+C[Black to play.]
+(;B[rb];W[sb];B[ra];W[sd];B[sa];W[qa];B[sc];W[qb]C[(Failure) White \
+lives by "oshi-tsubushi"]
+)
+(;B[sd]
+(;W[rb];B[qa];W[pa];B[sc];W[sb];B[ra];W[se];B[sd]C[(Success)])
+(;W[ra];B[sb];W[sc];B[pa];W[qa];B[rb]C[(Success, variation)]))
+)

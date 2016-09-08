@@ -190,13 +190,25 @@ plot.gokifu <- function(x, y, ...)
 }
 
 
+#' Check if the object is gokifu class
+#' @param x R object
+#' @return logical
+#' @export
+is.gokifu <- function(x)
+{
+  return(inherits(x, "gokifu"))
+}
+
+
 #' Draw outside note of kifu
-#' @param x \code{kifu} object
+#' @param x \code{gokifu} object
 #' @param ... graphic parameter
 #' @return \code{ggplot} object
 #' @export
 kifunote <- function(x, ...)
 {
+  if (!is.gokifu(x)) stop("object is not gokifu class")
+
   graphic_param <- set_graphic_param(boardsize = x$boardsize, ...)
 
   k <- graphic_param$moveperrow

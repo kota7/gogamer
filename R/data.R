@@ -34,3 +34,15 @@
 #'   \item{\url{http://senseis.xmp.net/?EarReddeningMove}}
 #' }
 "mimiaka"
+
+
+#' Tsumego (Life and death problem)
+#'
+#' @description A basic life and death problem. It shows three variations,
+#' the first is failure, and the last two are the success cases.
+#'
+#' @format \code{gogame} object
+#'
+#' @source Cho U (Zhang Xu). Kihon Shikatsu Jiten. Nihon Kiin 2014.
+#'
+"tsumego"

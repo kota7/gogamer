@@ -11,4 +11,7 @@ mimiaka <- read_sgf("inst/extdata/mimiaka.sgf")
 devtools::use_data(mimiaka, overwrite = TRUE)
 
 
+tsumego <- read_sgf("inst/extdata/tsumego.sgf")
+devtools::use_data(tsumego, overwrite = TRUE)
+
 

@@ -7,7 +7,7 @@
 kifunote(x, ...)
 }
 \arguments{
-\item{x}{\code{kifu} object}
+\item{x}{\code{gokifu} object}
 
 \item{...}{graphic parameter}
 }

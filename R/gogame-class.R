@@ -434,7 +434,7 @@ kifu <- function(x, from = 1L, to = 99L, restart = NA_integer_)
 #' @rdname kifu
 #' @examples
 #' kifuplot(mimiaka, 127, 150)
-kifuplot <- function(x, from = 1L, to = 100L, restart = NA_integer_, ...)
+kifuplot <- function(x, from = 1L, to = 99L, restart = NA_integer_, ...)
 {
   # one line wrapper for kifu -> plot
   if (!(is.gogame(x))) stop("object is not a gogame")
@@ -472,6 +472,9 @@ set_gamepath <- function(x, pathid = 1L)
 
   ## store the current branch id
   x$pathid <- as.integer(pathid)
+
+  ## store the number of variations
+  x$npath <- length(x$gametree$leaf)
 
   return(x)
 }

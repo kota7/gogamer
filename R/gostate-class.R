@@ -144,3 +144,13 @@ plot.gostate <- function(x, y, marklast = TRUE, markpoints = FALSE, ...)
 
   return(out)
 }
+
+
+#' Check if the object is gostate class
+#' @param x R object
+#' @return logical
+#' @export
+is.gostate <- function(x)
+{
+  return(inherits(x, "gostate"))
+}
