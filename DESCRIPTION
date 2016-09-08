@@ -1,15 +1,14 @@
 Package: gogamer
 Type: Package
-Title: Go Game Data Reader and Image Generator
+Title: Go Game Data Parser
 Version: 0.4.3
 Authors@R: c(
   person("Kota", "Mori", email = "kmori05@gmail.com", role = c("aut", "cre"))
   )
 Maintainer: Kota Mori <kmori05@gmail.com>
 Description:
-    Easy and flexible interface for handling go game data.
-    The package features
-    a reader function for SGF (smart go format) text files,
+    Easy and flexible interface for manipulating go game (weiqi, baduk) data.
+    The package features a reader function for SGF (smart go format) text files,
     and a set of plotting functions that draw go board images.
 License: MIT + file LICENSE
 Depends:

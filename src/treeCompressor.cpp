@@ -80,7 +80,7 @@ Rcpp::List tree_compressor(std::vector< std::vector<unsigned int> > children,
   newParent[0] = 0;
 
   // compile newleaf
-  for (unsigned int i = 0; i < newN; i++)
+  for (int i = 0; i < newN; i++)
     if (newChildren[i].size() == 0) newLeaf.push_back(i + 1);
 
   // compile newIndex

@@ -142,7 +142,7 @@ Rcpp::DataFrame get_transitiontree(
   std::vector<bool> nodeFound(children.size());
   for (unsigned int i = 0; i < nodeid_vec.size(); i++)
   {
-    if (nodeid_vec[i] >= children.size())
+    if (nodeid_vec[i] >= (int)children.size())
       Rcpp::stop("nodeid is larger than the size of children pointers");
     if (nodeFound[nodeid_vec[i]])
       Rcpp::stop("nodeid vector must be clustered");
