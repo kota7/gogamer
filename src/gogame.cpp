@@ -101,7 +101,7 @@ bool Gogame::IsLegal(unsigned int x, unsigned int y, unsigned int color, bool is
 
   // x and y must be a valid index for board
   // x and y are unsigned int, so no need to check >= 0
-  if (x > boardsize + 1 || y > boardsize + 1) {
+  if ((int)x > boardsize + 1 || (int)y > boardsize + 1) {
     return false;
   }
 
@@ -113,7 +113,7 @@ bool Gogame::IsLegal(unsigned int x, unsigned int y, unsigned int color, bool is
   }
 
   if ((color == BL || color == WH) && ismove &&
-      x >= 1 && x <= boardsize && y >= 1 && y <= boardsize) {
+      x >= 1 && (int)x <= boardsize && y >= 1 && (int)y <= boardsize) {
     // will check the liberty validity
     // illegal if:
     //   this stone has no liberty and
@@ -224,7 +224,7 @@ void Gogame::AddStone(unsigned int color, unsigned int x, unsigned int y,
     // no need to check the liberty.
     // but do nothing if the x or y is out of bounds because
     // you cannot add stone there!
-    if (x >= 1 && y >= 1 && x <= boardsize && y <= boardsize) {
+    if (x >= 1 && y >= 1 && (int)x <= boardsize && (int)y <= boardsize) {
       // if a stone is already there, then you need to first remove the stone
       if (board[y][x] == BL || board[y][x] == WH) {
         transitions.push_back(Transition(movenumber, x, y,
@@ -247,7 +247,7 @@ void Gogame::AddStone(unsigned int color, unsigned int x, unsigned int y,
   // coordinates out of bounds are regarded as pass,
   // append transition, but do nothing afterwards
   // x = y = 0 means this move is a pass
-  if (x < 1 || y < 1 || x > boardsize || y > boardsize) {
+  if (x < 1 || y < 1 || (int)x > boardsize || (int)y > boardsize) {
     transitions.push_back(Transition(movenumber, 0, 0, color, currentnode, true));
     return;
   }
@@ -438,13 +438,13 @@ void Gogame::GobackToMove(int m)
       break;
     } else {
       // revert board configuration
-      if (transitions[i].x > 0 && transitions[i].x <= boardsize
-            && transitions[i].y > 0 && transitions[i].y <= boardsize) {
+      if (transitions[i].x > 0 && transitions[i].x <= (unsigned)boardsize
+            && transitions[i].y > 0 && transitions[i].y <= (unsigned)boardsize) {
         board[transitions[i].y][transitions[i].x] -= transitions[i].value;
         // revert prisoner count
-        if (transitions[i].value == -BL) {
+        if (transitions[i].value == - (int)BL) {
           b_captured--;
-        } else if (transitions[i].value == -WH) {
+        } else if (transitions[i].value == - (int)WH) {
           w_captured--;
         }
       }
@@ -488,13 +488,13 @@ void Gogame::GobackToNode(int nid)
       break;
     } else {
       // revert board configuration
-      if (transitions[i].x > 0 && transitions[i].x <= boardsize
-            && transitions[i].y > 0 && transitions[i].y <= boardsize) {
+      if (transitions[i].x > 0 && (int)transitions[i].x <= boardsize
+            && transitions[i].y > 0 && (int)transitions[i].y <= boardsize) {
         board[transitions[i].y][transitions[i].x] -= transitions[i].value;
         // revert prisoner count
-        if (transitions[i].value == -BL) {
+        if (transitions[i].value == - (int)BL) {
           b_captured--;
-        } else if (transitions[i].value == -WH) {
+        } else if (transitions[i].value == - (int)WH) {
           w_captured--;
         }
       }

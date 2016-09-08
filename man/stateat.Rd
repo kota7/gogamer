@@ -22,8 +22,7 @@ plotat(x, at, ...)
 \code{plotat} returns a \code{ggplot} object
 }
 \description{
-This function obtains the board state at the move number.
-The result is stored in a \code{\link{gostate}} object.
+Computes the board state at a certain move number for a game.
 }
 \examples{
 stateat(saikoyo, 116)

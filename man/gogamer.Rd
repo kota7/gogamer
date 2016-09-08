@@ -4,8 +4,10 @@
 \name{gogamer}
 \alias{gogamer}
 \alias{gogamer-package}
-\title{gogamer: R package for go game data}
+\title{gogamer: Go Game Data Parser}
 \description{
-Reads go game data and produce board images with flexibility.
+Easy and flexible interface for manipulating go game (weiqi, baduk) data.
+The package features a reader function for SGF (smart go format) text files,
+and a set of plotting functions that draw go board images.
 }
 

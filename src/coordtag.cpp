@@ -18,7 +18,7 @@ std::vector<int> char_to_coord(std::vector<std::string> charvec)
   // Assumes:
   //   Each entry is length 1
 
-  for (int i = 0; i < charvec.size(); i++)
+  for (unsigned int i = 0; i < charvec.size(); i++)
   {
     if (charvec[i].size() != 1) {
       Rcpp::Rcout << charvec[i] << "\n";
@@ -27,7 +27,7 @@ std::vector<int> char_to_coord(std::vector<std::string> charvec)
   }
 
   std::vector<int> out(charvec.size());
-  for (int i = 0; i < charvec.size(); i++)
+  for (unsigned int i = 0; i < charvec.size(); i++)
     out[i] = charvec[i][0] - 96;
 
   return out;
@@ -56,7 +56,6 @@ Rcpp::DataFrame expand_rectangle(std::vector<std::string> text)
   int x2;
   int y1;
   int y2;
-  bool invalid;
 
   std::vector<int> x_out;
   std::vector<int> y_out;

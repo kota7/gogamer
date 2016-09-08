@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.org/kota7/gogamer.svg?branch=master)](https://travis-ci.org/kota7/gogamer)
+[![Build Status](https://travis-ci.org/kota7/gogamer.svg?branch=master)](https://travis-ci.org/kota7/gogamer) [![CRAN Status](http://www.r-pkg.org/badges/version/gogamer)](http://www.r-pkg.org/badges/version/gogamer)
 
 gogamer: R Package for Go Game Data
 ===================================
