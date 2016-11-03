@@ -1,3 +1,7 @@
+#ifndef SGFTREEHEADERDEF
+#define SGFTREEHEADERDEF
+
+
 #include <Rcpp.h>
 #include <vector>
 #include <string>
@@ -20,3 +24,6 @@ Tree<std::string> MakeSgfBranchTree(const std::string &sgf);
 
 // interacting with R
 Rcpp::List make_nodetree(std::string sgf, bool bynode = true);
+
+
+#endif

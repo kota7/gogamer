@@ -1,3 +1,7 @@
+#ifndef GOGAMEHEADERDEF
+#define GOGAMEHEADERDEF
+
+
 #include <Rcpp.h>
 #include <vector>
 
@@ -97,3 +101,6 @@ public:
   // for debugging
   void Summary();
 };
+
+
+#endif
