@@ -12,7 +12,7 @@ NULL
 
 
 ### enable Rcpp ###
-#' @useDynLib gogamer
+#' @useDynLib gogamer, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 NULL
 ###
