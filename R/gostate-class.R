@@ -118,8 +118,8 @@ plot.gostate <- function(x, y, marklast = TRUE, markpoints = FALSE, ...)
 {
   # draw stone allocation
   # remove pass moves
-  notPass <- (x$board$x >= 1L && x$board$x <= x$boardsize &&
-                x$board$y >= 1L && x$board$y <= x$boardsize)
+  notPass <- (x$board$x >= 1L & x$board$x <= x$boardsize &
+                x$board$y >= 1L & x$board$y <= x$boardsize)
   out <- ggoban(x$boardsize, ...) %>%
     addstones(x = x$board$x[notPass], y = x$board$y[notPass],
               color = x$board$color[notPass])
